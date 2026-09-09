@@ -1,6 +1,6 @@
 # A Readout Problem for Fefferman's Existence and Smoothness of the Navier-Stokes Equation
 
-Author: Yaoharee Lahtee. License: CC BY 4.0 (see `LICENSE`).
+Author: Yaoharee Lahtee. License: CC BY 4.0 (see `LICENSE`). DOI: [10.5281/zenodo.22673246](https://doi.org/10.5281/zenodo.22673246).
 
 This repository holds a short, arXiv-style, single-column mathematical note that:
 
@@ -43,7 +43,8 @@ step size.
 ## Provenance and process
 
 Both new theorems in this note were checked against, and registered in, an internal equation
-registry as proposals (pending canonical-code assignment) before being written into the paper,
-following the maintaining project's own equation-registry-first practice; see `CLAIMS.md` for the
-exact tiers and status of every claim. Independent review, git release, and Zenodo deposit are
-**not yet done**.
+registry (github.com/morrocwi/toledo) as proposals (pending canonical-code assignment) before
+being written into the paper, following the maintaining project's own equation-registry-first
+practice; see `CLAIMS.md` for the exact tiers and status of every claim. Independent adversarial
+review is complete, this repository is public, and it has been deposited on Zenodo
+(10.5281/zenodo.22673246).

@@ -1,0 +1,12 @@
+{
+  "bucket_url": "https://zenodo.org/api/files/8ca8b148-acd4-4a7d-aeb5-06975429ba43",
+  "conceptrecid": "22673245",
+  "created": "2026-09-09T10:26:59.847037+00:00",
+  "deposition_id": 22673246,
+  "files_uploaded": [
+    "main.pdf"
+  ],
+  "prereserved_doi": "10.5281/zenodo.22673246",
+  "sandbox": false,
+  "status": "published"
+}
