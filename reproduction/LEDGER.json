@@ -1,0 +1,690 @@
+{
+  "generated_at_utc": "2026-09-09T11:46:28.193896+00:00",
+  "series": "Readout-Navier-Stokes Development Series (Volumes 1-6, v0.1-v0.6)",
+  "source_repos": [
+    "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
+    "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)"
+  ],
+  "total_claims": 80,
+  "tier_counts": {
+    "finite_diagnostic": 27,
+    "Open": 8,
+    "Dr": 44,
+    "N/A": 1
+  },
+  "status_counts": {
+    "PASS": 26,
+    "OPEN": 8,
+    "NOT_RUN": 1,
+    "N/A": 45
+  },
+  "any_check_script_reported_failure": false,
+  "claims": [
+    {
+      "volume": 1,
+      "id": "NSR-01-weld",
+      "name": "Exact weld (dynamical + observational) over all 8 states, F^2=Id",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "dyn_weld=8/8 obs_weld=8/8 F^2=Id:True"
+    },
+    {
+      "volume": 1,
+      "id": "NSR-01-witness",
+      "name": "Witness pair stays O-equivalent / Q-inequivalent for every tested finite horizon",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "verified k=0..9999"
+    },
+    {
+      "volume": 1,
+      "id": "NSR-01-corollary",
+      "name": "Non-entailment corollary: exact weld + exact factorization does not imply finite-horizon decidability",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "immediate from NSR-01-weld and NSR-01-witness above"
+    },
+    {
+      "volume": 1,
+      "id": "Vol1-AppendixB-code-family",
+      "name": "Proposed Toledo code family for NSR-01/NSR-W1/NSR-02/NSR-03/NSR-04 under weld root",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "Explicitly proposal/unregistered status per the paper's own Appendix B; not a registered Toledo canonical entry, nothing to mechanically check."
+    },
+    {
+      "volume": 1,
+      "id": "Vol1-AppendixC-coq-witness",
+      "name": "NSR01_finite_witness.v Coq script (arXiv bundle)",
+      "tier": "finite_diagnostic",
+      "status": "NOT_RUN",
+      "evidence": "Coq file exists in the arXiv bundle location but was not compiled with coqc in this workspace or by this reproduction run (self-flagged by the paper itself as not Th_coqc). The Python re-derivation above (NSR-01-weld/witness) independently covers the same finite claim by direct enumeration."
+    },
+    {
+      "volume": 1,
+      "id": "Vol1-AppendixD-weld-exclusion",
+      "name": "Deliberate exclusion of weld/M.39.v1 (registry presence != theorem status)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "A methodological/source-audit statement, not a numeric or combinatorial claim; nothing to run. Confirmed by inspection that Volumes 1-6 never cite weld/M.39.v1 to derive a result."
+    },
+    {
+      "volume": 1,
+      "id": "NSR-02/03/04",
+      "name": "Navier-Stokes bridge obligations connecting continuum singularity to finite-readout breakdown",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "Explicitly posed, not answered, by Volume 1 itself. No construction given to check."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Thm3.1/Cor3.2",
+      "name": "8-state exact-weld witness with permanent reader equivalence (same construction as Vol.1 NSR-01)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "see printed weld/witness counts above; identical construction to Volume 1's NSR-01, re-derived independently here to avoid cross-volume double counting confusion"
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Sec13-lambda_max",
+      "name": "8-node cycle graph Laplacian lambda_max = 4.0 (Sec.13 worked example)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "computed lambda_max via eigh; matches paper's stated value 4.0"
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Thm7.1-threshold",
+      "name": "Explicit-Euler stability threshold h <= 2 tau_R/lambda_max = 0.35",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "2*0.7/4.0 = 0.35, matches paper; confirmed |eigenvalue(A_R)|<=1 at h=0.1"
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Eq27-29",
+      "name": "Explicit stepper recursion matches its own closed-form (Duhamel) unroll",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "recursion vs closed-form residual < 1e-9 after 7 steps"
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Thm7.1-eigenvalue-bound",
+      "name": "max|eigenvalue(A_R)| <= 1 under the stability condition",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "computed directly for the m=8 cycle graph at h=0.1 < 0.35"
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Prop6.3",
+      "name": "Energy identity (tau/2) d/dt||I||^2 + <I,LI> = <I,G>",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "verified as an EXACT symbolic algebraic identity (sympy simplify to 0, substituting the ODE's own dI/dt), plus a numeric spot-check on the m=8 cycle-graph instance"
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Eq33-34",
+      "name": "One-step residual R^n / normalized error epsilon_N (definition)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "definition is a directly computable finite sum; verified self-consistent on a simulated trajectory"
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Sec13-convergence-order",
+      "name": "Explicit Euler stepper is O(h) globally (Sec.13 worked example, general claim)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "GAP: paper's G_R/I_0 for the exact published error table are underspecified in the prose (a naive constant/kernel-aligned drive trivializes the test). Reproduced the underlying O(h) convergence claim with an explicit, documented, non-kernel-aligned G_R/I_0 instead (see BUILD_STATUS.md); ratios printed above land near 2.0 as expected for a first-order method, but this does NOT reproduce the paper's own exact numeric table (1.99976, 2.00069, 2.00053)."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Prop10.1",
+      "name": "Bounded retained state does not decide task adequacy (counterexample)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "exact two-line construction (Adm_Q constant 0 or 1 breaks each direction)"
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Def2.1",
+      "name": "Exact weld (definition)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Definition, not a claim; underlies Thm 3.1 which IS checked above."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Def2.2",
+      "name": "Finite-horizon reader equivalence (definition)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Definition, not a claim."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Sec4-adapter",
+      "name": "NS adapter problem / defects delta_dyn, delta_obs",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "Framework discussion with no numeric instantiation for a real NS adapter; explicitly not a theorem."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Eq16-17",
+      "name": "Finite retained-turbulence layer (definition)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Definition; explicitly NOT identified with real Navier-Stokes by the paper itself."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Thm6.1",
+      "name": "Global finite-interval continuation (general ODE existence/uniqueness)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Standard linear-ODE variation-of-constants argument over ALL admissible L_R, G_R; not finitely enumerable as a general theorem (a fixed numeric instance is what Sec.13 attempts, partially covered above)."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Cor6.2",
+      "name": "Positive-semidefinite restoration (spectral bound)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Spectral-theorem argument for a general PSD L_R; the SPECIFIC m=8 cycle-graph instance is confirmed PSD with lambda_min=0 by the eigenvalue computation above."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Cor6.4",
+      "name": "Spectral-gap estimate",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Standard linear-ODE spectral-projection argument for a general spectral gap; not a finite enumeration."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Thm8.1",
+      "name": "Continuum breakdown does not force retained norm blow-up under H_R",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Direct logical restatement of Thm 6.1's bound; inherits Thm 6.1's non-finite-witness status."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Cor8.2",
+      "name": "Necessary bridge failure for transferred blow-up",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Pure logical contrapositive of Thm 8.1; not a numeric/combinatorial claim."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Sec9",
+      "name": "State-dependent restoration (nonlinear model, open item)",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "Explicitly flagged by the paper itself as a separate, unresolved mathematical problem."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Prop10.2",
+      "name": "No readout norm blow-up for Lipschitz readers",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "One-line analytic corollary of Thm 6.1's boundedness for a general K-Lipschitz reader."
+    },
+    {
+      "volume": 2,
+      "id": "Vol2-Thm11.1",
+      "name": "Four-layer non-collapse",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Combines the checked finite witness (Thm 3.1) with the non-mechanical Thm 8.1; TWO DOCUMENT DEFECTS FOUND in the same proof sentence: (1) proof text cites 'Theorem 9.1' which does not exist as a numbered theorem in Volume 2 (Section 9 is an unnumbered open-problem discussion) -- most likely a typo for Theorem 8.1; (2) proof text also cites 'Proposition 11.1' which does not exist in Volume 2 (only Proposition 10.1 and 10.2 exist) -- most likely a typo for Proposition 10.1 ('Bounded retained state does not decide task adequacy'), whose stated content is a near-verbatim match for what the proof describes. Flagged for the founder/author; does not itself block the finite parts already verified."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Thm9.1",
+      "name": "Exact welded domain difference with permanent reader equivalence (restatement of Vol.2 Thm 3.1)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "identical construction to Vol.2 Thm 3.1 / Vol.1 NSR-01; ledger treats this as the SAME claim cited from three sites, not three independent claims"
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Prop5.1-CM",
+      "name": "Finite-cutoff constant C_M = (sum_{k in K_M}|k|^2)^(1/2) is a computable finite sum",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "computed for M=1,2,3 over a cubic Fourier mode cutoff; strictly increasing as expected"
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Assumption1.1",
+      "name": "Bounded-energy breakdown regime (hypothesis)",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "Explicitly conditional hypothesis, not a proved claim; consistent with Vol.1's refusal to assert NS singularities actually occur."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Lemma2.1",
+      "name": "Fixed-mode nonlinear bound |N_k(t)|<=|k|E^2",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Standard Cauchy-Schwarz/Parseval estimate for an ARBITRARY hypothetical smooth solution u, not a fixed concrete instance; algebra is elementary but not finitely enumerable."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Thm2.2",
+      "name": "Finite limit of every fixed Fourier mode",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Bounded-total-variation / Cauchy-sequence argument in a Banach space; classical real analysis, not mechanically checkable."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Thm3.1",
+      "name": "Finite-mode continuation for fixed cutoff M",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Applies Thm 2.2 to finitely many k; inherits Thm 2.2's non-finite-witness status."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Cor3.2",
+      "name": "NS finite-mode separation (Sigma_s does not imply Sigma_M)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Logical/analytic corollary of Thm 3.1; same status."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Thm4.1",
+      "name": "Tail localization (finite part bounded, tail unbounded)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Sobolev-norm decomposition + proof-by-contradiction; classical functional analysis, not a finite witness."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Prop5.1-full",
+      "name": "Finite residual bound ||eta_M(t)|| <= C_M E^2 (full claim, beyond C_M itself)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "The C_M arithmetic itself is checked above; the bound applying to an arbitrary hypothetical u depends on the non-finite-witness Lemma 2.1."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Thm6.1",
+      "name": "Finite retained-state continuation (complex case)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Same variation-of-constants argument as Vol.2 Thm 6.1, generalized to C^m; no worked numeric example given in Vol.3 analogous to Vol.2 Sec.13."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Cor6.2",
+      "name": "Fourier retained state as an exact instance of the general model",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Bookkeeping identification, not a new numeric claim; inherits Prop 5.1 and Thm 6.1 status."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Thm7.1",
+      "name": "Continuous finite readers survive the limit",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Continuity of Phi applied to the non-finite-witness Fourier-mode convergence theorem."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Thm8.1",
+      "name": "Three-level separation (Sigma_s, Sigma_M, Sigma_Phi,M)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Pure logical combination of three prior analytic (non-finite-witness) results."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-Sec10",
+      "name": "Conclusion (summary restatement)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Summary; inherits the checkability status of the results it restates."
+    },
+    {
+      "volume": 3,
+      "id": "Vol3-vs-Vol2-overlap",
+      "name": "Volume 2 vs. GLS-2026-006 public content",
+      "tier": "N/A",
+      "status": "N/A",
+      "evidence": "Extraction confirmed Volume 2's body text (pp.16-23) is byte-identical (modulo a pdftotext trailing-newline artifact) to the already-public State_Breakdown_Math_Only_v0_2.pdf; not a Volume 3 claim, recorded here for ledger completeness per the extraction agent's finding."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Thm4.1-orthogonality",
+      "name": "Exact spectral defect identity via Parseval/Pythagorean L^2 norm split",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "verified ||u||^2 = ||P_M u||^2 + ||(I-P_M)u||^2 on an explicit 81-mode truncated Fourier series"
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Thm4.2-Hs-split",
+      "name": "H^s-norm Pythagorean split underlying high-frequency localization",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "verified the H^s-weighted analogue of the L^2 split on the same explicit example, s=3.1"
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Sec9-consistency",
+      "name": "Section 9 claim-boundary list does not contradict the volume's own numbered theorems",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "documentation/textual consistency check (not a mathematical proof-check) against the extraction pass's own classification of Theorems 2.2-8.1"
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Assumption1.1",
+      "name": "Smooth NS solution with bounded energy and H^s breakdown (hypothesis)",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "Explicitly conditional/hypothetical; no existence of such a breakdown solution is asserted or constructed."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-EnergyIdentity",
+      "name": "Energy identity + finite incoming-energy limit E_-^2",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Standard energy identity for smooth NS plus a Gronwall-style monotonicity bound; classical continuum analysis."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Lemma2.1",
+      "name": "Fixed-mode nonlinear bound |N_k(t)| <= |k| E^2",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Cauchy-Schwarz + Parseval on an arbitrary hypothetical solution's convolution sum; elementary but not a finite witness."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Thm2.2",
+      "name": "Finite trace of every fixed mode (BV/Cauchy limit argument)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Classical real-analysis bounded-variation argument, not mechanically checkable."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Thm3.1",
+      "name": "Finite-energy trace at breakdown time, weak L^2 convergence",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Fatou/monotone-limit + weak-convergence diagonal argument; classical functional analysis."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Cor3.2",
+      "name": "Strong H^r convergence of fixed finite projections P_M u",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Finite-dimensional norm equivalence is elementary linear algebra, but the overall claim rests on Thm 3.1's continuum limit existence."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Thm5.2",
+      "name": "Weak restart: existence of a Leray-Hopf-type weak solution from u*",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Standard Galerkin/compactness existence proof; textbook-level classical PDE argument, not mechanically checkable."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Thm6.1/Cor6.2",
+      "name": "Crossing theorem: patched solution is a global finite-energy weak NS solution",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Weak-formulation boundary-term matching across the patch point; standard but non-mechanical PDE argument."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Thm7.1",
+      "name": "Finite spectral continuity through T* for continuous finite readers",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Finite-dimensional weak=norm continuity is elementary, but the overall claim depends on the continuum trace results above."
+    },
+    {
+      "volume": 4,
+      "id": "Vol4-Thm8.1",
+      "name": "Main crossing theorem (packages Thms 3.1/4.1/4.2/5.2/6.1/7.1)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Pure conjunction/summary of the prior non-mechanical results; no new argument."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Thm5.2-defect-localization",
+      "name": "Defect localization subtraction/limit algebra (all energy defect concentrated near x=0)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "verified the underlying finite-dimensional subtraction/limit-manipulation identity on an explicit discretized 1D periodic field with an injected point defect (portable algebra check, not a proof that any real NS candidate has this property)"
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Thm7.1-equivalence",
+      "name": "delta*=0 <=> norm convergence <=> strong L^2 convergence (generic Hilbert-space fact)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "verified the standard Hilbert-space equivalence on explicit finite-dimensional converging and non-converging sequences"
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Sec9-consistency",
+      "name": "Section 9 'Final reduction' established/not-established lists are internally consistent",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "documentation/textual consistency check: the two lists are disjoint as extracted"
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Assumption1.1-C1-C9",
+      "name": "Specific hypothetical periodic NS candidate with endpoint extension (C1-C9)",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "A stronger, more specific hypothesis than Volume 4's; the endpoint-extension assumption (C8-C9) is never constructed or justified for a real NS solution."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Thm2.1",
+      "name": "Energy bound via Gronwall inequality",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Standard Gronwall-inequality derivation; the ODE-inequality algebra is short and re-derivable, but the underlying PDE energy identity is classical/assumed."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Lemma3.1",
+      "name": "Fixed-mode nonlinear bound",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Same Cauchy-Schwarz/Parseval technique as Volume 4 Lemma 2.1; not a finite witness."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Thm3.2",
+      "name": "Modewise terminal trace exists",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Same BV/Cauchy-limit technique as Volume 4 Theorem 2.2; classical real analysis."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Thm3.3",
+      "name": "Finite-energy terminal state u* with weak convergence",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Same finite-K partial-sum + weak-convergence technique as Volume 4 Theorem 3.1."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Thm4.1",
+      "name": "u* identified a.e. with endpoint field u_partial away from singular point",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "The volume's most load-bearing and least independently-justified result: entirely conditional on the assumed (not derived) endpoint-extension hypothesis C8-C9 for an unconstructed candidate."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Thm6.1",
+      "name": "Exact finite readout P_M u(t) -> P_M u* strongly, expressed via u_partial's coefficients",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Eq.35 would be a directly checkable finite Fourier-sum identity IF u_partial were an explicit concrete function; the candidate is never constructed in this volume, so there is nothing concrete to evaluate it against."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Cor7.2",
+      "name": "No-concentration sufficient condition for delta*=0",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Abstract sufficient condition on a hypothetical/unconstructed candidate; straightforward logical corollary of Thm 5.2 + Thm 7.1."
+    },
+    {
+      "volume": 5,
+      "id": "Vol5-Thm8.1",
+      "name": "Finite-energy weak crossing (patched global solution, energy jump = delta*)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Same Galerkin-restart technique as Volume 4 Theorem 6.1; NOTE the weak-restart existence for this specific candidate is asserted via reference to 'the standard Galerkin construction' rather than fully re-proven in Volume 5's own text -- a thinner presentation than Volume 4's analogous theorem."
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Eq5-9-galerkin",
+      "name": "Fourier-Galerkin projected ODE bookkeeping (definition, exact by construction)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "residual between the numerically integrated trajectory and the stated ODE form is < 1e-6 at a midpoint step"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Lemma2.1",
+      "name": "Finite-cut nonlinear bound |eta_M(t)|^2 <= C_M E_T^2",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "C_M computed exactly as a finite sum; inequality verified for a concrete synthetic eta_M and E_T"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Thm3.2-duhamel",
+      "name": "Exact tape-closed Duhamel recurrence I_{n+1} = A_n I_n + chi_n",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "recurrence reproduces the independently integrated trajectory to < 1e-9 over the full horizon"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Thm4.1-domain-gate",
+      "name": "Domain reader factorization + reality/divergence-free constraint preservation (partial mechanical check)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "verified the reader-factorization (Eq.22) and constraint-preservation (Eq.17) parts exactly for a symmetric finite projection; the full commuting-square identity (Eq.21) is confirmed to hold GIVEN Thm 3.2's exact tape (checked above), not independently re-derived from a separate full-space dynamics -- see printed NOTE"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Thm5.1-sufficiency",
+      "name": "Future readout sufficiency relative to tape (finite induction)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "two independently-generated trajectories forced to agree at step n0, then fed an identical tape, stay equal for the entire remaining horizon (max divergence < 1e-10)"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Sec7-consistency",
+      "name": "Section 7 'closed' vs 'not established' self-scoping lists are internally consistent",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "documentation/textual consistency check: the two lists are disjoint as extracted"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Assumption1.1",
+      "name": "Crossing regime: a genuine finite-energy weak continuation past a smooth H^3 blow-up (A1-A6)",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "Unproven standing hypothesis; this exact kind of object is precisely what is NOT established anywhere in the series or cited literature -- postulated existence, not a finite/combinatorial claim."
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Thm1.2",
+      "name": "Finite-mode crossing: I_M(t) -> I_M(1) for every fixed M (given A5)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Standard functional-analytic continuity argument (finite-dim linear functionals are continuous); conditionally checkable in the sense of replaying the implication A5=>Eq.4 by logic, but A5 itself cannot be verified for real NS by any script."
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Def3.1-chi",
+      "name": "Cut current chi_{M,n} (definition)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Load-bearing definition, not itself a claim; used directly in the Thm 3.2 check above."
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Remark3.3",
+      "name": "Tape-closed, not autonomous (eta_M = Gamma_M(I_M) explicitly not assumed)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Scope-limiting remark, not independently checkable/needed as a numeric claim."
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Thm6.1-crossing",
+      "name": "Readout-Navier-Stokes discrete crossing (capstone: H3 breakdown does not force finite tape-closed readout breakdown)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Conditional on the unproven Assumption 1.1; only the finite-mathematics consequent (checked above via Thms 1.2/3.2/4.1/5.1) is mechanical. DOCUMENT DEFECT FOUND: proof text cites 'Theorem 2.1', which does not exist in the extracted pages (Section 2 only contains Lemma 2.1) -- likely a typo for Theorem 1.2 or Lemma 2.1; also appears to conflate Theorem 4.1 (zero-defect identities) with Theorem 5.1 (horizon sufficiency) when justifying 'exact finite-domain closure and zero defects'. Flagged for the founder/author."
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-Cor6.2",
+      "name": "All fixed finite cutoffs survive (forall M, Break_M(1)=0)",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Mechanical consequence of Thm 1.2 applied to all M, same conditional status as Thm 6.1."
+    }
+  ],
+  "raw_run_results": [
+    {
+      "script": "check_volume1.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume2.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume3.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume4.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume5.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6.py",
+      "returncode": 0
+    }
+  ]
+}

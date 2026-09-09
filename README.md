@@ -40,6 +40,15 @@ pair's reader-equivalence holding through `k=9999`, and Euler-stepper error rati
 approximately 2.0 (consistent with first-order `O(h)` convergence) across four halvings of the
 step size.
 
+### Wider reproduction system (whole 6-volume series)
+
+This note is one document in a larger "Readout-Navier-Stokes Development Series" (6 volumes,
+v0.1-v0.6). See `reproduction/` for a one-command reproducibility system covering every
+mechanically checkable claim across all 6 volumes, with an auto-generated ledger
+(`reproduction/LEDGER.md` / `reproduction/LEDGER.json`) honestly tiering every claim as
+machine-checked, script-verified, standard-but-not-mechanical, or explicitly open. Run
+`bash reproduction/reproduce_all.sh` to reproduce everything.
+
 ## Provenance and process
 
 Both new theorems in this note were checked against, and registered in, an internal equation
