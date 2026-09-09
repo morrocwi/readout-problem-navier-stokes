@@ -113,18 +113,57 @@ Hence shell energy alone is not an exact sufficient retained state for the nonli
 }
 \]
 
-The next mathematical target is not a new dynamical law. It is a richer retained map
+## Resolution of the richer-state target
+
+The earlier working target
 
 \[
 R(u)=\bigl(I(u),\Xi(u)\bigr)
 \]
 
-such that
+is superseded.  Readout Genesis already reserves \(\Xi_n\) for its
+`orientation_selecting_order` slot, so the richer Navier--Stokes state is not assigned
+that symbol.
+
+The canonical exact object is now the future-shell-readout quotient
 
 \[
-R(u)=R(v)
-\Longrightarrow
-\eta^{\mathrm{NS}}(u)=\eta^{\mathrm{NS}}(v),
+\boxed{
+\mathcal Q_{\min}^{NS}
+=
+X_M/\!\sim_I,
+\qquad
+x\sim_Iy
+\iff
+I(\Phi_t x)=I(\Phi_t y)
+\ \forall t\ge0.
+}
 \]
 
-with \(\Xi\) restricted to distinctions forced by the nonlinear triad structure.
+`NS_MINIMAL_DYNAMIC_READOUT.md` proves the quotient universal property and, for every
+fixed finite polynomial Galerkin truncation, proves existence of a finite Lie-readout jet
+
+\[
+\boxed{
+(J_0,\ldots,J_{R_M^\star}),
+\qquad
+J_0=I,
+\quad
+J_{r+1}=\mathcal L_{F_M}J_r,
+}
+\]
+
+with exactly the same fibers as \(\mathcal Q_{\min}^{NS}\).
+
+The first nontrivial jet level is forced by Navier--Stokes triads:
+
+\[
+J_1
+=
+-L_\nu I+\eta^{NS}.
+\]
+
+Thus the finite exact **state-sufficiency target is closed**.  What remains open is the
+computational target: determine \(R_M^\star\), remove redundant jet coordinates, and show
+that evolving the resulting quotient is materially cheaper than the full 3D Galerkin
+system at useful resolution.
