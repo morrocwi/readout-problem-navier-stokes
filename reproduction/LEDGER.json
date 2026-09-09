@@ -1,22 +1,22 @@
 {
-  "generated_at_utc": "2026-09-09T11:46:28.193896+00:00",
+  "generated_at_utc": "2026-09-09T17:07:57.993719+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6, v0.1-v0.6)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)"
   ],
-  "total_claims": 80,
+  "total_claims": 108,
   "tier_counts": {
-    "finite_diagnostic": 27,
-    "Open": 8,
-    "Dr": 44,
+    "finite_diagnostic": 48,
+    "Open": 13,
+    "Dr": 46,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 26,
-    "OPEN": 8,
+    "PASS": 47,
+    "OPEN": 13,
     "NOT_RUN": 1,
-    "N/A": 45
+    "N/A": 47
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -659,6 +659,230 @@
       "tier": "Dr",
       "status": "N/A",
       "evidence": "Mechanical consequence of Thm 1.2 applied to all M, same conditional status as Thm 6.1."
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSExact-shell-balance",
+      "name": "3D Fourier-Galerkin shell identity dI/dt + L_nu I = eta_NS",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "eta_NS is read directly from the projected nonlinear Navier-Stokes term; max shell residual=2.602e-18"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSExact-viscous-operator",
+      "name": "Exact shell viscous operator (L_nu)jj = 2 nu |k|^2 on exact k^2 shells",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "shells are grouped by exact integer |k|^2, so the viscous contribution factorizes; max residual=4.337e-19"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSExact-transfer-conservation",
+      "name": "Dealiased nonlinear retained tape conserves total kinetic energy",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "the projected convective term only redistributes energy between retained shells; max |sum_j eta_NS,j|=3.535e-18"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSExact-divergence-free",
+      "name": "Fourier trajectory remains divergence-free under the Leray projection",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "max |k.u_hat|=8.674e-19"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSExact-trajectory-consistency",
+      "name": "Retained dI from the NS RHS agrees with the evolved retained trajectory",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "centered finite-difference readout compared with instantaneous RHS readout; relative error=1.397e-06"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSExact-autonomous-closure",
+      "name": "Autonomous closure eta_NS = Gamma(I)",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "not fitted or asserted: this check derives the exact nonlinear tape from the resolved 3D state only; autonomy/identifiability requires additional tests"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSExact-continuum-singularity",
+      "name": "Inference from the finite retained trajectory to a continuum singularity",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "explicitly outside scope: the deterministic N=16 Galerkin run is a finite diagnostic and does not establish continuum breakdown or regularity"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSHarmonic-segmented-kernel",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "segmented reduceat fused kernel agrees with the original fused triad sum to 1e-12"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSHarmonic-backend-equivalence",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "optimized fused and pseudo-spectral FFT RHS agree on the same finite cube to 1e-12"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSHarmonic-task-exactness",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "real harmonic retained RK4 readout agrees with full finite RK4 and is real to 1e-12"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSObs-triad-Rstar1-check",
+      "name": "Exact-rational triad coefficients and R=0 insufficiency witness for the analytic R*=1 subcase",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "coefficients are exact Fractions (3/10,-4/5,1/2), both nonlinear conservation sums are zero, and equal shell magnitudes with different triad phase give different J1; companion note proves closure of (x,y,z,r)"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSObs-cube-modular-rank",
+      "name": "Exact modular Taylor-readout rank witness for the 52-real-dimensional 3D cube Galerkin truncation",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "over F_1000003, shell rank first reaches 49 at R=23 and total-energy rank at R=48; translation symmetry independently bounds characteristic-zero generic rank by 49"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSObs-global-Rstar-cube",
+      "name": "Global ideal-stabilization order R_M^star for the full 3D cube truncation",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "rank saturation proves generic local observability modulo translation, not global equality of polynomial fibers; a Groebner/ideal stabilization or equivalent global argument is still required"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSObs-cost-acceleration",
+      "name": "Measured reduced propagation cost C(Q_min^NS) below full 3D NS cost",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the exact all-future local quotient has dimension 49/52 in this truncation and no independent 49-state reduced propagator has been built; dimension alone is not a cost certificate"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSPlane-sparse-terminal-support",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "the plane-average reader uses only axis modes, while one exact triad dependency pullback saturates the full tested Fourier cube"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSPlane-task-exactness",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "retained plane-average RK4 readout agrees with full finite RK4 to 1e-12 and the fused/FFT RHS backends pass the same gate"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSPlane-real-divfree-readout",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "plane readout is real to floating tolerance and its component along the plane normal vanishes to floating tolerance"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSPlane-structural-work-law",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "with D(A)=K_M, retained triad work equals (4H-1) C_full + C_axis for every tested case"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSReadout-same-I-different-eta",
+      "name": "Finite witness: identical shell-energy readout does not determine the exact nonlinear NS tape",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "max shell-energy mismatch=1.735e-18; relative tape difference=1.412512; both states remain divergence-free and each nonlinear tape conserves total energy"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSReadout-no-global-Gamma-I",
+      "name": "No exact global autonomous map eta_NS = Gamma(I) for shell-energy I alone on the tested finite state class",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "the constructed pair has the same complete retained shell-energy vector but different exact NS nonlinear tapes; a single-valued Gamma(I) cannot return both"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSReadout-next-state",
+      "name": "Minimal richer retained state sufficient to determine eta_NS",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the witness only proves shell energies are insufficient; it does not yet identify the minimal additional phase/triad/history distinctions required"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSRFC-RK4-stage-exactness",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "terminal target from stage-conditioned retained RK4 agrees with the full RK4 recurrence to the declared 1e-12 gate"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSRFC-RK4-backend-equivalence",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "fused direct-triad RHS and pseudo-spectral FFT RHS agree on the same finite mode cube to the declared 1e-12 gate"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSRFC-RK4-break-even",
+      "name": "",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "retained rollout is enabled only with a >=5% calibration margin; otherwise execution falls back to full RK4"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSXiMin-triad-lineage",
+      "name": "Direct NS ordered-triad sum reproduces the exact retained nonlinear tape",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSXiMin-translation-gauge",
+      "name": "Spatial translation is a future-shell-readout equivalence of the finite NS system",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "shell defect=3.469e-18; eta defect=1.518e-18; future 20-step shell defect=1.388e-17"
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSXiMin-exact-quotient",
+      "name": "Canonical minimal exact dynamically sufficient state is the quotient by future shell-readout equivalence",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Standard quotient/universal-property theorem stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md; not promoted to a machine-checked tier."
+    },
+    {
+      "volume": 6,
+      "id": "Vol6-NSXiMin-finite-jet",
+      "name": "For a fixed finite polynomial Galerkin truncation, a finite Lie-readout jet realizes the future-readout quotient",
+      "tier": "Dr",
+      "status": "N/A",
+      "evidence": "Uses polynomial NS Galerkin dynamics + Hilbert basis theorem + analytic-output identity theorem; proof and exact lineage are stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md."
     }
   ],
   "raw_run_results": [
@@ -684,6 +908,38 @@
     },
     {
       "script": "check_volume6.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6_ns_exact.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6_ns_harmonic_probe.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6_ns_observability.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6_ns_plane_average.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6_ns_readout.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6_ns_retained_fold.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6_ns_retained_fold_rk4.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume6_ns_xi_min.py",
       "returncode": 0
     }
   ]
