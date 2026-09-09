@@ -171,14 +171,81 @@ so the nonlinear term removes retained energy from the low shell and places it i
 \sum_j\eta_j^{\mathrm{NS}}\approx0.
 \]
 
-The next unresolved map is therefore exactly
+## Current status of the closure question
+
+The historical next step after deriving this exact shell identity was to test whether the nonlinear tape could factor through shell energy alone,
+
+\[
+\eta^{\mathrm{NS}}(u)=\Gamma(I(u)).
+\]
+
+That autonomy test has now been answered negatively on the tested finite admissible state class. `NS_RETAINED_SUFFICIENCY.md` constructs states satisfying
+
+\[
+I(u)=I(v)
+\]
+
+within machine tolerance while
+
+\[
+\eta^{\mathrm{NS}}(u)\neq\eta^{\mathrm{NS}}(v).
+\]
+
+Therefore the current program does **not** treat
+
+\[
+\widehat\eta(I)
+\]
+
+as the canonical unresolved target.
+
+The exact all-future state-sufficiency target is instead
 
 \[
 \boxed{
-\eta^{\mathrm{NS}}(t)
-\longrightarrow
-\widehat\eta(I(t))
+\mathcal Q_{\min}^{NS}
+=
+X_M/\!\sim_I,
+\qquad
+x\sim_I y
+\iff
+I(\Phi_t x)=I(\Phi_t y)
+\ \forall t\ge0,
 }
 \]
 
-subject to a separate autonomy/identifiability test.
+with finite readout-jet realization discussed in `NS_MINIMAL_DYNAMIC_READOUT.md` and local observability/compression results in `NS_OBSERVABILITY_RANK.md`.
+
+For acceleration, the active branch is task-conditioned finite-horizon retained computation:
+
+\[
+\boxed{
+Q
+\longrightarrow
+\text{terminal support}
+\longrightarrow
+\text{exact NS triad pullback}
+\longrightarrow
+\text{retained Euler/RK4 computation}
+\longrightarrow
+Q.
+}
+\]
+
+That branch is documented in `NS_RETAINED_FOLD_COMPILER.md`, `NS_RETAINED_FOLD_RK4.md`, `NS_PHYSICAL_PLANE_AVERAGE.md`, `NS_PHYSICAL_HARMONIC_PROBE.md`, and `NS_READOUT_DESIGN_ACCELERATION.md`.
+
+Thus the current lineage is
+
+\[
+\boxed{
+\text{exact retained identity}
+\to
+\text{shell-sufficiency obstruction}
+\to
+\text{minimal exact quotient / observability}
+\to
+\text{task-horizon retained computation}
+\to
+\text{readout-design cost optimization}.
+}
+\]
