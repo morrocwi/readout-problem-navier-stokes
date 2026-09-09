@@ -1,0 +1,380 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+  pdftitle={A Readout Problem for Fefferman's Existence and Smoothness of the Navier-Stokes Equation},
+  pdfauthor={Yaoharee Lahtee},
+  pdfsubject={Finite readout theory; Navier-Stokes},
+  pdfkeywords={readout, finite state, Navier-Stokes, Fefferman, retained turbulence}
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{A Readout Problem for Fefferman's Existence and Smoothness of the\\ Navier--Stokes Equation}
+\author{Yaoharee Lahtee}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Core Epistemic Structure}
+
+\noindent\textbf{Core Respondent / Experience-Based Expert:} Yaoharee Lahtee --- lived experience:
+sole author, originator of the admissible-domain-reading framework and the retained-turbulence
+continuation result; selections: chose the eight-state witness construction and the linear
+retained-ODE model as the minimal objects that make the readout-versus-domain distinction exact;
+interpretation: the Navier--Stokes readout dichotomy (R)/(N) below is posed, not answered, and the
+document's own non-claim boundary (Remark~\ref{rem:boundary}) is authorial, not a hedge added
+after the fact.
+
+\noindent\textbf{Interactional Expert:} None.
+
+\noindent\textbf{AI Model(s) Used:} Claude (Anthropic) --- formalization assistance, Toledo
+equation-registry cross-referencing, LaTeX typesetting, and independent re-execution of the
+verification script accompanying this paper.
+
+\noindent Non-collapse rule: Experience-Based Expertise $\neq$ Interactional Expertise $\neq$ AI
+Model. Registration is an attribution device, not a certification of truth or expertise.
+
+\bigskip
+
+\begin{abstract}
+Fefferman's note \emph{Existence and Smoothness of the Navier--Stokes Equation} asks whether
+smooth, physically reasonable solutions of the three-dimensional Navier--Stokes equations exist
+globally, or whether breakdown can occur~\cite{fefferman2006}. The present note does not alter
+that problem. It asks what additional statement is needed before a breakdown of the Navier--Stokes
+domain may be identified with a breakdown of a finite readout of an underlying discrete state. We
+prove one elementary finite-state theorem: exact commuting domain translation together with exact
+reader factorization does not imply that any finite-horizon reader decides an arbitrary domain
+question. We then pose, but do not answer, the corresponding Navier--Stokes readout dichotomy. As
+a further, genuinely separate result, we prove a global finite-interval continuation theorem for a
+finite retained-turbulence layer that could serve as one candidate finite reader: given finite
+dimension, positive time constant, a fixed finite generator, and a locally integrable drive, the
+retained state has a unique, bounded solution on every finite time interval. Consequently a
+hypothetical continuum breakdown does not, by itself, force blow-up of this retained layer, so long
+as its own finite-dimensional hypotheses continue to hold.
+\end{abstract}
+
+\section{Continuum benchmark}
+
+Let $\Omega = \mathbb{R}^3$. For viscosity $\nu>0$, consider
+\begin{equation}
+  \partial_t u + (u\cdot\nabla)u = -\nabla p + \nu\Delta u + f, \qquad \nabla\cdot u = 0. \tag{NS}
+\end{equation}
+In Fefferman's formulation a physically reasonable solution is smooth for all time and, on
+$\mathbb{R}^3$, has uniformly bounded kinetic energy. Alternatives (A) and (B) are unforced
+global-existence statements; alternatives (C) and (D) allow a smooth external force and ask for
+breakdown~\cite{fefferman2006}. Nothing below assumes that breakdown actually occurs; the
+breakdown predicate is only the domain-level event to be compared with finite readout events.
+
+\section{Finite state, domain map, and reader}
+
+We use a finite retained state $S_n = (G_n,\Lambda_n,T_n)$ and a finite stepper
+$S_{n+1} = F(S_n, u_n, c_n, T_n)$. For the argument below the controls, context and tape may be
+frozen, so we write simply $S_{n+1}=F(S_n)$.
+
+Let $D$ be a domain state space and let $q_D$ map retained states into that domain. We call $q_D$
+an \emph{admissible domain reading} when there are maps $F_D$ and $O_D$ such that
+\begin{equation}
+  q_D(F(s)) = F_D(q_D(s)), \qquad O(s) = O_D(q_D(s)). \label{eq:weld}
+\end{equation}
+The first identity says translation and evolution commute; the second says the declared reader is
+preserved by the translation.
+
+For a nonnegative integer $L$, define
+\begin{equation}
+  z \sim_{O,L} z' \iff O(F^k z) = O(F^k z') \ \text{for every } 0\le k\le L.
+\end{equation}
+Two retained states may thus differ while remaining indistinguishable to a declared reader through
+a fixed finite horizon.
+
+Let $Q: D\to\{0,1\}$ be a yes--no question asked of the domain. We say $O$ \emph{decides} $Q$ by
+time $L$ if
+\begin{equation}
+  z\sim_{O,L} z' \implies Q(q_D(z)) = Q(q_D(z')) \label{eq:decide}
+\end{equation}
+for all retained states $z,z'$. If no such $L$ exists, every finite observation window leaves at
+least one pair of retained states that the reader identifies although the domain question
+separates them.
+
+\section{Exact finite non-entailment}
+
+\begin{theorem}[Exact domain reading does not imply finite decision]\label{thm:witness}
+There is a finite retained system, an admissible domain reading satisfying \eqref{eq:weld}, and a
+nonconstant domain question $Q$ such that $O$ does not decide $Q$ by time $L$ for any finite $L$.
+\end{theorem}
+
+\begin{proof}
+Take $S = \{0,1\}^3$, $D=\{0,1\}^2$, and define
+\begin{align}
+  F(a,b,c) &= (1-a,\,b,\,1-c), & F_D(a,b) &= (1-a,\,b), \\
+  q_D(a,b,c) &= (a,b), & O(a,b,c) &= b = O_D(a,b),
+\end{align}
+and $Q(a,b) = a$. Then
+\[
+  q_D(F(a,b,c)) = (1-a,b) = F_D(q_D(a,b,c)), \qquad O(a,b,c) = b = O_D(q_D(a,b,c)),
+\]
+so \eqref{eq:weld} holds exactly on all $8$ states, and $F^2=\mathrm{Id}_S$.
+
+Now set $z=(0,0,0)$, $z'=(1,0,1)$. The second coordinate is fixed by $F$, hence
+$O(F^k z) = O(F^k z') = 0$ for every $k\ge 0$, so $z\sim_{O,L}z'$ for every finite $L$. The first
+coordinates remain complementary under every iterate of $F$, hence
+$Q(q_D(F^k z)) \ne Q(q_D(F^k z'))$ for every $k\ge 0$, and in particular
+$Q(q_D(z))\ne Q(q_D(z'))$. Thus \eqref{eq:decide} fails for every finite $L$.
+\end{proof}
+
+\begin{corollary}\label{cor:witness}
+Exact domain commutation and exact readout factorization do not imply finite decision of every
+domain predicate.
+\end{corollary}
+
+\begin{remark}
+The theorem is not a statement about the Navier--Stokes equations. It is a finite separation
+result. Even when a domain translation commutes exactly with the dynamics and preserves the
+declared reader, a distinction made in the domain need not be a distinction made by that reader.
+This construction and its independent numerical re-verification are registered in the Toledo
+equation library as a proposal, pending canonical-code assignment, under the identifier
+\texttt{PROP-NS-WITNESS-01} (tier \texttt{finite\_diagnostic}: script-verified
+by exact enumeration over all $8$ states, not machine-checked in Coq).
+\end{remark}
+
+\section{The Navier--Stokes readout problem}
+
+We now apply this observation only to the form of Fefferman's question. Let $D_{NS}$ denote a
+Navier--Stokes domain whose elements carry enough information to state Fefferman's conditions. Let
+\begin{equation}
+  \Sigma_F(d) = \begin{cases} 1, & \text{if } d \text{ has no global smooth solution satisfying Fefferman's conditions}, \\ 0, & \text{otherwise.} \end{cases}
+\end{equation}
+This is only a shorthand for the breakdown property in alternatives (C) and (D) of
+\cite{fefferman2006}; it is not a new Navier--Stokes criterion.
+
+To relate a finite retained system to this domain one must construct a translation
+$q_{NS}: S \to D_{NS}$ and prove, for the chosen domain dynamics and reader,
+\begin{equation}
+  q_{NS}(F(s)) = F_{NS}(q_{NS}(s)), \qquad O(s) = O_{NS}(q_{NS}(s)). \label{eq:nsweld}
+\end{equation}
+No such construction is supplied here. Its existence is part of the problem.
+
+Assume such a translation has been fixed. The associated \emph{Fefferman readout question} is
+whether the binary property $\Sigma_F$ is determined by a finite prefix of the declared reader.
+More precisely, for a chosen class $C\subseteq S$, prove one of the following two statements.
+
+\smallskip
+\noindent(R) \emph{Finite readout determination.} There is a finite $L$ such that, for all
+$z,z'\in C$,
+\begin{equation}
+  z\sim_{O,L} z' \implies \Sigma_F(q_{NS}(z)) = \Sigma_F(q_{NS}(z')). \label{eq:R}
+\end{equation}
+In this case the declared finite reader determines the Fefferman breakdown property on $C$ after
+finitely many steps.
+
+\smallskip
+\noindent(N) \emph{Finite readout non-determination.} For every finite $L$ there exist
+$z_L,z_L'\in C$ such that
+\begin{equation}
+  z_L \sim_{O,L} z_L', \qquad \Sigma_F(q_{NS}(z_L)) \ne \Sigma_F(q_{NS}(z_L')). \label{eq:N}
+\end{equation}
+In this case no finite observation window of the declared reader decides the Fefferman breakdown
+property on $C$.
+
+\smallskip
+For fixed $q_{NS}$, $O$ and $C$, (R) and (N) are complementary. The mathematical content is not the
+dichotomy itself, but the construction of a nontrivial Navier--Stokes translation satisfying
+\eqref{eq:nsweld}, the declaration of a reader with specified finite information content, and the
+proof of one side of the dichotomy.
+
+This formulation separates three questions that are otherwise easy to conflate. First, Fefferman
+asks whether a global smooth bounded-energy Navier--Stokes solution exists. Second, a domain
+translation asks whether a retained discrete dynamics can be read as a Navier--Stokes dynamics
+while preserving the specified reader. Third, the readout problem asks whether the resulting
+breakdown property is determined by a finite observation history.
+
+Theorem~\ref{thm:witness} shows that the third question is not answered by the second.
+Consequently, even an exact admissible domain reading does not by itself give the implication
+\begin{equation}
+  \text{Navier--Stokes domain breakdown} \implies \text{finite reader breakdown}. \label{eq:implication}
+\end{equation}
+For the Navier--Stokes domain, that implication requires an additional theorem about the
+particular translation and the particular reader.
+
+Nothing here contradicts Fefferman's alternatives (A)--(D). If (C) or (D) is proved, the continuum
+breakdown statement stands. The readout problem begins only when one asks whether that
+domain-level breakdown is also a necessary failure of a specified finite information channel.
+
+\begin{remark}\label{rem:boundary}
+This note makes one proved finite statement (Theorem~\ref{thm:witness}) and poses one
+Navier--Stokes adapter problem. It does not prove global regularity, does not prove blowup, and
+does not identify a continuum singularity with an artefact. Its purpose is to isolate the
+additional mathematical bridge required before those different claims may be treated as the same
+claim. The retained-turbulence continuation result of Section~\ref{sec:continuation} answers a
+narrower, adjacent question --- what happens to one \emph{candidate} finite reader under one
+concrete regularity hypothesis --- and likewise proves nothing about the continuum equation
+itself.
+\end{remark}
+
+\section{A finite retained-turbulence layer}\label{sec:continuation}
+
+One concrete candidate for the finite reader $O$ above is a retained-turbulence layer. Let
+$r_R: D_{NS}\to\mathbb{R}^m$ be a retained-turbulence map and write $I_R(t) = r_R(q_{NS}(s(t)))$.
+The retained model is
+\begin{equation}
+  \tau_R \dot I_R + L_R I_R = S_R + \eta_R, \qquad \tau_R>0,\ I_R(t)\in\mathbb{R}^m,\ L_R\in\mathbb{R}^{m\times m}. \label{eq:retained}
+\end{equation}
+Write $G_R(t) := S_R(t)+\eta_R(t)$. Equation~\eqref{eq:retained} is not identified with (NS); it is
+a second state equation on a finite retained carrier. Its statement coincides exactly with the
+already-registered Toledo reading \texttt{weld/P.05.v1} (the URCF retained-information
+relaxation-inertia turbulence law); we cite that reading directly rather than re-registering the
+equation, and register only the new theorem below.
+
+\begin{theorem}[Global finite-interval continuation]\label{thm:continuation}
+Assume
+\begin{equation}
+  m<\infty, \qquad \tau_R>0, \qquad L_R\in\mathbb{R}^{m\times m} \text{ is fixed}, \qquad G_R\in L^1_{loc}([0,\infty);\mathbb{R}^m). \label{eq:hyp}
+\end{equation}
+Then for every $I_R(0)=I_0\in\mathbb{R}^m$, equation~\eqref{eq:retained} has a unique absolutely
+continuous solution on every finite interval, given by
+\begin{equation}
+  I_R(t) = e^{-tL_R/\tau_R} I_0 + \frac{1}{\tau_R}\int_0^t e^{-(t-s)L_R/\tau_R} G_R(s)\,ds. \label{eq:voc}
+\end{equation}
+Moreover,
+\begin{equation}
+  \|I_R(t)\| \le e^{t\|L_R\|/\tau_R}\left(\|I_0\| + \frac{1}{\tau_R}\int_0^t \|G_R(s)\|\,ds\right),
+\end{equation}
+hence $\sup_{0\le t\le T}\|I_R(t)\| < \infty$ for every $T<\infty$.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:retained} is equivalent to $\dot I_R = -\tau_R^{-1}L_R I_R + \tau_R^{-1}G_R$.
+Variation of constants gives \eqref{eq:voc}. Since $\|e^{-tL_R/\tau_R}\| \le e^{t\|L_R\|/\tau_R}$,
+the norm bound follows from the triangle inequality. Local integrability of $G_R$ makes the
+right-hand side finite for every finite $t$.
+\end{proof}
+
+\begin{corollary}[Positive-semidefinite restoration]\label{cor:psd}
+If $L_R = L_R^\top \succeq 0$, then $\|e^{-tL_R/\tau_R}\|_2 \le 1$ and therefore
+\begin{equation}
+  \|I_R(t)\|_2 \le \|I_0\|_2 + \frac{1}{\tau_R}\int_0^t \|G_R(s)\|_2\,ds,
+\end{equation}
+i.e.\ the exponential growth factor in Theorem~\ref{thm:continuation}'s bound may be dropped to $1$
+whenever $L_R$ is positive semidefinite.
+\end{corollary}
+
+\begin{proof}
+Diagonalize $L_R = U\Lambda U^\top$ with $\lambda_j\ge 0$. Then
+$\|e^{-tL_R/\tau_R}\|_2 = \max_j e^{-t\lambda_j/\tau_R} \le 1$. Applying this bound to
+\eqref{eq:voc} via the triangle inequality gives
+\begin{equation*}
+  \|I_R(t)\|_2 \le \|e^{-tL_R/\tau_R}\|_2\|I_0\|_2
+  + \tau_R^{-1}\int_0^t \|e^{-(t-s)L_R/\tau_R}\|_2\|G_R(s)\|_2\,ds
+  \le \|I_0\|_2 + \tau_R^{-1}\int_0^t\|G_R(s)\|_2\,ds.
+\end{equation*}
+(The squared, cross-term-free bound $\|I_R(t)\|_2^2\le\|I_0\|_2^2+\tau_R^{-1}\int_0^t\|G_R(s)\|_2^2\,ds$
+claimed in an earlier draft of this corollary does not follow from this argument and is false in
+general: $L_R=0$, $\tau_R=1$, $I_0=0$, $G_R\equiv 1$ on $[0,2]$ gives $\|I_R(2)\|_2^2=4$ against a
+claimed bound of $2$. The energy identity of Proposition~\ref{prop:energy} likewise yields, via
+Cauchy--Schwarz on $\langle I_R,G_R\rangle\le\|I_R\|_2\|G_R\|_2$, only this same linear bound, not a
+quadratic one.)
+\end{proof}
+
+\begin{proposition}[Energy identity]\label{prop:energy}
+Under $L_R = L_R^\top \succeq 0$,
+\begin{equation}
+  \frac{\tau_R}{2}\frac{d}{dt}\|I_R(t)\|_2^2 + \langle I_R, L_R I_R\rangle = \langle I_R, G_R\rangle.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Take the Euclidean inner product of \eqref{eq:retained} with $I_R$.
+\end{proof}
+
+\begin{theorem}[Failure localization]\label{thm:localization}
+Let $T_*>0$ and define the retained regularity condition
+\begin{equation}
+  H_R(T_*) := \Big[\, m<\infty,\ \tau_R>0,\ L_R\in\mathbb{R}^{m\times m}\ \text{fixed},\
+  G_R\in L^1([0,T_*+\varepsilon];\mathbb{R}^m)\ \text{for some } \varepsilon>0 \,\Big],
+\end{equation}
+and let $\Sigma_R(T_*) := \mathbf{1}\{\limsup_{t\uparrow T_*}\|I_R(t)\| = \infty\}$. Then for every
+$T_*<\infty$,
+\begin{equation}
+  H_R(T_*) \implies \Sigma_R(T_*) = 0, \qquad\text{hence}\qquad \Sigma_F(T_*)\wedge H_R(T_*) \implies \Sigma_R(T_*)=0. \label{eq:localization}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The first implication is Theorem~\ref{thm:continuation} applied on $[0,T_*+\varepsilon]$. The
+second follows because a hypothetical Navier--Stokes breakdown $\Sigma_F$ does not by itself alter
+the hypotheses of the finite-dimensional continuation theorem.
+\end{proof}
+
+\begin{corollary}[Necessary bridge failure for transferred blow-up]\label{cor:bridge}
+Any theorem of the form $\Sigma_F(T_*) \implies \Sigma_R(T_*)=1$ requires
+$\Sigma_F(T_*) \implies \lnot H_R(T_*)$. Thus at least one of the following must occur at
+breakdown: $r_R$ ceases to be defined; $L_R$ ceases to be a fixed finite operator;
+$G_R \notin L^1_{loc}$; $\tau_R$ ceases to remain positive; or the retained model is no longer the
+declared model.
+\end{corollary}
+
+\begin{remark}
+Theorem~\ref{thm:continuation}--Corollary~\ref{cor:bridge} are registered in the Toledo equation
+library as a proposal, pending canonical-code assignment, under the identifier
+\texttt{PROP-NS-CONTINUATION-01} (tier \texttt{Dr}: a checkable analytical result,
+independently re-derivable, explicitly not \texttt{Th\_coqc}), parented to the equation reading
+\texttt{weld/P.05.v1} (registered in Toledo's canonical registry, but itself carrying
+\texttt{status: unverified} and \texttt{coq\_status: open\_prop} for the underlying
+turbulence-physics claim -- a fact this parenting does not inherit around, since the present
+theorem's own linear-ODE mathematics does not depend on that claim's physical verification) and to
+the retained-Laplacian root \texttt{EQ-008}. These
+results say nothing about the continuum equation (NS) itself. They say that \emph{if} a candidate
+finite reader of the type~\eqref{eq:retained} continues to satisfy its own finite-dimensional
+regularity hypotheses $H_R(T_*)$ up to a hypothetical Navier--Stokes breakdown time, that reader
+does not itself blow up. Whether $H_R$ actually survives contact with a genuine Navier--Stokes
+translation $q_{NS}$ satisfying~\eqref{eq:nsweld} is precisely an instance of the unanswered
+dichotomy (R)/(N) of Section~4, not a fact established here.
+\end{remark}
+
+\section{Finite verification}
+
+The eight-state witness of Theorem~\ref{thm:witness} and the explicit-step stability of the
+retained stepper for equation~\eqref{eq:retained} on a cycle-graph Laplacian ($m=8$,
+$\lambda_{\max}=4$, $\tau_R=0.7$, explicit-step stability threshold $h\le 2\tau_R/\lambda_{\max}=
+0.35$) are checked directly by the script accompanying this paper
+(\texttt{verification/verify\_state\_breakdown\_math.py}): exact enumeration over all $8$ states
+confirms the weld identities and $F^2=\mathrm{Id}$; the witness pair is checked through $k=9999$
+steps; and a first-order explicit Euler stepper is compared against the exact matrix-exponential
+solution at four step sizes, giving error ratios converging to $2.0$, consistent with
+$O(h)$ convergence for this finite test. These are finite, machine-checked facts about the objects
+defined above; they are not evidence about the continuum Navier--Stokes equation.
+
+\section{Conclusion}
+
+Exact domain-dynamics welding and exact reader factorization do not, by themselves, imply that a
+declared finite reader decides an arbitrary domain question (Theorem~\ref{thm:witness}). Applied to
+Fefferman's problem, this means an admissible Navier--Stokes domain translation does not by itself
+resolve whether the breakdown predicate $\Sigma_F$ is finite-readout-determined; that is the
+Navier--Stokes readout problem, posed here as the dichotomy (R)/(N) and left open. Separately, one
+concrete candidate finite reader --- a finite retained-turbulence layer governed by
+\eqref{eq:retained} --- provably does not itself blow up on any finite interval so long as its own
+finite-dimensional hypotheses hold (Theorem~\ref{thm:continuation}), which sharpens \emph{where}
+any future bridge theorem transferring continuum breakdown onto that reader would have to fail
+(Corollary~\ref{cor:bridge}). Neither result proves, disproves, or otherwise makes progress on the
+Clay Millennium Problem itself.
+
+\begin{thebibliography}{9}
+\bibitem{fefferman2006}
+C.~L.~Fefferman, \emph{Existence and Smoothness of the Navier--Stokes Equation}, in
+\emph{The Millennium Prize Problems}, Clay Mathematics Institute / American Mathematical Society,
+2006.
+\end{thebibliography}
+
+\end{document}

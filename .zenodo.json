@@ -1,0 +1,29 @@
+{
+  "title": "A Readout Problem for Fefferman's Existence and Smoothness of the Navier-Stokes Equation",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "license": "CC-BY-4.0",
+  "creators": [
+    {
+      "name": "Lahtee, Yaoharee",
+      "orcid": "0009-0005-3861-0626"
+    }
+  ],
+  "description": "A short, arXiv-style single-column mathematical note that: (1) proves one elementary finite-state theorem -- exact commuting domain translation together with exact reader factorization does not imply that any finite-horizon reader decides an arbitrary domain question (an explicit 8-state witness, independently re-verified by exact enumeration); (2) poses, without answering, the corresponding Navier-Stokes readout problem: a dichotomy asking whether Fefferman's breakdown predicate is finite-readout-determined once a Navier-Stokes domain translation and a declared finite reader are fixed; (3) proves a separate theorem that a finite retained-turbulence layer (tau_R dI_R/dt + L_R I_R = S_R + eta_R) has a unique, bounded solution on every finite time interval given finite dimension, positive time constant, a fixed finite generator, and a locally integrable drive, and states precisely what this does and does not imply about a hypothetical continuum breakdown transferring onto that reader. This note does not prove, disprove, or otherwise make progress on the Clay Millennium Navier-Stokes existence-and-smoothness problem -- see CLAIMS.md in the repository for the exact claim boundary. It cites exactly one external reference: Fefferman's own official Clay Mathematics Institute problem statement. Both new theorems were checked against, and registered as proposals in, the author's public Toledo equation registry (github.com/morrocwi/toledo) prior to being written into the paper.",
+  "keywords": [
+    "Navier-Stokes",
+    "readout problem",
+    "finite readers",
+    "Clay Millennium Problem",
+    "turbulence",
+    "readout-not-truth"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/morrocwi/toledo",
+      "relation": "references",
+      "resource_type": "dataset"
+    }
+  ],
+  "version": "0.1.0"
+}

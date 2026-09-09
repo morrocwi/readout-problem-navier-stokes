@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "A Readout Problem for Fefferman's Existence and Smoothness of the Navier-Stokes Equation"
+type: dataset
+version: "0.1.0"
+authors:
+  - family-names: Lahtee
+    given-names: Yaoharee
+    orcid: "https://orcid.org/0009-0005-3861-0626"
+date-released: "2026-09-09"
+url: "https://github.com/morrocwi/readout-problem-navier-stokes"
+repository-code: "https://github.com/morrocwi/readout-problem-navier-stokes"
+license: CC-BY-4.0
+keywords:
+  - Navier-Stokes
+  - readout problem
+  - finite readers
+  - Clay Millennium Problem
+  - turbulence
+abstract: >-
+  A short, arXiv-style mathematical note proving one elementary finite-state theorem (an explicit
+  8-state witness showing exact domain-dynamics welding plus exact reader factorization does not
+  imply finite-horizon reader decidability of an arbitrary domain question), posing without
+  answering a corresponding Navier-Stokes readout dichotomy, and proving a separate theorem on
+  global finite-interval existence/uniqueness/boundedness for a finite retained-turbulence layer.
+  This note does not prove, disprove, or otherwise make progress on the Clay Millennium
+  Navier-Stokes existence-and-smoothness problem; see CLAIMS.md for the exact claim boundary.
