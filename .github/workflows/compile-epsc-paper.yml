@@ -7,6 +7,9 @@ on:
       - "paper/EPSC_NAVIER_STOKES_CERTIFICATES.tex"
       - ".github/workflows/compile-epsc-paper.yml"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,3 +26,15 @@ jobs:
           name: EPSC_NAVIER_STOKES_CERTIFICATES
           path: paper/EPSC_NAVIER_STOKES_CERTIFICATES.pdf
           if-no-files-found: error
+      - name: Commit compiled PDF on main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add paper/EPSC_NAVIER_STOKES_CERTIFICATES.pdf
+          if git diff --cached --quiet; then
+            echo "Compiled PDF unchanged."
+          else
+            git commit -m "compile EPSC Navier-Stokes certificate manuscript"
+            git push
+          fi
