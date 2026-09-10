@@ -60,9 +60,13 @@ evolution must be observed before they become locally complete modulo symmetry. 
 finite cubic resolution we derive sharp structural ceilings for one scalar total-energy reader
 and for the full shell-energy reader, and show that the resulting jet ranks are independent of
 every positive viscosity.  Exact modular certificates attain the ceilings at the earliest
-structurally possible orders in four tested cases: scalar energy at $N=1,2$ and shell energy at
-$N=1,3$.  The finite results motivate a resolution-indexed saturation conjecture and an
-explicit measurement--time trade-off.  No continuum regularity claim is made.
+structurally possible orders in five tested reader--resolution cases: scalar energy at $N=1,2$
+and shell energy at $N=1,2,3$.  In particular, the shell reader now saturates at the structural
+minimum for three consecutive finite cutoffs.  The finite results motivate a resolution-indexed
+saturation conjecture and an explicit measurement--time trade-off.  We also state the precise
+finite-dimensional bridge from rank saturation to a quantitative local inverse certificate;
+that bridge requires additional conditioning and branch bounds and is not supplied by rank alone.
+No continuum regularity claim is made.
 
 \section*{1. Resolution, readers, and all-$N$ ceilings}
 
@@ -167,16 +171,40 @@ N&d_N&\text{reader}&m& R_{\min}&\text{certified rank}\\ \hline
 1&52&\text{total energy}&1&48&49\\
 1&52&\text{shell energies}&3&23&49\\
 2&248&\text{total energy}&1&244&245\\
+2&248&\text{shell energies}&9&30&245\\
 3&684&\text{shell energies}&18&39&681
 \end{array}
 \end{equation}
 Every row reaches the translation ceiling $d_N-3$ at the earliest order allowed by the
 corresponding structural bound.
 
-For $N=2$, an exact projected Jacobian over $\F_{251}$ satisfies
+For $N=2$, the exact total-energy certificate over $\F_{251}$ satisfies
 \begin{equation}
 \boxed{\operatorname{rank}_{\F_{251}}D\mathcal E_{244}=245.}
 \end{equation}
+The nine shell values are
+\begin{equation}
+Q_2=\{1,2,3,4,5,6,8,9,12\},
+\end{equation}
+and the exact shell calculation over the same good prime gives the new middle-resolution
+certificate
+\begin{equation}
+\boxed{\operatorname{rank}_{\F_{251}}D\mathcal J_{30}=245,}
+\end{equation}
+while at the preceding order
+\begin{equation}
+\boxed{\operatorname{rank}_{\F_{251}}D\mathcal J_{29}=241<245.}
+\end{equation}
+Hence $R=30$ is both attained and structurally earliest.  The recorded $N=2$ shell milestones
+are
+\begin{equation}
+\begin{array}{c|rrrrrrrr}
+R&0&1&5&10&20&25&29&30\\ \hline
+\operatorname{rank}&9&17&49&89&169&209&241&245,
+\end{array}
+\end{equation}
+which equal $\min(9+8R,245)$ at every recorded order.
+
 For $N=3$, the shell set is
 \begin{equation}
 Q_3=\{1,2,3,4,5,6,8,9,10,11,12,13,14,17,18,19,22,27\},
@@ -195,9 +223,15 @@ R&0&5&10&20&30&35&38&39\\ \hline
 which follow $\min(18+17R,681)$ at every recorded order.
 
 \begin{proposition}[Certified finite saturation]
-At the four reader--resolution pairs in the table, and for every $\nu>0$, the corresponding
+At the five reader--resolution pairs in the table, and for every $\nu>0$, the corresponding
 energy jet has generic local rank $d_N-3$ at its earliest structurally possible order.
 \end{proposition}
+
+In particular, the shell reader is now exactly certified at three consecutive finite cutoffs,
+\begin{equation}
+\boxed{(N,R_I^{\min},d_N-3)=(1,23,49),(2,30,245),(3,39,681).}
+\end{equation}
+This is finite evidence, not an induction theorem and not a proof for arbitrary finite $N$.
 
 At generic states the translation action is free; for example, nonzero coefficients at the
 three axial modes force a fixing translation to satisfy
@@ -222,8 +256,13 @@ and
 \end{conjecture}
 
 Only the certified rows above are proved; the conjecture is not a statement about
-$N\to\infty$ or continuum Navier--Stokes.  Nevertheless, the all-$N$ ceilings already expose
-an exact design trade-off.  A scalar reader requires at least
+$N\to\infty$ or continuum Navier--Stokes.  In the finite-first reading, the desired general
+result is a construction or proof schema that accepts any particular finite $N$ and certifies
+the corresponding finite minor.  The three consecutive shell cases do not by themselves
+supply such a schema.
+
+Nevertheless, the universal ceilings already expose an exact design trade-off.  A scalar
+reader requires at least
 \begin{equation}
 R_E^{\min}=d_N-4=2(2N+1)^3-6=\Theta(N^3)
 \end{equation}
@@ -247,21 +286,78 @@ and stable recovery from noisy high-order derivatives remains open.  It does ide
 quantity that a practical sensor-design program should minimize: temporal depth subject to
 saturating the symmetry-limited observable state.
 
-\section*{5. Scope and verification record}
+\section*{5. Bridge from observability to quantitative inversion}
 
-The results are finite-dimensional observability statements.  They do not prove continuum
+Rank saturation and quantitative reconstruction are deliberately separated.  Fix one finite
+$N$ and suppose a saturated observation jet has generic rank $d_N-3$.  At a point where the
+translation action is locally free, choose an explicit transverse symmetry slice $S_N$ of
+dimension $d_N-3$ and select a square set of observation coordinates
+$H_N:S_N\to\R^{d_N-3}$ with
+\begin{equation}
+\det DH_N(x_*)\ne0.
+\end{equation}
+This gives a local inverse in finite dimension, but not yet a numerical error radius.
+
+For a declared convex branch $B_N\subset S_N$ and a fixed preconditioner $A_N$, define
+\begin{equation}
+q_N=\sup_{x\in B_N}\|I-A_NDH_N(x)\|.
+\end{equation}
+If $q_N<1$, then
+\begin{equation}
+\boxed{
+\|x-z\|\le\frac{\|A_N\|}{1-q_N}\|H_N(x)-H_N(z)\|,
+}
+\end{equation}
+and bounded measurement plus forward-residual uncertainty yields a finite retained-state
+certificate
+\begin{equation}
+\boxed{
+\rho_N\le\frac{\|A_N\|}{1-q_N}(\sigma_{\rm meas}+\sigma_{\rm res}).
+}
+\end{equation}
+This is the precise interface between the energy-observability programme and the EPSC
+quantitative-inversion programme.  Saturation supplies the structural possibility of a square
+local chart; a branch-wide $q_N<1$ enclosure supplies quantitative stability.  Neither statement
+implies the other globally.
+
+At $N=1$, a separate exact characteristic-zero construction already supplies a 49-dimensional
+translation slice, a square shell-energy chart, an exact rational center inverse, and a centered
+entrywise enclosure on
+\begin{equation}
+\|x-x_*\|_\infty\le10^{-17}
+\end{equation}
+with reproduced defect
+\begin{equation}
+\boxed{q_1=0.08058674502845<1/2.}
+\end{equation}
+Thus the next finite quantitative target suggested by the new $N=2$ shell certificate is not
+another rank computation: it is a 245-dimensional symmetry-fixed shell chart at $R=30$ together
+with an explicit preconditioner and certified branch-wide defect $q_2<1$.  Extending this package
+constructively to arbitrary finite $N$ is a stronger problem than the saturation conjecture.
+
+Any omitted-mode or continuum estimate belongs to a separate outer adapter.  If a finite inner
+error $\rho_N$ and an independently justified orthogonal tail error $\beta_N$ are both available,
+they may subsequently be combined as $\sqrt{\rho_N^2+\beta_N^2}$.  No such outer statement is
+needed for the finite observability or finite inversion results in this note.
+
+\section*{6. Scope and verification record}
+
+The results are finite-dimensional observability statements plus an explicit interface to a
+separate finite-dimensional quantitative-inverse criterion.  They do not prove continuum
 regularity or singularity formation, global reconstruction, stable noisy differentiation, or
-computational speed-up.  Their precise content is the combination of universal all-$N$
-structural ceilings, positive-viscosity rank universality, and exact ceiling saturation at the
-certified reader--resolution pairs above.
+computational speed-up.  Their precise content is the combination of universal finite-$N$
+structural ceilings, positive-viscosity rank universality, exact ceiling saturation at the
+certified reader--resolution pairs above, and the logical bridge that identifies which extra
+certificate is required to turn structural observability into a finite error radius.
 
 The derivation record, executable checkers, and machine-readable certificates are maintained at
 \begin{center}
 {\small\url{https://github.com/morrocwi/readout-problem-navier-stokes}}.
 \end{center}
-The principal records are
+The principal records include\\
 \texttt{reproduction/NS\_POSITIVE\_VISCOSITY\_OBSERVABILITY.md},\\
-\texttt{reproduction/checks/check\_k2\_energy\_observability.py}, and\\
+\texttt{reproduction/checks/check\_k2\_energy\_observability.py},\\
+\texttt{reproduction/checks/check\_k2\_shell\_energy\_observability.py}, and\\
 \texttt{reproduction/checks/check\_k3\_shell\_energy\_observability.py}.
 
 \end{document}
