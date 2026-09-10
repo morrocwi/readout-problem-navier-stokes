@@ -30,4 +30,6 @@ jobs:
       - name: Find a small-integer N=2 quotient-chart center
         run: python reproduction/checks/check_volume7_eps18_n2_small_witness.py
       - name: Certify a conservative positive N=2 inverse radius
+        env:
+          PYTHONINTMAXSTRDIGITS: '0'
         run: python reproduction/checks/check_volume7_eps18_n2_explicit_radius.py
