@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T17:14:47.247614+00:00",
+  "generated_at_utc": "2026-09-10T18:40:12.512325+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 175,
+  "total_claims": 190,
   "tier_counts": {
-    "finite_diagnostic": 78,
-    "Open": 30,
-    "Dr": 66,
+    "finite_diagnostic": 82,
+    "Open": 36,
+    "Dr": 71,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 77,
-    "OPEN": 30,
+    "PASS": 81,
+    "OPEN": 36,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 20
+    "DERIVED": 25
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -1208,6 +1208,126 @@
     },
     {
       "volume": 7,
+      "id": "V7-EPSC18-N2-FINITE-OPERATOR-MAJORANTS",
+      "name": "finite N=2 scaled Galerkin and shell-output derivative majorants",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "C=14400; CL bound=864; C*B bound<=1083801600; Q bound=1440; triad_max=98; center max|x_j|=3"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N2-INTEGER-SCALED-NONZERO-MINOR",
+      "name": "selected N=2 small-center shell chart has a nonzero integer-scaled characteristic-zero determinant",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "good-prime selected minor det mod 251=46; C=14400 clears viscosity/basis denominators and C^n n! is invertible mod 251 through n=30; therefore the corresponding row-scaled characteristic-zero determinant is a nonzero integer"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N2-EXPLICIT-POSITIVE-RADIUS",
+      "name": "explicit positive quantitative local inverse radius for the fixed N=2 shell chart",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "A_bound=245*Jrow^244 with 79161 decimal digits; Hrow has 330 digits; choose r=1/(2*A_bound*Hrow), whose denominator has 79490 digits; 10^(-79490) < r <= 10^(-79489); then q_2<=1/2 on ||x-x_*||_inf<=r"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N2-PRACTICAL-INTERVAL-RADIUS",
+      "name": "practically informative entrywise/preconditioned N=2 inverse radius and measurement tolerance",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the Cramer/Hadamard certificate proves a strictly positive branch-wide radius but is intentionally very loose; an exact or validated numerical preconditioner plus centered entrywise Jacobian propagation is still needed for a useful rho_2"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC32-N2-SMALL-INTEGER-CENTER",
+      "name": "small-integer full-rank center for the explicit N=2 shell quotient chart",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "seed=20260910; max|x_j|=3; slice rank=245; selected rows=245; minor det mod 251=46"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC32-N2-SMALL-CENTER-CHAR0-INPUT",
+      "name": "compact integer lift is available for the N=2 characteristic-zero preconditioner stage",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "the same explicit translation slice and 245-row chart have a nonzero good-prime minor at a state with all coordinates in {-3,-2,-1,1,2,3}; this supplies a deterministic small integer center for exact characteristic-zero reconstruction"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC32-N2-QUANTITATIVE-Q2-AFTER-SMALL-CENTER",
+      "name": "branch-wide quantitative N=2 inverse certificate q_2<1 around the small center",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the next stage must reconstruct the selected Jacobian in characteristic zero and certify an inverse/preconditioned Jacobian enclosure on a nonzero real box"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-BRANCH-CHART-PREREQUISITES",
+      "name": "fixed N=1 branch box and exact preconditioner support finite noisy-chart propagation",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "re-ran exact N=1 entrywise checker: q<=1/2 on ||x-x_*||_inf<=10^-17; reconstructed exact center inverse with 1.28<||A||_inf<1.29"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-SCALED-CHART-NOISE-PROPAGATION",
+      "name": "branch-conditioned measurement and forward-residual uncertainty propagate to a finite N=1 state radius",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "for true x and candidate z both in the certified N=1 branch box, ||y-H_1(x)||_inf<=sigma and ||H_1(z)-y||_inf<=tau imply ||x-z||_inf < (129/50)(sigma+tau); H_1 is the selected finite row-scaled shell-energy Taylor chart"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-RAW-WINDOW-TO-CHART-BRANCH-CAPTURE",
+      "name": "raw finite-window energy measurements are converted to the selected N=1 chart with certified branch capture",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the present result begins after a branch box and scaled chart uncertainty are supplied; a derivative-free finite sample/window map with validated Taylor/flow remainder and branch selection is still required"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-ARBITRARY-FINITE-N-NOISE-PROPAGATION",
+      "name": "branch-conditioned noisy-chart radius is certified by a uniform construction for arbitrary finite N",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "this checker is fixed N=1 only; N=2 currently has only a very conservative positive local inverse radius, and no arbitrary-finite-N conditioning law is proved"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-FINITE-SAMPLE-CHART-LEADING-COEFFICIENT",
+      "name": "finite N=1 sample-time Jacobian has a nonzero h^552 leading determinant coefficient",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "slice_dim=49; jet_rank=49; jet_det_mod_p=978598; Vandermonde_rank=24; Vandermonde_det_mod_p=195676; leading_coeff_mod_p=955709; leading_power=552; selected_row_pattern=True"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-DERIVATIVE-FREE-SAMPLE-CHART-EXISTENCE",
+      "name": "sufficiently short nonzero finite sample spacing yields a local N=1 quotient chart without numerical differentiation",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "for S_h=(I0(phi_jh))_{j=0..23}+(I1(phi_jh))_{j=0..23}+I2(x), analytic finite-ODE flow and determinant multilinearity give det D S_h(x*)=c h^552+O(h^553) with c!=0; hence some eta>0 exists such that 0<|h|<eta is locally invertible"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-EXPLICIT-SAMPLE-SPACING-CONDITIONING",
+      "name": "explicit finite sample spacing with certified branch-wide q_h<1 and useful noise factor",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the h^552 theorem is existential as h->0; an explicit h must still balance validated flow/Taylor remainder against Vandermonde conditioning and certify a branch-wide preconditioned Jacobian defect"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-RAW-SENSOR-BRANCH-CAPTURE",
+      "name": "raw noisy shell-energy samples select and remain in the certified local inverse branch",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "finite-time local observability no longer requires numerical differentiation, but sensor error, model discrepancy, explicit sample spacing, reconstruction residual, and branch selection still require a quantitative certificate"
+    },
+    {
+      "volume": 7,
       "id": "V7-NSOBS-DIMENSIONS",
       "name": "finite NS observability dimensions and shell counts",
       "tier": "finite_diagnostic",
@@ -1518,6 +1638,22 @@
     },
     {
       "script": "check_volume7_eps18_n1_small_witness.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n2_explicit_radius.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n2_small_witness.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps19_n1_chart_noise.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps19_n1_finite_sample_chart.py",
       "returncode": 0
     },
     {
