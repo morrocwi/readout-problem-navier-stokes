@@ -1,16 +1,16 @@
 {
-  "generated_at_utc": "2026-09-10T15:26:52.462659+00:00",
+  "generated_at_utc": "2026-09-10T15:30:24.794679+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 155,
+  "total_claims": 156,
   "tier_counts": {
     "finite_diagnostic": 68,
     "Open": 25,
-    "Dr": 61,
+    "Dr": 62,
     "N/A": 1
   },
   "status_counts": {
@@ -18,7 +18,7 @@
     "OPEN": 25,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 15
+    "DERIVED": 16
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -1105,10 +1105,18 @@
     {
       "volume": 7,
       "id": "V7-EPSC-18-CERTIFIED-ENERGY-JET-INVERSE",
-      "name": "quantitative certified inverse from energy jets to retained quotient state",
+      "name": "strictly positive full N=1 certified energy-jet local inverse radius",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "full N=1 symmetry-slice local inverse plus explicit and row-aware positive-radius certificates are reproduced separately; the current radius is mathematically positive but not measurement-ready"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-18-MEASUREMENT-READY-INVERSE",
+      "name": "measurement-ready or arbitrary-finite-N certified energy-jet inverse radius",
       "tier": "Open",
       "status": "OPEN",
-      "evidence": "rank saturation is local qualitative identifiability and does not yet provide rho_N"
+      "evidence": "requires effective entrywise interval/preconditioned conditioning, branch/noise propagation, and extension beyond the certified N=1 local chart"
     },
     {
       "volume": 7,
@@ -1116,7 +1124,7 @@
       "name": "noise-stable measurement-to-continuum certificate",
       "tier": "Open",
       "status": "OPEN",
-      "evidence": "requires certified conditioning/noise propagation through the finite observability inverse"
+      "evidence": "requires a measurement-ready certified rho_N before composition with the omitted-tail certificate"
     },
     {
       "volume": 7,
