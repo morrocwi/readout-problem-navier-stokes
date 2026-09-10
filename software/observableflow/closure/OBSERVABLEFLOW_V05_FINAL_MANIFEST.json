@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "project": "ObservableFlow",
+  "version": "0.5.0",
+  "status": "CLOSED",
+  "closed_at": "2026-09-10T21:16:00+07:00",
+  "data_label": "[SimulatedData]",
+  "simulation": true,
+  "freeze_policy": "The v0.5 benchmark objective, gates, train/validation/test split, upstream pins, and reported test metrics are frozen. Any later tuning belongs to a new benchmark/version and must not overwrite this evidence lane.",
+  "repository": "morrocwi/readout-problem-navier-stokes",
+  "closure_parent_commit": "59bdd0297e6d5081d5d4bcd66ef5ce2aa80744d9",
+  "benchmark_execution_commit": "0355cb94b10f5698378298b9a03512009265ce97",
+  "benchmark_result": {
+    "path": "software/observableflow/benchmarks/openfoam13_cavity/results/head_to_head_v05.json",
+    "blob_sha": "11cb7e7e01fe5436832c436a7311a268fb1623bb",
+    "workflow": "observableflow-v05-head2head",
+    "workflow_file_blob_sha": "dfb4addbea9853bcaf7920ab330cc31e25b4515b",
+    "workflow_run_id": 34487277000,
+    "workflow_conclusion": "success",
+    "artifact_id": 10156230874,
+    "artifact_name": "observableflow-v05-head2head",
+    "artifact_digest": "sha256:70eb6dceb36c55b2fb65ac6c1c8edc1e705a1c2a9476c627dab50c73483d9022",
+    "artifact_expires_at": "2026-12-09T14:10:11Z"
+  },
+  "upstream_pins": {
+    "openfoam_repository": "https://github.com/OpenFOAM/OpenFOAM-13",
+    "openfoam_commit": "18870c24d21c6b982e2cdec27b2f59738cca5f90",
+    "openfoam_case": "tutorials/incompressibleFluid/cavity",
+    "openfoam_runtime_image": "dicehub/openfoam@sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524",
+    "pysensors_repository": "https://github.com/dynamicslab/pysensors",
+    "pysensors_commit": "65400cd12e2f2b79e8a24d16852dd1371c14aa4e",
+    "pysensors_baseline": "SSPOR + QR + Custom(exact shared training POD basis)"
+  },
+  "configuration": {
+    "samples": 401,
+    "scalar_channels": 196,
+    "pod_rank": 8,
+    "pod_train_energy_fraction": 0.9998809139218795,
+    "split": {
+      "train_samples": 240,
+      "validation_samples": 80,
+      "test_samples": 81,
+      "policy": "chronological 60/20/20"
+    },
+    "max_sensors": 8,
+    "max_temporal_depth": 12,
+    "sensor_channel_cost": 1.0,
+    "temporal_depth_unit_cost": 0.25,
+    "noise_std_in_train_standardized_units": 0.01,
+    "selection_objective": "cost + 0.25*log10(kappa) + 4*validation_nrmse + 2*validation_noisy_nrmse",
+    "deployment_gates": {
+      "max_condition_number": 1000.0,
+      "max_noiseless_nrmse": 0.5,
+      "max_noisy_nrmse": 1.0
+    },
+    "anti_leakage": "POD, ROM and sensor ranking fit on train only; design/reconstruction-method selection uses validation only; final comparison uses untouched test only."
+  },
+  "test_results": {
+    "observableflow": {
+      "selected_channel_indices": [7, 27, 176],
+      "selected_channel_names": ["p[p7]", "p[p27]", "U[p42].y"],
+      "spatial_channels": 3,
+      "temporal_depth": 4,
+      "time_samples_per_reconstruction": 5,
+      "rank": 8,
+      "target_rank": 8,
+      "condition_number": 106.3039897942385,
+      "declared_total_cost": 4.0,
+      "full_reference_noiseless_nrmse": 0.607256668269635,
+      "full_reference_noisy_nrmse": 0.6075814877244767,
+      "deployment_pass": false,
+      "deployment_failure_reasons": ["noiseless_nrmse>0.5"]
+    },
+    "pysensors": {
+      "spatial_channels": 8,
+      "temporal_depth": 0,
+      "rank": 8,
+      "target_rank": 8,
+      "condition_number": 8.84881994297933,
+      "declared_total_cost": 8.0,
+      "full_reference_noiseless_nrmse": 0.7676302446168711,
+      "full_reference_noisy_nrmse": 0.7675811442294354,
+      "deployment_pass": false,
+      "deployment_failure_reasons": ["noiseless_nrmse>0.5"]
+    },
+    "comparison": {
+      "observableflow_pareto_dominates_on_declared_test_axes": true,
+      "pysensors_pareto_dominates_on_declared_test_axes": false,
+      "declared_total_cost_reduction_percent": 50.0,
+      "spatial_channel_reduction_percent": 62.5,
+      "noiseless_nrmse_reduction_percent": 20.892034605447257,
+      "noisy_nrmse_reduction_percent": 20.84465697311783,
+      "market_superiority_claim": false,
+      "deployment_ready_claim": false
+    }
+  },
+  "supported_claims": [
+    "On this frozen OpenFOAM-13 cavity benchmark, using the declared cost model and untouched test set, ObservableFlow v0.5 Pareto-dominates the pinned PySensors SSPOR/QR baseline on declared acquisition cost, noiseless full-reference NRMSE, and 1%-noise full-reference NRMSE.",
+    "The selected ObservableFlow design uses 3 spatial channels and temporal depth 4 versus 8 static channels for the selected PySensors baseline.",
+    "Both methods fail the predeclared noiseless NRMSE <= 0.50 deployment gate on the final test set.",
+    "Full rank alone is not sufficient evidence of stable or deployment-quality reconstruction."
+  ],
+  "unsupported_claims": [
+    "ObservableFlow is generally superior to PySensors.",
+    "ObservableFlow is generally superior to commercial sensor-placement or digital-twin products.",
+    "ObservableFlow is deployment-ready.",
+    "The benchmark establishes performance on turbulent, high-Reynolds-number, multi-geometry, physical-hardware, or industrial datasets.",
+    "The benchmark establishes a universal physical value for the temporal-depth cost coefficient 0.25.",
+    "The software or benchmark solves the continuum Navier-Stokes existence/smoothness problem."
+  ],
+  "next_phase": {
+    "name": "ObservableFlow v0.6",
+    "status": "NOT_STARTED_BY_THIS_CLOSURE",
+    "minimum_evidence_goal": "Multi-case, multi-regime external benchmarking without modifying the frozen v0.5 evidence lane."
+  }
+}

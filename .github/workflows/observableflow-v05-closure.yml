@@ -1,0 +1,27 @@
+name: observableflow-v05-closure
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'software/observableflow/closure/**'
+      - 'software/observableflow/benchmarks/openfoam13_cavity/results/head_to_head_v05.json'
+      - '.github/workflows/observableflow-v05-closure.yml'
+  push:
+    paths:
+      - 'software/observableflow/closure/**'
+      - 'software/observableflow/benchmarks/openfoam13_cavity/results/head_to_head_v05.json'
+      - '.github/workflows/observableflow-v05-closure.yml'
+
+jobs:
+  closure-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate frozen manifest against committed benchmark result
+        run: python software/observableflow/closure/check_v05_closure.py
