@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T15:30:24.794679+00:00",
+  "generated_at_utc": "2026-09-10T16:00:04.099072+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 156,
+  "total_claims": 160,
   "tier_counts": {
-    "finite_diagnostic": 68,
-    "Open": 25,
-    "Dr": 62,
+    "finite_diagnostic": 70,
+    "Open": 26,
+    "Dr": 63,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 67,
-    "OPEN": 25,
+    "PASS": 69,
+    "OPEN": 26,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 16
+    "DERIVED": 17
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -860,7 +860,7 @@
       "name": "Direct NS ordered-triad sum reproduces the exact retained nonlinear tape",
       "tier": "finite_diagnostic",
       "status": "PASS",
-      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18"
+      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18"
     },
     {
       "volume": 6,
@@ -941,6 +941,38 @@
       "tier": "Open",
       "status": "OPEN",
       "evidence": "kinematic transfer connectivity is closed; nonvanishing/algebraic independence of enough observable minors remains open"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-EXACT-CHAR0-JACOBIAN",
+      "name": "exact characteristic-zero integer-scaled 49x49 N=1 observability Jacobian",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "all 49 selected rows agree with the good-prime construction after C^n n! scaling; |det J0| has 2561 decimal digits; det mod 1000003=62254"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-EXACT-INVERSE-NORM",
+      "name": "exact rational inverse norm for the selected full N=1 symmetry-slice Jacobian",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "exact Fraction Gauss-Jordan gives 1.28 < ||J0^-1||_inf < 1.29; max-row rational numerator digits=1842, denominator digits=1842"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-EXACT-PRECONDITIONED-RADIUS",
+      "name": "strictly positive exact-preconditioned quantitative radius for full N=1",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "A=J0^-1 exactly; choose r=1/(2*max_i sum_j |A_ij|H_j); 10^(-59) < r <= 10^(-58); q<=1/2; at least 3818 decimal orders larger than the previous 10^-3878 lower-bracket scale"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-MEASUREMENT-SCALE-RADIUS",
+      "name": "measurement-scale robust radius for the full N=1 energy-jet inverse",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the exact center inverse removes essentially all determinant-bound slack, but the rigorous global row-Hessian enclosure still gives a radius between 10^-59 and 10^-58; entrywise/local interval Jacobian bounds plus branch/noise containment remain required"
     },
     {
       "volume": 7,
@@ -1330,6 +1362,10 @@
     },
     {
       "script": "check_volume7_energy_transfer_observability.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n1_exact_preconditioner.py",
       "returncode": 0
     },
     {
