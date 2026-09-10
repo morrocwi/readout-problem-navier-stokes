@@ -57,3 +57,42 @@ being written into the paper, following the maintaining project's own equation-r
 practice; see `CLAIMS.md` for the exact tiers and status of every claim. Independent adversarial
 review is complete, this repository is public, and it has been deposited on Zenodo
 (10.5281/zenodo.22673246).
+
+---
+
+## Post-paper research lane: Discrete Epsilon-Completion
+
+A later, **finite-diagnostic** lane now tests whether the finite Fourier-Galerkin NS recurrence can
+be evolved directly on integer Fourier records and whether nested finite refinements can provide an
+operational stopping diagnostic without promoting that diagnostic into a continuum claim.
+
+Read these together:
+
+- `reproduction/NS_DISCRETE_EPSILON_COMPLETION.md` — NS-specific algorithm, recorded run, and claim boundary.
+- `reproduction/checks/check_discrete_epsilon_completion.py` — independent NumPy reproduction checker.
+- `reproduction/results/discrete_epsilon_completion_v01.json` — frozen 2026-09-10 finite-diagnostic result.
+- `CLAIMS.md` — explicit separation of finite algebra, nested stability, continuum completion, and physical validation.
+
+The general algorithm/certification layer lives in **Information Discrete Mathematics**, not here:
+`github.com/morrocwi/information-discrete-math`, specifically `idm/ns_epsilon.py` and
+`docs/DISCRETE_EPSILON_COMPLETION.md`.
+
+Equation/definition provenance is registered **Toledo-first** in
+`github.com/morrocwi/toledo/registry/proposals/discrete_epsilon_completion.json`:
+
+- `PROP-EPSC-01` — Nested Readout Consistency Defect;
+- `PROP-EPSC-02` — NS Fourier boundary-energy diagnostic;
+- `PROP-EPSC-03` — fail-closed epsilon-completion gate;
+- `PROP-EPSC-04` — **OPEN** computable omitted-information tail certificate.
+
+The key boundary is fail-closed:
+
+```
+finite nested diagnostic may PASS
+continuum / infinite-object epsilon certificate remains HOLD
+until a proved PROP-EPSC-04 beta_K bound is supplied
+```
+
+This post-paper lane is **not part of the deposited v0.1.0 paper claim** unless a future release
+explicitly incorporates it. It does not change the repository's non-claim on the Clay Millennium
+problem.
