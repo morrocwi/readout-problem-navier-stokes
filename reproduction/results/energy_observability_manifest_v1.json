@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "title": "Finite energy-observability reproducibility manifest",
+  "simulation": false,
+  "paper_source": "paper/NS_ENERGY_OBSERVABILITY_ALL_K_FINAL.tex",
+  "tested_environment": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "numba": "0.65.1"
+  },
+  "one_command_full": "bash reproduction/reproduce_energy_observability.sh",
+  "one_command_quick": "bash reproduction/reproduce_energy_observability.sh --quick",
+  "certificates": [
+    {
+      "case": "K=1 total energy",
+      "checker": "reproduction/checks/check_volume6_ns_observability.py",
+      "git_blob_sha": "d5a9fb1b8ffc50717571811850853c47d5e72b9e",
+      "prime": 1000003,
+      "earliest_order": 48,
+      "rank": 49,
+      "state_dimension": 52,
+      "translation_ceiling": 49
+    },
+    {
+      "case": "K=1 shell energy",
+      "checker": "reproduction/checks/check_volume6_ns_observability.py",
+      "git_blob_sha": "d5a9fb1b8ffc50717571811850853c47d5e72b9e",
+      "prime": 1000003,
+      "earliest_order": 23,
+      "rank": 49,
+      "state_dimension": 52,
+      "translation_ceiling": 49,
+      "channels": 3
+    },
+    {
+      "case": "K=2 total energy",
+      "checker": "reproduction/checks/check_k2_energy_observability.py",
+      "git_blob_sha": "3d96c7540082d8f3c0c4b5400b2e5e23bc099224",
+      "result": "reproduction/results/k2_energy_observability_mod251.json",
+      "result_git_blob_sha": "de6b5cd4ab6cfd4515db47a34484395e655c5345",
+      "prime": 251,
+      "earliest_order": 244,
+      "rank": 245,
+      "state_dimension": 248,
+      "translation_ceiling": 245
+    },
+    {
+      "case": "K=3 shell energy",
+      "checker": "reproduction/checks/check_k3_shell_energy_observability.py",
+      "git_blob_sha": "077c173d4a519c0931801ffcabd335e042166288",
+      "result": "reproduction/results/k3_shell_energy_observability_mod683.json",
+      "result_git_blob_sha": "1475f0d7f01894666aa15c0461fe71db7747a214",
+      "prime": 683,
+      "earliest_order": 39,
+      "rank": 681,
+      "state_dimension": 684,
+      "translation_ceiling": 681,
+      "channels": 18
+    }
+  ],
+  "supporting_checker": {
+    "path": "reproduction/checks/check_positive_viscosity_scaling.py",
+    "git_blob_sha": "f611090fd0db71e10dfeed775c2ef8ff617ab81b"
+  },
+  "paper_source_git_blob_sha_before_repro_packaging": "51d17d2c862e1ca25141b9c38bd1582b46b45e31",
+  "claim_boundary": "Finite-dimensional local observability modulo spatial translation; no continuum Navier-Stokes regularity, singularity, global reconstruction, noisy-stability, or computational-speedup claim."
+}
