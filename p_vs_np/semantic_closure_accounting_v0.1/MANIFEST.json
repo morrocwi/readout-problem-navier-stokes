@@ -1,29 +1,50 @@
 {
   "title": "Semantic Closure Accounting for Boolean Circuits: A Readout-First Architecture Toward P versus NP",
-  "version": "0.1",
-  "date": "2026-09-10",
+  "version": "0.1.1-route-closure-corrigendum",
+  "original_date": "2026-09-10",
+  "corrigendum_date": "2026-09-11",
   "author": "Yaoharee Lahtee",
-  "claim_status": "architecture and finite formal candidates; P versus NP remains open",
-  "source_sha256": "d7c8ce2ab7eb920f45d1d56239347232b6da99c5726d575a0cfba11f10619529",
-  "reference_pdf_sha256": "1448eac8d541574a58435ed492445ec6908b4b3d23ada9147903469d3222deca",
+  "claim_status": "architecture and finite formal candidates; route closed as accounting reduction; unrestricted SAT circuit lower bound and P versus NP remain open",
+  "artifacts": {
+    "source": {
+      "path": "p_vs_np/semantic_closure_accounting_v0.1/Semantic_Closure_Accounting_P_vs_NP_v0.1.tex",
+      "git_blob_sha": "8d463fae1fa95736e3ea19cd175c2df40141b79c"
+    },
+    "pdf": {
+      "path": "p_vs_np/semantic_closure_accounting_v0.1/Semantic_Closure_Accounting_P_vs_NP_v0.1.pdf",
+      "git_blob_sha": "5b0eec22629d97d5a9cbb69eeea28af33f64842e",
+      "build_status": "reproducibly compiled by GitHub Actions after the route-closure corrigendum"
+    },
+    "route_closure": {
+      "path": "p_vs_np/semantic_closure_accounting_v0.1/ROUTE_CLOSURE.md",
+      "git_blob_sha": "e89b42330ac1b4c0284ac7ff19651bc198dd370f"
+    }
+  },
+  "provenance_note": "The original v0.1 SHA-256 values are intentionally not reused after the 2026-09-11 corrigendum. Current artifacts are pinned here by repository path and Git blob SHA; the repository history preserves the original version.",
   "upstream": {
     "information_discrete_math": {
       "repo": "https://github.com/morrocwi/information-discrete-math",
       "branch": "research/p-vs-np-readout",
+      "head": "ce437b8ec40ee82fe914bc237026a88ddb092582",
       "draft_pr": 117,
+      "focused_ci_run": 34507034511,
+      "focused_ci_status": "success",
       "formal_files": [
         "formal/IDM_CircuitGenesisBridge.v",
         "formal/IDM_RetainRecomputeResolve.v",
         "formal/IDM_RRRCostLowerBound.v",
-        "formal/IDM_CircuitLedgerTransfer.v"
+        "formal/IDM_CircuitLedgerTransfer.v",
+        "formal/IDM_DemandCircuitDominance.v"
       ]
     },
     "readout_genesis": "https://github.com/morrocwi/readout_genesis",
-    "toledo": {
-      "repo": "https://github.com/morrocwi/toledo",
-      "proposal_path": "registry/proposals/semantic_closure_accounting_p_vs_np_v0_1.json",
-      "registration_commit": "0b17d60321f0a8ffaa0ebdd9f845fce05b347f30"
-    }
+    "toledo": "https://github.com/morrocwi/toledo"
   },
-  "toledo_proposal": "registry/proposals/semantic_closure_accounting_p_vs_np_v0_1.json"
+  "toledo": {
+    "original_proposal": "registry/proposals/semantic_closure_accounting_p_vs_np_v0_1.json",
+    "route_closure_proposal": "registry/proposals/semantic_closure_accounting_p_vs_np_v0_1_route_closure.json",
+    "route_closure_commit": "c5331e733d83357a45284229c3a65a954cf0c2e2",
+    "canonical_promotion_status": "not promoted; working codes remain A3/M.??.v1 until Toledo dedup/lineage build"
+  },
+  "route_closure_result": "Universal accounting H_n(f_n) <= |C| K_n implies H_n(f_n) <= CC(f_n) K_n. Therefore any certified B K_n < H_n(f_n) is already a circuit-size lower-bound certificate B < CC(f_n). The H/K route organizes rather than bypasses the unrestricted lower-bound breakthrough."
 }
