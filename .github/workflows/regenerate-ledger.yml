@@ -27,8 +27,26 @@ jobs:
       - name: Install finite-check dependencies
         run: python -m pip install --upgrade pip numpy sympy mpmath pyyaml scipy
 
-      - name: Run every reproduction checker and regenerate ledger
+      - name: Run every volume reproduction checker and regenerate ledger
         run: python reproduction/generate_ledger.py
+
+      - name: Run post-paper discrete epsilon-completion diagnostic
+        run: |
+          python reproduction/checks/check_discrete_epsilon_completion.py --json "$RUNNER_TEMP/discrete_epsilon_completion_v01.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          p = Path(os.environ["RUNNER_TEMP"]) / "discrete_epsilon_completion_v01.json"
+          r = json.loads(p.read_text())
+          assert r["analytic_shear_test"]["pass_1e-12"] is True
+          assert r["independent_fft_gate"]["pass_1e-12"] is True
+          c = r["adaptive_epsilon_completion"]
+          assert c["first_passing_K"] == 4
+          assert c["confirmed_K"] == 5
+          assert c["continuum_certificate"] == "HOLD"
+          print("EPSC finite diagnostic reproduced: K=4 first pass, K=5 confirmation; continuum certificate HOLD")
+          PY
 
       - name: Commit regenerated ledger if changed
         run: |
@@ -39,5 +57,10 @@ jobs:
             echo "Ledger already current."
           else
             git commit -m "regenerate reproduction ledger"
-            git push
+            # Several human commits may arrive while the full reproduction matrix is running.
+            # Rebase the generated-only ledger commit before pushing instead of failing on a
+            # harmless non-fast-forward race.
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
           fi
