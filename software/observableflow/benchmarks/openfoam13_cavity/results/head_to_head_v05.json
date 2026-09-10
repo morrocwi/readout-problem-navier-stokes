@@ -1,0 +1,440 @@
+{
+  "benchmark": "ObservableFlow v0.5 stability-aware vs PySensors SSPOR/QR",
+  "comparison": {
+    "market_superiority_claim": false,
+    "note": "A single benchmark supports only a benchmark-specific comparison, never a general market-superiority claim.",
+    "observableflow_deployment_pass": false,
+    "observableflow_pareto_dominates_on_test": true,
+    "observableflow_test_objective": 8.150827039712656,
+    "pysensors_deployment_pass": false,
+    "pysensors_pareto_dominates_on_test": false,
+    "pysensors_test_objective": 12.842404606453263
+  },
+  "configuration": {
+    "anti_leakage": "POD/ROM/sensor ranking fit on train only; design/method chosen on validation; final metrics from untouched test only.",
+    "channels": 196,
+    "deployment_gates": {
+      "max_condition_number": 1000.0,
+      "max_noiseless_nrmse": 0.5,
+      "max_noisy_nrmse": 1.0
+    },
+    "depth_unit_cost": 0.25,
+    "fairness": "Both methods use the exact same train-standardized 196 channels and the exact same training POD basis. PySensors uses its native SSPOR/QR sensor ranking and native reconstruction methods.",
+    "max_depth": 12,
+    "max_sensors": 8,
+    "noise_std_in_train_standardized_units": 0.01,
+    "pod_rank": 8,
+    "pod_train_energy_fraction": 0.9998809139218795,
+    "samples": 401,
+    "selection_objective": "cost + 0.25*log10(kappa) + 4*validation_nrmse + 2*validation_noisy_nrmse",
+    "sensor_channel_cost": 1.0,
+    "test_samples": 81,
+    "train_samples": 240,
+    "validation_samples": 80
+  },
+  "data_label": "[SimulatedData]",
+  "observableflow": {
+    "candidate_count": 88,
+    "test": {
+      "design": {
+        "condition_number": 106.3039897942385,
+        "depth": 4,
+        "depth_cost": 1.0,
+        "feasible": true,
+        "rank": 8,
+        "selected": [
+          7,
+          27,
+          176
+        ],
+        "sensor_cost": 3.0,
+        "sigma_max": 85.25703446369614,
+        "sigma_min": 0.802011614321525,
+        "target_rank": 8,
+        "total_cost": 4.0
+      },
+      "full_reference_noiseless": {
+        "median_sample_rmse": 3.0286218101270466,
+        "nrmse": 0.607256668269635,
+        "p95_sample_rmse": 4.700515252656958,
+        "rmse": 3.255073275050105,
+        "samples": 77
+      },
+      "full_reference_noisy": {
+        "median_sample_rmse": 3.019750690924955,
+        "nrmse": 0.6075814877244767,
+        "p95_sample_rmse": 4.699702557016883,
+        "rmse": 3.2568144022899004,
+        "samples": 77
+      },
+      "pass": false,
+      "reasons": [
+        "noiseless_nrmse>0.5"
+      ],
+      "reduced_state_noiseless": {
+        "median_sample_rmse": 8.619420393889063,
+        "nrmse": 0.4149304805968303,
+        "p95_sample_rmse": 14.448939563127784,
+        "rmse": 9.613302284206076,
+        "samples": 77
+      },
+      "reduced_state_noisy": {
+        "median_sample_rmse": 8.725233963920925,
+        "nrmse": 0.4155536091605218,
+        "p95_sample_rmse": 14.442474034884297,
+        "rmse": 9.627739216475003,
+        "samples": 77
+      },
+      "selected_channels": [
+        {
+          "index": 7,
+          "location": [
+            0.0125,
+            0.025,
+            0.005
+          ],
+          "name": "p[p7]"
+        },
+        {
+          "index": 27,
+          "location": [
+            0.0875,
+            0.05,
+            0.005
+          ],
+          "name": "p[p27]"
+        },
+        {
+          "index": 176,
+          "location": [
+            0.0125,
+            0.0875,
+            0.005
+          ],
+          "name": "U[p42].y"
+        }
+      ],
+      "structural_score": 4.506637391185162,
+      "validation_or_test_objective": 8.150827039712656
+    },
+    "validation_selected": {
+      "design": {
+        "condition_number": 106.3039897942385,
+        "depth": 4,
+        "depth_cost": 1.0,
+        "feasible": true,
+        "rank": 8,
+        "selected": [
+          7,
+          27,
+          176
+        ],
+        "sensor_cost": 3.0,
+        "sigma_max": 85.25703446369614,
+        "sigma_min": 0.802011614321525,
+        "target_rank": 8,
+        "total_cost": 4.0
+      },
+      "full_reference_noiseless": {
+        "median_sample_rmse": 0.5088752517429316,
+        "nrmse": 0.2725444437632517,
+        "p95_sample_rmse": 1.28413625478543,
+        "rmse": 0.7057194689355833,
+        "samples": 76
+      },
+      "full_reference_noisy": {
+        "median_sample_rmse": 0.5492884203342319,
+        "nrmse": 0.2748382614840485,
+        "p95_sample_rmse": 1.2899481316504564,
+        "rmse": 0.7116590206703526,
+        "samples": 76
+      },
+      "pass": true,
+      "reasons": [],
+      "reduced_state_noiseless": {
+        "median_sample_rmse": 1.8561314873272126,
+        "nrmse": 0.17778651071450996,
+        "p95_sample_rmse": 3.7506692238705397,
+        "rmse": 2.227874588943447,
+        "samples": 76
+      },
+      "reduced_state_noisy": {
+        "median_sample_rmse": 2.0188670810595757,
+        "nrmse": 0.1814428784209911,
+        "p95_sample_rmse": 3.644455737896736,
+        "rmse": 2.273693187150729,
+        "samples": 76
+      },
+      "selected_channels": [
+        {
+          "index": 7,
+          "location": [
+            0.0125,
+            0.025,
+            0.005
+          ],
+          "name": "p[p7]"
+        },
+        {
+          "index": 27,
+          "location": [
+            0.0875,
+            0.05,
+            0.005
+          ],
+          "name": "p[p27]"
+        },
+        {
+          "index": 176,
+          "location": [
+            0.0125,
+            0.0875,
+            0.005
+          ],
+          "name": "U[p42].y"
+        }
+      ],
+      "structural_score": 4.506637391185162,
+      "validation_or_test_objective": 6.146491689206266
+    }
+  },
+  "pysensors": {
+    "baseline": "SSPOR + QR + Custom(exact shared POD basis), pinned external commit",
+    "test": {
+      "condition_number": 8.84881994297933,
+      "depth": 0,
+      "full_reference_noiseless": {
+        "median_sample_rmse": 4.056210118830225,
+        "nrmse": 0.7676302446168711,
+        "p95_sample_rmse": 5.573586561898791,
+        "rmse": 4.18006757887265,
+        "samples": 81
+      },
+      "full_reference_noisy": {
+        "median_sample_rmse": 4.0441735705002335,
+        "nrmse": 0.7675811442294354,
+        "p95_sample_rmse": 5.573674194730553,
+        "rmse": 4.179800206737341,
+        "samples": 81
+      },
+      "method": "regularized",
+      "pass": false,
+      "rank": 8,
+      "reasons": [
+        "noiseless_nrmse>0.5"
+      ],
+      "selected": [
+        0,
+        175,
+        20,
+        43,
+        172,
+        151,
+        21,
+        19
+      ],
+      "selected_channels": [
+        {
+          "index": 0,
+          "location": [
+            0.0125,
+            0.0125,
+            0.005
+          ],
+          "name": "p[p0]"
+        },
+        {
+          "index": 175,
+          "location": [
+            0.0125,
+            0.0875,
+            0.005
+          ],
+          "name": "U[p42].x"
+        },
+        {
+          "index": 20,
+          "location": [
+            0.0875,
+            0.0375,
+            0.005
+          ],
+          "name": "p[p20]"
+        },
+        {
+          "index": 43,
+          "location": [
+            0.025,
+            0.0875,
+            0.005
+          ],
+          "name": "p[p43]"
+        },
+        {
+          "index": 172,
+          "location": [
+            0.0875,
+            0.075,
+            0.005
+          ],
+          "name": "U[p41].x"
+        },
+        {
+          "index": 151,
+          "location": [
+            0.0875,
+            0.0625,
+            0.005
+          ],
+          "name": "U[p34].x"
+        },
+        {
+          "index": 21,
+          "location": [
+            0.0125,
+            0.05,
+            0.005
+          ],
+          "name": "p[p21]"
+        },
+        {
+          "index": 19,
+          "location": [
+            0.075,
+            0.0375,
+            0.005
+          ],
+          "name": "p[p19]"
+        }
+      ],
+      "sensor_count": 8,
+      "target_rank": 8,
+      "total_cost": 8.0,
+      "validation_or_test_objective": 12.842404606453263
+    },
+    "validation_candidate_count": 16,
+    "validation_selected": {
+      "condition_number": 8.84881994297933,
+      "depth": 0,
+      "full_reference_noiseless": {
+        "median_sample_rmse": 0.7782236332080563,
+        "nrmse": 0.4441799453715872,
+        "p95_sample_rmse": 2.194880045604382,
+        "rmse": 1.1807823788422496,
+        "samples": 80
+      },
+      "full_reference_noisy": {
+        "median_sample_rmse": 0.7783537268613179,
+        "nrmse": 0.44394183760442923,
+        "p95_sample_rmse": 2.200108277983998,
+        "rmse": 1.1801494068707428,
+        "samples": 80
+      },
+      "method": "regularized",
+      "pass": true,
+      "rank": 8,
+      "reasons": [],
+      "selected": [
+        0,
+        175,
+        20,
+        43,
+        172,
+        151,
+        21,
+        19
+      ],
+      "selected_channels": [
+        {
+          "index": 0,
+          "location": [
+            0.0125,
+            0.0125,
+            0.005
+          ],
+          "name": "p[p0]"
+        },
+        {
+          "index": 175,
+          "location": [
+            0.0125,
+            0.0875,
+            0.005
+          ],
+          "name": "U[p42].x"
+        },
+        {
+          "index": 20,
+          "location": [
+            0.0875,
+            0.0375,
+            0.005
+          ],
+          "name": "p[p20]"
+        },
+        {
+          "index": 43,
+          "location": [
+            0.025,
+            0.0875,
+            0.005
+          ],
+          "name": "p[p43]"
+        },
+        {
+          "index": 172,
+          "location": [
+            0.0875,
+            0.075,
+            0.005
+          ],
+          "name": "U[p41].x"
+        },
+        {
+          "index": 151,
+          "location": [
+            0.0875,
+            0.0625,
+            0.005
+          ],
+          "name": "U[p34].x"
+        },
+        {
+          "index": 21,
+          "location": [
+            0.0125,
+            0.05,
+            0.005
+          ],
+          "name": "p[p21]"
+        },
+        {
+          "index": 19,
+          "location": [
+            0.075,
+            0.0375,
+            0.005
+          ],
+          "name": "p[p19]"
+        }
+      ],
+      "sensor_count": 8,
+      "target_rank": 8,
+      "total_cost": 8.0,
+      "validation_or_test_objective": 10.901324796222115
+    }
+  },
+  "runtime": {
+    "observableflow_commit": "0355cb94b10f5698378298b9a03512009265ce97",
+    "openfoam_image": "dicehub/openfoam@sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524"
+  },
+  "scope": "Certificate-matched reduced-order benchmark on one OpenFOAM-13 cavity trajectory; the 7x7 p,U probe grid is a dense sampled surrogate, not the native CFD mesh.",
+  "simulation": true,
+  "upstream": {
+    "openfoam_case": "tutorials/incompressibleFluid/cavity",
+    "openfoam_commit": "18870c24d21c6b982e2cdec27b2f59738cca5f90",
+    "openfoam_repository": "https://github.com/OpenFOAM/OpenFOAM-13",
+    "pysensors_commit": "65400cd12e2f2b79e8a24d16852dd1371c14aa4e",
+    "pysensors_repository": "https://github.com/dynamicslab/pysensors"
+  }
+}
