@@ -1,0 +1,121 @@
+{
+  "status": "finite_diagnostic",
+  "simulation_label": "[SimulatedData]",
+  "simulation": true,
+  "executed_date": "2026-09-10",
+  "production_solver_uses_spatial_grid": false,
+  "production_solver_uses_fft": false,
+  "continuum_certificate": "HOLD",
+  "continuum_hold_reason": "PROP-EPSC-04 proved omitted-information bound not supplied",
+  "toledo": [
+    "PROP-EPSC-01",
+    "PROP-EPSC-02",
+    "PROP-EPSC-03",
+    "PROP-EPSC-04"
+  ],
+  "analytic_shear_test": {
+    "K": 1,
+    "nu": 0.1,
+    "dt": 0.01,
+    "T": 1.0,
+    "max_nonlinear_rhs_at_t0": 0.0,
+    "max_error_vs_exact_decay": 3.885780586188048e-16,
+    "pass_1e-12": true
+  },
+  "independent_fft_gate": {
+    "K": 2,
+    "modes": 124,
+    "ordered_triads": 6486,
+    "nu": 0.01,
+    "dt": 0.0025,
+    "max_rhs_difference": 1.0408340855860843e-16,
+    "max_one_rk4_step_difference": 8.673617379884035e-19,
+    "pass_1e-12": true
+  },
+  "adaptive_epsilon_completion": {
+    "task": "full retained Fourier state at terminal time for Taylor-Green initial data",
+    "nu": 0.01,
+    "dt": 0.005,
+    "T": 0.05,
+    "eps_overlap_l2": 1e-06,
+    "eps_boundary_energy": 1e-08,
+    "required_consecutive_passes": 2,
+    "first_passing_K": 4,
+    "confirmed_K": 5,
+    "continuum_certificate": "HOLD",
+    "rows": [
+      {
+        "K": 1,
+        "modes": 26,
+        "ordered_triads": 264,
+        "runtime_seconds": 0.002502486999986786,
+        "energy": 0.1246255619379216,
+        "boundary_energy": 0.1246255619379216,
+        "max_divergence_constraint": 0.0,
+        "max_reality_symmetry_error": 0.0,
+        "overlap_l2": null,
+        "overlap_max_component": null,
+        "passes_epsilon_gate": false
+      },
+      {
+        "K": 2,
+        "modes": 124,
+        "ordered_triads": 6486,
+        "runtime_seconds": 0.031475099000005,
+        "energy": 0.12462552958257375,
+        "boundary_energy": 1.9392993159776753e-05,
+        "max_divergence_constraint": 0.0,
+        "max_reality_symmetry_error": 0.0,
+        "overlap_l2": 3.8910533092073596e-05,
+        "overlap_max_component": 9.727633273018399e-06,
+        "passes_epsilon_gate": false
+      },
+      {
+        "K": 3,
+        "modes": 342,
+        "ordered_triads": 49626,
+        "runtime_seconds": 0.22647669299999507,
+        "energy": 0.12462552957690787,
+        "boundary_energy": 5.6913378015901385e-09,
+        "max_divergence_constraint": 4.336808689942018e-19,
+        "max_reality_symmetry_error": 2.168404344971009e-19,
+        "overlap_l2": 1.1403737777185173e-06,
+        "overlap_max_component": 2.3520490612170646e-07,
+        "passes_epsilon_gate": false
+      },
+      {
+        "K": 4,
+        "modes": 728,
+        "ordered_triads": 224796,
+        "runtime_seconds": 1.2765611899999953,
+        "energy": 0.12462552957690642,
+        "boundary_energy": 2.0885801683142805e-12,
+        "max_divergence_constraint": 5.082197683525802e-21,
+        "max_reality_symmetry_error": 2.168404344971009e-19,
+        "overlap_l2": 3.551240840312347e-08,
+        "overlap_max_component": 4.696162582980997e-09,
+        "passes_epsilon_gate": true
+      },
+      {
+        "K": 5,
+        "modes": 1330,
+        "ordered_triads": 749580,
+        "runtime_seconds": 4.790619188000022,
+        "energy": 0.12462552957690641,
+        "boundary_energy": 1.0307303024220065e-15,
+        "max_divergence_constraint": 4.336808689942018e-19,
+        "max_reality_symmetry_error": 3.5123380335723884e-20,
+        "overlap_l2": 7.740608438354867e-10,
+        "overlap_max_component": 1.1239100665234217e-10,
+        "passes_epsilon_gate": true
+      }
+    ]
+  },
+  "claim_boundary": {
+    "finite_algebra": "supported on the executed cases",
+    "nested_refinement_diagnostic": "K=4 and K=5 pass the declared operational gate on the short Taylor-Green run",
+    "continuum_completion": "HOLD",
+    "millennium_problem": "no claim",
+    "physical_turbulence_validation": "no claim"
+  }
+}
