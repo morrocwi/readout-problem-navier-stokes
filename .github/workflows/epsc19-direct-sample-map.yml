@@ -6,11 +6,13 @@ on:
       - epsc19-direct-sample-map-certificate
       - main
     paths:
-      - 'reproduction/checks/check_volume7_eps19_n1_direct_sample_inverse.py'
+      - 'reproduction/checks/check_volume6_ns_observability.py'
+      - 'reproduction/checks/check_volume7_eps18_n1_local_inverse.py'
       - 'reproduction/checks/check_volume7_eps18_n1_exact_preconditioner.py'
       - 'reproduction/checks/check_volume7_eps18_n1_explicit_radius.py'
       - 'reproduction/checks/check_volume7_eps18_n1_small_witness.py'
       - 'reproduction/checks/check_volume7_eps19_n1_sample_interpolation_conditioning.py'
+      - 'reproduction/checks/check_volume7_eps19_n1_direct_sample_inverse.py'
       - '.github/workflows/epsc19-direct-sample-map.yml'
   workflow_dispatch:
 
