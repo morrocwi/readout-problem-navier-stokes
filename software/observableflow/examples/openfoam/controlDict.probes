@@ -1,0 +1,16 @@
+observableFlowProbes
+{
+    type                probes;
+    libs                (sampling);
+    writeControl        timeStep;
+    writeInterval       1;
+    fixedLocations      true;
+    interpolationScheme cellPoint;
+    fields              (p U);
+    probeLocations
+    (
+        (0 0 0)
+        (0.05 0 0)
+        (0.1 0 0)
+    );
+}
