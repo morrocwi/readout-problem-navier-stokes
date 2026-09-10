@@ -15,26 +15,103 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Refresh EPSC-15 manuscript status
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path("paper/EPSC_NAVIER_STOKES_CERTIFICATES.tex")
+          text = p.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  "estimate connects a smooth finite Fourier comparison path to a Leray--Hopf solution and isolates\n"
+                  "the remaining numerical obligation: a validated continuous-time enclosure of the actual RK4\n"
+                  "tape.  The associated finite Fourier residual is itself a finite triad computation.",
+                  "estimate connects a finite Fourier comparison path to a Leray--Hopf solution and is paired with\n"
+                  "an exact-dyadic piecewise-linear enclosure of the recorded RK4 node tape.  For that declared\n"
+                  "comparison path the continuous-time residual integral is an exact finite rational computation,\n"
+                  "while the gradient integral is bounded by a rigorous coefficientwise Fourier majorant."
+              ),
+              (
+                  "\\section{Validated RK4 continuous-time enclosure: the remaining frontier}",
+                  "\\section{Exact continuous-time enclosure of the recorded RK4 tape}"
+              ),
+              (
+                  "The current finite solver uses explicit RK4 at discrete nodes.  Nodewise residual samples do not\n"
+                  "certify the integrals in~\\eqref{eq:AB}.  The remaining numerical obligation is therefore precise:\n"
+                  "construct from the floating-point RK4 tape a validated continuous-time finite Fourier path\n"
+                  "$v_h(t)$ and computable enclosures",
+                  "The finite solver uses explicit RK4 at discrete nodes.  Nodewise residual samples alone do not\n"
+                  "certify the integrals in~\\eqref{eq:AB}.  We instead interpret each stored binary64 component as\n"
+                  "its exact IEEE-754 dyadic rational, apply the Leray projector in exact rational arithmetic, and\n"
+                  "join consecutive projected nodes by a continuous piecewise-linear finite Fourier path $v_h(t)$.\n"
+                  "This produces rigorous enclosures"
+              ),
+              (
+                  "A practical validated implementation can use a piecewise-polynomial continuous extension of each\n"
+                  "RK4 step, outward-rounded interval bounds for its coefficients, interval evaluation of the finite\n"
+                  "triad residual on each time cell, and certified quadrature/enclosure of the resulting nonnegative\n"
+                  "polynomial or interval majorant.  This paper does not claim that this final interval-enclosure layer\n"
+                  "has already been completed.  In the accompanying Toledo registry it remains the explicit open\n"
+                  "target \\texttt{PROP-EPSC-15}.",
+                  "On each time cell the Fourier coefficients of $v_h$ are affine in normalized time.  Hence the\n"
+                  "quadratic Navier--Stokes residual is degree at most two, its homogeneous $H^{-1}$ norm squared is\n"
+                  "degree at most four, and its cell integral is evaluated exactly in rational arithmetic.  A\n"
+                  "coefficientwise Fourier $\\ell^1$ majorant gives a rigorous upper bound for the gradient integral.\n"
+                  "The executable checker also bounds $e^{\\overline A_T}$ from above by a rational Taylor sum plus a\n"
+                  "geometric remainder and rounds the reported square root upward with integer arithmetic.  Thus\n"
+                  "\\texttt{PROP-EPSC-15} is supplied for the declared finite tape/path construction.  Tightness and\n"
+                  "cost at larger cutoffs and longer horizons are separated as the open \\texttt{PROP-EPSC-16}."
+              ),
+              (
+                  "The EPSC lineage is registered as \\texttt{PROP-EPSC-01} through \\texttt{PROP-EPSC-15}.",
+                  "The EPSC lineage is registered as \\texttt{PROP-EPSC-01} through \\texttt{PROP-EPSC-16}."
+              ),
+          ]
+
+          changed = False
+          for old, new in replacements:
+              if old in text:
+                  text = text.replace(old, new, 1)
+                  changed = True
+              elif new in text:
+                  pass  # idempotent rerun after the bot commits the refreshed manuscript
+              else:
+                  raise SystemExit("EPSC-15 manuscript refresh anchor not found; refuse silent drift")
+
+          if changed:
+              p.write_text(text, encoding="utf-8")
+              print("Refreshed EPSC-15 manuscript status and construction.")
+          else:
+              print("EPSC-15 manuscript already current.")
+          PY
+
       - name: Compile EPSC manuscript
         uses: xu-cheng/latex-action@v3
         with:
           root_file: EPSC_NAVIER_STOKES_CERTIFICATES.tex
           working_directory: paper
+
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
           name: EPSC_NAVIER_STOKES_CERTIFICATES
           path: paper/EPSC_NAVIER_STOKES_CERTIFICATES.pdf
           if-no-files-found: error
-      - name: Commit compiled PDF on main
+
+      - name: Commit refreshed manuscript and compiled PDF on main
         if: github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add paper/EPSC_NAVIER_STOKES_CERTIFICATES.pdf
+          git add paper/EPSC_NAVIER_STOKES_CERTIFICATES.tex paper/EPSC_NAVIER_STOKES_CERTIFICATES.pdf
           if git diff --cached --quiet; then
-            echo "Compiled PDF unchanged."
+            echo "Manuscript and compiled PDF unchanged."
           else
-            git commit -m "compile EPSC Navier-Stokes certificate manuscript"
-            git push
+            git commit -m "refresh EPSC-15 manuscript and compiled PDF"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
           fi
