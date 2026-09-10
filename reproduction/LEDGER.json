@@ -1,23 +1,23 @@
 {
-  "generated_at_utc": "2026-09-10T08:54:00.090207+00:00",
+  "generated_at_utc": "2026-09-10T09:00:21.347391+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6, v0.1-v0.6)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)"
   ],
-  "total_claims": 113,
+  "total_claims": 117,
   "tier_counts": {
-    "finite_diagnostic": 50,
-    "Open": 14,
-    "Dr": 48,
+    "finite_diagnostic": 51,
+    "Open": 15,
+    "Dr": 50,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 49,
-    "OPEN": 14,
+    "PASS": 50,
+    "OPEN": 15,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 2
+    "DERIVED": 4
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -859,7 +859,7 @@
       "name": "Direct NS ordered-triad sum reproduces the exact retained nonlinear tape",
       "tier": "finite_diagnostic",
       "status": "PASS",
-      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18"
+      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18"
     },
     {
       "volume": 6,
@@ -924,6 +924,38 @@
       "tier": "Open",
       "status": "OPEN",
       "evidence": "finite terminal coefficients alone are non-identifying; a separately certified pointwise H^s bound would yield beta_K=M_s/(K+1)^s"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-TERMINAL-EB-ALGEBRA",
+      "name": "terminal energy-budget tail inequality finite algebra",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "finite Parseval split pass=True; beta^2=0.7 >= actual tail^2=0.3"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-TERMINAL-EB",
+      "name": "Leray-Hopf terminal energy-budget certificate",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "analytic proof in paper/NS_TERMINAL_ENERGY_BUDGET_CERTIFICATE.md; finite checker verifies only its orthogonal-energy algebra"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-ENERGY-EQUALITY-CLOSURE",
+      "name": "energy equality forces energy-budget beta_K to zero",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "beta_K^2 = terminal tail^2 + twice unresolved viscous dissipation + energy defect; under zero defect both unresolved terms vanish by monotone Fourier convergence"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-TERMINAL-ADAPTER",
+      "name": "certified adapter from finite Galerkin trajectory to actual continuum projection",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "required before plugging the project's surrogate finite trajectory into the continuum terminal energy-budget theorem"
     }
   ],
   "raw_run_results": [
@@ -985,6 +1017,10 @@
     },
     {
       "script": "check_volume7_spacetime_tail.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_terminal_energy_budget.py",
       "returncode": 0
     }
   ]
