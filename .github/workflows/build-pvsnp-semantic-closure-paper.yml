@@ -27,7 +27,8 @@ jobs:
             texlive-latex-base \
             texlive-latex-recommended \
             texlive-latex-extra \
-            texlive-fonts-recommended
+            texlive-fonts-recommended \
+            lmodern
 
       - name: Build PDF twice
         working-directory: p_vs_np/semantic_closure_accounting_v0.1
