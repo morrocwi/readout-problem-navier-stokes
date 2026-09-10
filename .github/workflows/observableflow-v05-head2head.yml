@@ -1,0 +1,128 @@
+name: observableflow-v05-head2head
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'software/observableflow/observableflow/**'
+      - 'software/observableflow/benchmarks/openfoam13_cavity/**'
+      - 'software/observableflow/pyproject.toml'
+      - '.github/workflows/observableflow-v05-head2head.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  openfoam-vs-pysensors:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[head2head]')
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM_SHA: 18870c24d21c6b982e2cdec27b2f59738cca5f90
+      PYSENSORS_SHA: 65400cd12e2f2b79e8a24d16852dd1371c14aa4e
+      OPENFOAM_IMAGE: dicehub/openfoam@sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524
+      CASE_DIR: /tmp/observableflow-cavity-v05
+      RESULT_PATH: software/observableflow/benchmarks/openfoam13_cavity/results/head_to_head_v05.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install ObservableFlow v0.5 and pinned external baseline
+        run: |
+          python -m pip install -e 'software/observableflow[dev,api]'
+          python -m pip install "python-sensors @ git+https://github.com/dynamicslab/pysensors.git@$PYSENSORS_SHA"
+          python - <<'PY'
+          import importlib.metadata
+          import observableflow
+          import pysensors
+          print('observableflow', importlib.metadata.version('observableflow'))
+          print('python-sensors', importlib.metadata.version('python-sensors'))
+          print('pysensors module', pysensors.__file__)
+          PY
+
+      - name: Fetch pinned official OpenFOAM-13 cavity case
+        run: |
+          rm -rf /tmp/OpenFOAM-13 "$CASE_DIR"
+          git init /tmp/OpenFOAM-13
+          git -C /tmp/OpenFOAM-13 remote add origin https://github.com/OpenFOAM/OpenFOAM-13.git
+          git -C /tmp/OpenFOAM-13 config core.sparseCheckout true
+          mkdir -p /tmp/OpenFOAM-13/.git/info
+          printf '/tutorials/incompressibleFluid/cavity/\n' > /tmp/OpenFOAM-13/.git/info/sparse-checkout
+          git -C /tmp/OpenFOAM-13 fetch --depth 1 origin "$UPSTREAM_SHA"
+          git -C /tmp/OpenFOAM-13 checkout --detach FETCH_HEAD
+          test "$(git -C /tmp/OpenFOAM-13 rev-parse HEAD)" = "$UPSTREAM_SHA"
+          cp -a /tmp/OpenFOAM-13/tutorials/incompressibleFluid/cavity "$CASE_DIR"
+
+      - name: Instrument common 7x7 reference and candidate probe data
+        run: |
+          python software/observableflow/benchmarks/openfoam13_cavity/prepare_case.py "$CASE_DIR" --end-time 2
+          chmod -R a+rwX "$CASE_DIR"
+
+      - name: Pull pinned OpenFOAM runtime
+        run: docker pull "$OPENFOAM_IMAGE"
+
+      - name: Run real OpenFOAM solver
+        run: |
+          docker run --rm -v "$CASE_DIR:/home/openfoam/data" "$OPENFOAM_IMAGE" \
+            "cd /home/openfoam/data && blockMesh > log.blockMesh 2>&1 && foamRun > log.foamRun 2>&1"
+          find "$CASE_DIR/postProcessing/observableFlowReference" -type f -name p -print -quit | grep -q .
+          find "$CASE_DIR/postProcessing/observableFlowReference" -type f -name U -print -quit | grep -q .
+
+      - name: Run certificate-matched head-to-head benchmark
+        run: |
+          python software/observableflow/benchmarks/openfoam13_cavity/compare_pysensors.py \
+            "$CASE_DIR" --output "$RESULT_PATH" --pod-rank 8 --max-sensors 8 --max-depth 12
+
+      - name: Validate comparison artifact without forcing a winner
+        run: |
+          python - <<'PY'
+          import json, math
+          p='software/observableflow/benchmarks/openfoam13_cavity/results/head_to_head_v05.json'
+          d=json.load(open(p))
+          assert d['simulation'] is True and d['data_label']=='[SimulatedData]'
+          assert d['upstream']['openfoam_commit']=='18870c24d21c6b982e2cdec27b2f59738cca5f90'
+          assert d['upstream']['pysensors_commit']=='65400cd12e2f2b79e8a24d16852dd1371c14aa4e'
+          assert d['configuration']['pod_rank']==8
+          assert d['configuration']['train_samples'] > 8
+          assert d['configuration']['validation_samples'] > 12
+          assert d['configuration']['test_samples'] > 12
+          of=d['observableflow']['test']
+          py=d['pysensors']['test']
+          assert of['design']['rank'] >= of['design']['target_rank']
+          assert py['rank'] >= py['target_rank']
+          for x in (
+              of['full_reference_noiseless']['nrmse'],
+              of['full_reference_noisy']['nrmse'],
+              py['full_reference_noiseless']['nrmse'],
+              py['full_reference_noisy']['nrmse'],
+          ):
+              assert math.isfinite(x)
+          assert d['comparison']['market_superiority_claim'] is False
+          print(json.dumps(d['comparison'], indent=2, sort_keys=True))
+          print('ObservableFlow test:', json.dumps(of, indent=2, sort_keys=True))
+          print('PySensors test:', json.dumps(py, indent=2, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: observableflow-v05-head2head
+          path: |
+            ${{ env.RESULT_PATH }}
+            /tmp/observableflow-cavity-v05/log.*
+          if-no-files-found: warn
+
+      - name: Commit verified benchmark result to main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$RESULT_PATH"
+          if git diff --cached --quiet; then
+            echo 'No result change to commit.'
+            exit 0
+          fi
+          git commit -m 'Record ObservableFlow v0.5 vs PySensors benchmark [skip head2head]'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
