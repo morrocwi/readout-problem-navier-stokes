@@ -28,10 +28,19 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 from fractions import Fraction
 
 import check_k2_energy_observability as k2
 import check_volume7_eps18_n2_small_witness as small
+
+# This checker intentionally constructs finite integers with tens of thousands of
+# decimal digits.  Python 3.11's defensive int<->str conversion cap is appropriate
+# for untrusted text, but here every integer is produced deterministically inside the
+# finite recurrence.  Disable that display-only cap so exact digit counts/evidence can
+# be emitted without changing the mathematical computation.
+if hasattr(sys, "set_int_max_str_digits"):
+    sys.set_int_max_str_digits(0)
 
 P = k2.P
 RMAX = 30
