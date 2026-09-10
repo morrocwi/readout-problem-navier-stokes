@@ -1,21 +1,21 @@
 {
-  "generated_at_utc": "2026-09-10T14:56:58.682022+00:00",
+  "generated_at_utc": "2026-09-10T15:03:08.433423+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 145,
+  "total_claims": 147,
   "tier_counts": {
-    "finite_diagnostic": 65,
-    "Open": 22,
+    "finite_diagnostic": 66,
+    "Open": 23,
     "Dr": 57,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 64,
-    "OPEN": 22,
+    "PASS": 65,
+    "OPEN": 23,
     "NOT_RUN": 1,
     "N/A": 47,
     "DERIVED": 11
@@ -976,6 +976,22 @@
     },
     {
       "volume": 7,
+      "id": "V7-EPSC18-N1-SMALL-INTEGER-CENTER",
+      "name": "small-integer full-rank center for the N=1 symmetry-fixed inverse",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "seed=20260910; max|x_j|=3; rank=49; slice_rank=49; minor det mod 1000003=978598"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-SMALL-CENTER-INTERVAL-RADIUS",
+      "name": "useful q<1 interval/Krawczyk radius around the small-integer N=1 center",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "a small exact center reduces avoidable scaling, but a certified interval enclosure of the selected 49x49 Jacobian over a nonzero box is still required"
+    },
+    {
+      "volume": 7,
       "id": "V7-NSOBS-DIMENSIONS",
       "name": "finite NS observability dimensions and shell counts",
       "tier": "finite_diagnostic",
@@ -1246,6 +1262,10 @@
     },
     {
       "script": "check_volume7_eps18_n1_local_inverse.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n1_small_witness.py",
       "returncode": 0
     },
     {
