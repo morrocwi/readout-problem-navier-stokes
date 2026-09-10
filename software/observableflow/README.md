@@ -20,7 +20,7 @@ subject to
 
 `rank O(S,R) >= target_rank` and `sigma_min(O(S,R)) >= epsilon`.
 
-## What v0.1 includes
+## What v0.2 includes
 
 - local finite-horizon observability matrix construction;
 - sensor-noise whitening;
@@ -28,11 +28,17 @@ subject to
 - exhaustive Pareto search for finite candidate sets;
 - scalable greedy search for larger sets;
 - finite-difference linearization of a nonlinear discrete simulator and scalar readers;
-- Navier-Stokes cubic Galerkin structural-bound helpers reproducing the anchor values:
-  - K=1: d=52, 3 shells, scalar Rmin=48, shell Rmin=23;
-  - K=2: d=248, 9 shells, scalar Rmin=244;
-  - K=3: d=684, 18 shells, scalar Rmin=680, shell Rmin=39;
-- optional FastAPI endpoints `/v1/analyze` and `/v1/optimize`.
+- Navier-Stokes cubic Galerkin structural-bound helpers reproducing the paper anchor values;
+- optional FastAPI endpoints `/v1/analyze` and `/v1/optimize`;
+- **OpenFOAM adapter** for standard `postProcessing` output:
+  - reads scalar/vector/tensor-like `probes` files;
+  - merges restart segments by physical time;
+  - reads tabular sampled-state snapshots from time directories;
+  - performs POD reduction of CFD snapshots;
+  - fits an affine LTI Jacobian bridge `(A,C)` from reduced CFD state to probe channels;
+  - sends the fitted model directly to the ObservableFlow Pareto/greedy optimizer;
+  - generates a `probes` function-object block for `controlDict`;
+  - exposes the `observableflow-openfoam` CLI.
 
 ## Install and test
 
@@ -41,6 +47,7 @@ cd software/observableflow
 python -m pip install -e '.[dev]'
 pytest -q
 python examples/two_state_demo.py
+python examples/openfoam_synthetic_demo.py
 ```
 
 Optional API:
@@ -50,6 +57,42 @@ python -m pip install -e '.[api]'
 uvicorn observableflow.api:app --reload
 ```
 
+## OpenFOAM quick start
+
+Generate a probes block:
+
+```bash
+observableflow-openfoam generate-probes \
+  --field p --field U \
+  --location 0,0,0 --location 0.05,0,0
+```
+
+Place the emitted block under `functions { ... }` in `system/controlDict`, run the solver (or OpenFOAM `postProcess`), then inspect the recorded channels:
+
+```bash
+observableflow-openfoam inspect-probes CASE --object observableFlowProbes --field p --field U
+```
+
+For a POD/ROM design run, provide a tabular sampled-state file produced at each OpenFOAM time directory:
+
+```bash
+observableflow-openfoam optimize CASE \
+  --probe-object observableFlowProbes \
+  --field p --field U \
+  --snapshot-object stateSample \
+  --snapshot-file state.raw \
+  --snapshot-skip-columns 3 \
+  --pod-rank 12 \
+  --max-depth 20 \
+  --max-sensors 8 \
+  --depth-unit-cost 0.25 \
+  --method greedy
+```
+
+See `OPENFOAM_ADAPTER.md` for the data contract, model assumptions and current limitations.
+
 ## Scope boundary
 
-This MVP is an engineering algorithm, not a new theorem. The exact finite-field Navier-Stokes certificates remain in `reproduction/checks/`. The current optimizer uses local linearized finite-horizon observability and SVD conditioning. A later CFD adapter should supply trajectory Jacobians/readers from OpenFOAM or another solver and should be benchmarked against static sparse-sensor baselines.
+This package is an engineering algorithm, not a new theorem. The exact finite-field Navier-Stokes certificates remain in `reproduction/checks/`.
+
+The OpenFOAM bridge currently fits a **local/data-driven affine LTI reduced model** from sampled CFD snapshots and probe signals. Its rank/conditioning output is therefore an engineering diagnostic, not a formal certificate for the continuous Navier-Stokes PDE. Native binary `volField` parsing, nonlinear/trajectory-varying Jacobians, physical-device grouping, reconstruction-error benchmarking, and direct OpenFOAM tutorial CI are later milestones.
