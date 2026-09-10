@@ -4,7 +4,7 @@ ObservableFlow is an observability-guided design engine for choosing **what to m
 
 It is an engineering bridge from the finite-resolution Navier--Stokes observability work in this repository to sensor architecture. It does **not** turn spectral observability theorems into physical-sensor guarantees, and it does not claim that full rank alone implies stable reconstruction.
 
-**v0.5.0 is CLOSED and frozen.** New tuning or broader experiments belong to v0.6 or later.
+**v0.5.0 is CLOSED and frozen.** New tuning or broader experiments belong to v0.6 or later. The separate post-freeze roadmap is [`FUTURE_WORK.md`](FUTURE_WORK.md); it does not modify or reinterpret the frozen v0.5 evidence lane.
 
 ## Core design problem
 
