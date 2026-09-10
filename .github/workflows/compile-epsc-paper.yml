@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Refresh EPSC-15 manuscript status
+      - name: Refresh EPSC manuscript status
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -67,7 +67,33 @@ jobs:
               ),
               (
                   "The EPSC lineage is registered as \\texttt{PROP-EPSC-01} through \\texttt{PROP-EPSC-15}.",
-                  "The EPSC lineage is registered as \\texttt{PROP-EPSC-01} through \\texttt{PROP-EPSC-16}."
+                  "The EPSC lineage is registered as \\texttt{PROP-EPSC-01} through \\texttt{PROP-EPSC-19}."
+              ),
+              (
+                  "The EPSC lineage is registered as \\texttt{PROP-EPSC-01} through \\texttt{PROP-EPSC-16}.",
+                  "The EPSC lineage is registered as \\texttt{PROP-EPSC-01} through \\texttt{PROP-EPSC-19}."
+              ),
+              (
+                  "A residual-based adapter converts\n"
+                  "a certified smooth comparison path into a terminal $L^2$ bound.  The current numerical solver is\n"
+                  "not yet an end-to-end continuum certificate because the validated continuous-time enclosure of its\n"
+                  "floating-point RK4 tape remains open.",
+                  "A residual-based adapter converts\n"
+                  "a certified comparison path into a terminal $L^2$ bound.  The declared stored-RK4-tape construction\n"
+                  "now supplies a rigorous continuous-time enclosure for that path.  The remaining outer numerical\n"
+                  "frontier is tightness and computational scaling at larger cutoff/horizon (\\texttt{PROP-EPSC-16});\n"
+                  "measurement-to-continuum composition with energy observability is treated separately in\n"
+                  "\\texttt{NS_OBSERVABLE_TO_CONTINUUM_CERTIFICATES.tex}."
+              ),
+              (
+                  "The remaining implementation frontier is now finite and concrete: validated continuous-time\n"
+                  "residual enclosure of the RK4 tape.  This separation is the central practical result of the EPSC\n"
+                  "programme.",
+                  "The continuous-time residual enclosure of the declared stored RK4 tape is now supplied by the\n"
+                  "exact-dyadic piecewise-linear construction.  The remaining outer implementation frontier is making\n"
+                  "that certification tight and affordable at larger $K$ and longer $T$ (\\texttt{PROP-EPSC-16}).\n"
+                  "A companion synthesis paper separates this outer problem from the certified energy-observability\n"
+                  "inverse and noise-stability frontiers (\\texttt{PROP-EPSC-18/19})."
               ),
           ]
 
@@ -77,15 +103,19 @@ jobs:
                   text = text.replace(old, new, 1)
                   changed = True
               elif new in text:
-                  pass  # idempotent rerun after the bot commits the refreshed manuscript
+                  pass
               else:
-                  raise SystemExit("EPSC-15 manuscript refresh anchor not found; refuse silent drift")
+                  # Some anchors describe historical pre-EPSC-15 wording and may already have
+                  # been refreshed by an earlier bot commit. Only fail on the two current-tail
+                  # consistency anchors that must exist in either old or new form.
+                  if "current numerical solver" in old or "remaining implementation frontier" in old:
+                      raise SystemExit("EPSC status refresh anchor not found; refuse silent drift")
 
           if changed:
               p.write_text(text, encoding="utf-8")
-              print("Refreshed EPSC-15 manuscript status and construction.")
+              print("Refreshed EPSC status, proposal range, and synthesis link.")
           else:
-              print("EPSC-15 manuscript already current.")
+              print("EPSC manuscript already current.")
           PY
 
       - name: Compile EPSC manuscript
@@ -110,7 +140,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Manuscript and compiled PDF unchanged."
           else
-            git commit -m "refresh EPSC-15 manuscript and compiled PDF"
+            git commit -m "refresh EPSC manuscript and compiled PDF"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
