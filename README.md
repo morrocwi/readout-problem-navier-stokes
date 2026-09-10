@@ -1,32 +1,30 @@
 # A Readout Problem for Fefferman's Existence and Smoothness of the Navier-Stokes Equation
 
-Author: Yaoharee Lahtee. License: CC BY 4.0 (see `LICENSE`). DOI: [10.5281/zenodo.22673246](https://doi.org/10.5281/zenodo.22673246).
+Author: Yaoharee Lahtee. License: CC BY 4.0 (see `LICENSE`). Original paper DOI: [10.5281/zenodo.22673246](https://doi.org/10.5281/zenodo.22673246).
 
-This repository holds a short, arXiv-style, single-column mathematical note that:
+This repository now contains two clearly separated research layers:
 
-1. proves one elementary finite-state theorem — exact commuting domain translation together with exact reader factorization does not imply that any finite-horizon reader decides an arbitrary domain question (an explicit 8-state witness);
-2. poses, without answering, the corresponding **Navier-Stokes readout problem**: a dichotomy (R)/(N) asking whether Fefferman's breakdown predicate is finite-readout-determined once a Navier-Stokes domain translation and a declared finite reader are fixed;
-3. proves a separate finite retained-turbulence continuation theorem.
+1. the deposited v0.1.0 readout paper (`paper/main.tex`, `paper/main.pdf`), which poses the Navier-Stokes readout dichotomy and proves finite-state/retained-layer results; and
+2. the later **Discrete Epsilon-Completion (EPSC)** research lane, which develops finite-to-continuum omitted-information certificates without changing the original deposited claim.
 
-**The deposited v0.1.0 paper does not prove, disprove, or otherwise resolve the Clay Millennium Navier-Stokes existence-and-smoothness problem.** See `CLAIMS.md` for the exact claim boundary.
+**Neither layer proves global regularity, finite-time blow-up, uniqueness of weak solutions, or the Clay Millennium Navier-Stokes problem.** See `CLAIMS.md`.
 
-## Contents
+## Papers and analytic notes
 
-- `paper/main.tex`, `paper/main.pdf` — deposited paper.
-- `paper/NS_SPACETIME_TAIL_CERTIFICATE.md` — later analytic note: unconditional Leray-Hopf spacetime Fourier-tail certificate.
-- `paper/NS_TERMINAL_ENERGY_BUDGET_CERTIFICATE.md` — later analytic note: a-posteriori terminal tail bound from a certified retained energy tape.
-- `verification/verify_state_breakdown_math.py` — finite-witness and Euler-convergence verification.
-- `reproduction/` — wider development-series reproduction system.
-- `CLAIMS.md` — exact claim boundary.
-- `LICENSE` — CC BY 4.0.
+- `paper/main.tex`, `paper/main.pdf` — original deposited paper.
+- `paper/EPSC_NAVIER_STOKES_CERTIFICATES.tex` — new standalone manuscript: *Finite Readout Certificates for Navier-Stokes: Discrete Epsilon-Completion, Spectral Tails, and A Posteriori Adapters*.
+- `paper/NS_SPACETIME_TAIL_CERTIFICATE.md` — Leray-Hopf spacetime Fourier-tail certificate.
+- `paper/NS_TERMINAL_ENERGY_BUDGET_CERTIFICATE.md` — terminal a-posteriori energy-budget certificate.
+- `paper/NS_RELATIVE_ENERGY_ADAPTER_CERTIFICATE.md` — residual-based Galerkin/comparison-path to Leray-Hopf terminal adapter.
 
-## Reproducing the original verification
+## Four-repository architecture
 
-```bash
-python3 verification/verify_state_breakdown_math.py
-```
+- `morrocwi/information-discrete-math` — general executable mathematics and certificate machinery;
+- `morrocwi/toledo` — equation/proposal provenance and tier/status;
+- `morrocwi/readout_genesis` — interpretation/application map only;
+- this repository — Navier-Stokes specialization, manuscripts, experiments, reproduction and claim boundaries.
 
-## Wider reproduction system
+## Reproduction
 
 Run:
 
@@ -34,51 +32,19 @@ Run:
 bash reproduction/reproduce_all.sh
 ```
 
-The reproduction ledger separates finite/script checks, standard analytic derivations (`Dr`), and explicitly open items. Volume 7 now contains finite witnesses for both the spacetime tail certificate and the terminal energy-budget certificate; the analytic Leray-Hopf steps remain honestly tagged `Dr` rather than being faked as finite proofs.
+The ledger separates finite/script checks, standard analytic derivations (`Dr`), and explicitly open obligations. The EPSC work is tracked as the later Volume-7 research lane rather than being retroactively inserted into the deposited Volumes 1-6 series.
 
-## Four-repository architecture
+## Discrete Epsilon-Completion
 
-- `morrocwi/information-discrete-math` — general executable mathematics and certificate machinery;
-- `morrocwi/toledo` — equation/proposal provenance and status;
-- `morrocwi/readout_genesis` — interpretation/application map only;
-- this repository — Navier-Stokes specialization, proofs, experiments, reproduction and claim boundary.
-
----
-
-## Post-paper research lane: Discrete Epsilon-Completion
-
-The first numerical stage tested whether the finite Fourier-Galerkin NS recurrence can be evolved directly on integer Fourier records and whether nested refinements can provide an operational stopping diagnostic without promoting that diagnostic into a continuum claim.
-
-Read:
-
-- `reproduction/NS_DISCRETE_EPSILON_COMPLETION.md` — finite algorithm and recorded run;
-- `reproduction/checks/check_discrete_epsilon_completion.py` — independent NumPy checker;
-- `reproduction/results/discrete_epsilon_completion_v01.json` — frozen 2026-09-10 result;
-- `paper/NS_SPACETIME_TAIL_CERTIFICATE.md` — target-norm refinement and spacetime certificate;
-- `paper/NS_TERMINAL_ENERGY_BUDGET_CERTIFICATE.md` — terminal retained-energy-tape certificate;
-- `reproduction/checks/check_volume7_spacetime_tail.py` and `check_volume7_terminal_energy_budget.py` — finite witness checkers;
-- `CLAIMS.md` — current claim boundary.
-
-The general implementation lives in Information Discrete Mathematics:
-
-- `idm/ns_retained.py` — finite Fourier-Galerkin recurrence;
-- `idm/ns_epsilon.py` — nested defect and fail-closed epsilon gate;
-- `idm/ns_tail_certificate.py` — spectral/spacetime tail certificate helpers;
-- `idm/ns_terminal_certificate.py` — fail-closed terminal energy-budget certificate.
-
-Equation/proposal provenance is registered Toledo-first. `PROP-EPSC-01..09` live in `registry/proposals/discrete_epsilon_completion.json`; `PROP-EPSC-10..12` live in `registry/proposals/discrete_epsilon_completion_terminal_energy.json`.
-
-### Result 1 — target-space refinement
-
-The original target
+The base fail-closed structure is
 
 \[
-\|(I-P_K)u\|\le\beta_K,\qquad \beta_K\to0
+\delta_K=\|R_Kx_{K+1}-x_K\|,
+\qquad
+\|Q_Kx\|_Y\le\beta_{K,Y},
 \]
 
-is not meaningful enough until the target norm/readout and admissible assumptions are declared.
-
-For terminal Fourier coefficients alone, an unrestricted omitted high-frequency divergence-free pair can change the tail without changing `P_Ku`; so retained terminal coefficients by themselves do not identify a universal useful terminal tail.
+with certification allowed only when the declared numerical/refinement defect and a **proved** omitted-information bound satisfy the requested tolerance. A small nested defect or small boundary-shell energy alone is not a continuum certificate.
 
 For an unforced Leray-Hopf trajectory on the `2*pi` periodic three-torus,
 
@@ -90,62 +56,82 @@ For an unforced Leray-Hopf trajectory on the `2*pi` periodic three-torus,
 }
 \]
 
-by the spectral tail inequality plus the Leray-Hopf energy inequality. This is an explicit computable `beta_K -> 0` in the declared spacetime norm, without assuming global smoothness.
+provides an explicit computable spacetime `beta_K -> 0` without assuming global smoothness.
 
-### Result 2 — prescribed terminal-time energy-budget bound
-
-For the actual Leray-Hopf projection, define the retained energy tape
+For prescribed terminal time, a separately certified pointwise `H^s` bound gives
 
 \[
-\mathcal R_K^{EB}
-=
-\left(
-\|P_Ku(T)\|_2,
-\nu\int_0^T\|\nabla P_Ku(t)\|_2^2dt
-\right).
+\|(I-P_K)u(T)\|_2\le M_s(T)/(K+1)^s.
 \]
 
-Then
+A richer retained energy/dissipation tape also gives
 
 \[
 \boxed{
 \|(I-P_K)u(T)\|_2^2
 \le
 \|u_0\|_2^2
--
-\|P_Ku(T)\|_2^2
--
-2\nu\int_0^T\|\nabla P_Ku(t)\|_2^2dt
-}.
+-\|P_Ku(T)\|_2^2
+-2\nu\int_0^T\|\nabla P_Ku\|_2^2dt
+}
 \]
 
-This is a genuine finite-K terminal upper bound **if the retained quantities are exact or certified directional bounds for the actual continuum projection**. Raw values from an uncertified Galerkin surrogate are not enough.
+for the actual Leray-Hopf projection or certified directional bounds on those quantities.
 
-Its asymptotic floor is the energy-inequality slack
+## Relative-energy adapter
+
+The latest step avoids silently identifying the finite Galerkin trajectory with the continuum projection. For a smooth divergence-free comparison path `v`, define
 
 \[
-\mathcal D_E(T)=
-\|u_0\|_2^2-
-\|u(T)\|_2^2-
-2\nu\int_0^T\|\nabla u\|_2^2dt.
+r=\partial_tv+P[(v\cdot\nabla)v]-\nu\Delta v-Pf,
 \]
 
-If energy equality is independently justified, `D_E(T)=0` and the terminal energy-budget certificate tends to zero as `K -> infinity`.
+\[
+A_T=2\int_0^T\|\nabla v\|_\infty dt,
+\qquad
+B_T=\int_0^T\|r\|_{H^{-1}}^2dt.
+\]
 
-### The new frontier
+Then the standard relative-energy estimate gives
 
-The main bridge is now sharper than “find any beta.” The next target is Toledo `PROP-EPSC-12`:
+\[
+\sup_{t\le T}\|u(t)-v(t)\|_2^2
+\le
+e^{A_T}\left(e_0^2+B_T/\nu\right).
+\]
+
+If `v(T)` is supported in the retained cutoff, this directly yields a terminal omitted-tail bound for the actual solution. For a finite Fourier comparison path the unresolved residual is itself a finite triad tape, implemented in `information-discrete-math`.
+
+## Toledo lineage and current frontier
+
+The EPSC family is registered Toledo-first through `PROP-EPSC-15`:
+
+- `PROP-EPSC-01..09` — base/refinement, spectral and spacetime certificate family;
+- `PROP-EPSC-10..12` — terminal energy-budget family and adapter obligation;
+- `PROP-EPSC-13` — residual-based Leray relative-energy adapter;
+- `PROP-EPSC-14` — finite Fourier unresolved residual tape;
+- `PROP-EPSC-15` — **OPEN** validated RK4 continuous-time residual enclosure.
+
+The remaining end-to-end numerical bridge is therefore precise:
 
 ```text
-finite Galerkin record
-        ↓ certified directional adapter error
-actual continuum projected energy tape
-        ↓ terminal energy-budget theorem
-rigorous terminal beta_K
+floating-point RK4 tape
+    -> validated continuous-time Fourier interpolation
+    -> certified upper bounds on A_T and B_T
+    -> relative-energy beta_K
+    -> terminal continuum L2 certificate
 ```
 
-In other words, the immediate research problem is to certify that the finite solver's retained terminal energy and accumulated retained dissipation bound the corresponding actual continuum quantities in the directions required by the theorem.
+Nodewise residual samples or agreement between finite backends are not enough for this final step.
 
-### Non-claim
+## Finite numerical evidence and non-claim
 
-These results do **not** prove global regularity, finite-time blow-up, uniqueness of weak solutions, physical adequacy of a coarse cutoff, or the Clay Millennium problem. They partially close `PROP-EPSC-04` and isolate the remaining finite-to-continuum adapter obligation.
+The short Taylor-Green refinement diagnostic (`nu=0.01`, `dt=0.005`, `T=0.05`) passed its declared operational nested gate at K=4 and K=5. This remains a finite diagnostic, not a proof that K=5 contains all continuum information. It also does not overturn the prior negative coarse turbulent validation: K<=3 did not reproduce the published Re=1600 Taylor-Green dissipation curve in the external-reference test.
+
+The repository's governing distinction is:
+
+```text
+finite algebra / nested stability
+    != continuum completion
+    != physical turbulence validation
+```
