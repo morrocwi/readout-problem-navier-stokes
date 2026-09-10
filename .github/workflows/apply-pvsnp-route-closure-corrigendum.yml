@@ -1,0 +1,41 @@
+name: apply-pvsnp-route-closure-corrigendum
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/apply-pvsnp-route-closure-corrigendum.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-corrigendum:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply exact source corrigendum
+        run: python3 p_vs_np/semantic_closure_accounting_v0.1/apply_route_closure_corrigendum.py
+
+      - name: Verify key corrections
+        run: |
+          grep -F 'provided that' p_vs_np/semantic_closure_accounting_v0.1/Semantic_Closure_Accounting_P_vs_NP_v0.1.tex
+          grep -F 'DemandCircuitDominance' p_vs_np/semantic_closure_accounting_v0.1/Semantic_Closure_Accounting_P_vs_NP_v0.1.tex
+          ! grep -F 'sufficient \emph{if and only if}' p_vs_np/semantic_closure_accounting_v0.1/Semantic_Closure_Accounting_P_vs_NP_v0.1.tex
+
+      - name: Commit corrected TeX if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add p_vs_np/semantic_closure_accounting_v0.1/Semantic_Closure_Accounting_P_vs_NP_v0.1.tex
+          if git diff --cached --quiet; then
+            echo "TeX already corrected"
+          else
+            git commit -m "Correct P-vs-NP route-closure logic and asymptotic target"
+            git push origin HEAD:main
+          fi
