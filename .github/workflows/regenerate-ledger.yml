@@ -25,7 +25,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install finite-check dependencies
-        run: python -m pip install --upgrade pip numpy sympy mpmath pyyaml scipy
+        run: python -m pip install --upgrade pip numpy sympy mpmath pyyaml scipy numba
 
       - name: Run every volume reproduction checker and regenerate ledger
         run: python reproduction/generate_ledger.py
