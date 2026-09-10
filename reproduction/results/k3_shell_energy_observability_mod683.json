@@ -1,0 +1,26 @@
+{
+  "N": 3,
+  "Rmax": 39,
+  "earliest_possible_shell_order": 39,
+  "final_rank": 681,
+  "milestones": {
+    "0": 18,
+    "5": 103,
+    "10": 188,
+    "20": 358,
+    "30": 528,
+    "35": 613,
+    "38": 664,
+    "39": 681
+  },
+  "milestones_match_structural_ceiling": true,
+  "mode_count": 342,
+  "prime": 683,
+  "real_state_dimension": 684,
+  "shell_count": 18,
+  "shells": [1,2,3,4,5,6,8,9,10,11,12,13,14,17,18,19,22,27],
+  "simulation": false,
+  "status": "PASS",
+  "translation_ceiling": 681,
+  "viscosity": "1/200"
+}
