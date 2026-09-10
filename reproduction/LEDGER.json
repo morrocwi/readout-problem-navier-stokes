@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T18:40:12.512325+00:00",
+  "generated_at_utc": "2026-09-10T19:05:03.859807+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 190,
+  "total_claims": 193,
   "tier_counts": {
-    "finite_diagnostic": 82,
-    "Open": 36,
-    "Dr": 71,
+    "finite_diagnostic": 83,
+    "Open": 37,
+    "Dr": 72,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 81,
-    "OPEN": 36,
+    "PASS": 82,
+    "OPEN": 37,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 25
+    "DERIVED": 26
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -1328,6 +1328,30 @@
     },
     {
       "volume": 7,
+      "id": "V7-EPSC19-N1-SAMPLE-TO-SCALED-JET-NORM",
+      "name": "exact induced infinity norm for the N=1 sample-to-scaled-Taylor interpolation operator",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "exact rational Lagrange inversion of the 24x24 power Vandermonde; kappa_inf(h)=max_n 600^n n! |h|^-n sum_j |V^-1[n,j]|"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-TAYLOR-INTERMEDIATE-ILL-CONDITIONING",
+      "name": "small-spacing reconstruction of the existing scaled Taylor chart strongly amplifies sample-space error",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "h=1: 10^70 <= kappa < 10^71, dominant n=23; h=1/10: 10^93 <= kappa < 10^94, dominant n=23; h=1/100: 10^116 <= kappa < 10^117, dominant n=23; h=1/600: 10^134 <= kappa < 10^135, dominant n=23"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC19-N1-DIRECT-SAMPLE-MAP-CONDITIONING",
+      "name": "branch-wide conditioning and inverse radius for the direct 49-sample map",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "this checker diagnoses the sample->scaled-Taylor intermediate map only; the direct finite sample map may condition differently and still needs an explicit spacing, validated flow/tangent enclosure, preconditioner, q_h<1, noise propagation and branch capture"
+    },
+    {
+      "volume": 7,
       "id": "V7-NSOBS-DIMENSIONS",
       "name": "finite NS observability dimensions and shell counts",
       "tier": "finite_diagnostic",
@@ -1654,6 +1678,10 @@
     },
     {
       "script": "check_volume7_eps19_n1_finite_sample_chart.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps19_n1_sample_interpolation_conditioning.py",
       "returncode": 0
     },
     {
