@@ -4,95 +4,107 @@ Author: Yaoharee Lahtee. License: CC BY 4.0 (see `LICENSE`). DOI: [10.5281/zenod
 
 This repository holds a short, arXiv-style, single-column mathematical note that:
 
-1. proves one elementary finite-state theorem — exact commuting domain translation together with
-   exact reader factorization does not imply that any finite-horizon reader decides an arbitrary
-   domain question (an explicit 8-state witness);
-2. poses, without answering, the corresponding **Navier-Stokes readout problem**: a dichotomy
-   (R)/(N) asking whether Fefferman's breakdown predicate is finite-readout-determined once a
-   Navier-Stokes domain translation and a declared finite reader are fixed;
-3. proves a separate, further theorem — a finite retained-turbulence layer
-   `tau_R dI_R/dt + L_R I_R = S_R + eta_R` has a unique, bounded solution on every finite time
-   interval given finite dimension, positive time constant, a fixed finite generator, and a
-   locally integrable drive — and states precisely what this does and does not imply about a
-   hypothetical continuum breakdown transferring onto that reader.
+1. proves one elementary finite-state theorem — exact commuting domain translation together with exact reader factorization does not imply that any finite-horizon reader decides an arbitrary domain question (an explicit 8-state witness);
+2. poses, without answering, the corresponding **Navier-Stokes readout problem**: a dichotomy (R)/(N) asking whether Fefferman's breakdown predicate is finite-readout-determined once a Navier-Stokes domain translation and a declared finite reader are fixed;
+3. proves a separate finite retained-turbulence continuation theorem.
 
-**This note does not prove, disprove, or otherwise make progress on the Clay Millennium
-Navier-Stokes existence-and-smoothness problem.** See `CLAIMS.md` for the exact claim boundary.
-It cites exactly one external reference: Fefferman's own official Clay Mathematics Institute
-problem statement.
+**The deposited v0.1.0 paper does not prove, disprove, or otherwise resolve the Clay Millennium Navier-Stokes existence-and-smoothness problem.** See `CLAIMS.md` for the exact claim boundary.
 
 ## Contents
 
-- `paper/main.tex`, `paper/main.pdf` — the paper.
-- `verification/verify_state_breakdown_math.py` — the finite-witness and Euler-convergence
-  verification script (independently re-run 2026-09-09, see `CLAIMS.md`).
-- `CLAIMS.md` — exact claim boundary, what is proved vs. posed vs. explicitly not claimed.
+- `paper/main.tex`, `paper/main.pdf` — deposited paper.
+- `paper/NS_SPACETIME_TAIL_CERTIFICATE.md` — later analytic note refining the epsilon-completion problem by target norm.
+- `verification/verify_state_breakdown_math.py` — finite-witness and Euler-convergence verification.
+- `reproduction/` — wider development-series reproduction system.
+- `CLAIMS.md` — exact claim boundary.
 - `LICENSE` — CC BY 4.0.
 
-## Reproducing the verification
+## Reproducing the original verification
 
-```
+```bash
 python3 verification/verify_state_breakdown_math.py
 ```
 
-Expected output confirms: 8/8 dynamical and observational weld checks, `F^2 = Id`, the witness
-pair's reader-equivalence holding through `k=9999`, and Euler-stepper error ratios converging to
-approximately 2.0 (consistent with first-order `O(h)` convergence) across four halvings of the
-step size.
+## Wider reproduction system
 
-### Wider reproduction system (whole 6-volume series)
+Run:
 
-This note is one document in a larger "Readout-Navier-Stokes Development Series" (6 volumes,
-v0.1-v0.6). See `reproduction/` for a one-command reproducibility system covering every
-mechanically checkable claim across all 6 volumes, with an auto-generated ledger
-(`reproduction/LEDGER.md` / `reproduction/LEDGER.json`) honestly tiering every claim as
-machine-checked, script-verified, standard-but-not-mechanical, or explicitly open. Run
-`bash reproduction/reproduce_all.sh` to reproduce everything.
+```bash
+bash reproduction/reproduce_all.sh
+```
+
+The reproduction ledger separates machine/script checks, standard analytic derivations (`Dr`), and explicitly open items. The post-paper Volume-7 checker `reproduction/checks/check_volume7_spacetime_tail.py` tests the finite spectral algebra and non-identifiability witness while leaving the Leray-Hopf estimate at its honest analytic tier.
 
 ## Provenance and process
 
-Both new theorems in this note were checked against, and registered in, an internal equation
-registry (github.com/morrocwi/toledo) as proposals (pending canonical-code assignment) before
-being written into the paper, following the maintaining project's own equation-registry-first
-practice; see `CLAIMS.md` for the exact tiers and status of every claim. Independent adversarial
-review is complete, this repository is public, and it has been deposited on Zenodo
-(10.5281/zenodo.22673246).
+The project uses a four-repository separation:
+
+- `morrocwi/information-discrete-math` — general executable mathematics and certificate machinery;
+- `morrocwi/toledo` — equation/proposal provenance and status;
+- `morrocwi/readout_genesis` — interpretation/application map only;
+- this repository — Navier-Stokes specialization, proofs, experiments, reproduction and claim boundary.
 
 ---
 
 ## Post-paper research lane: Discrete Epsilon-Completion
 
-A later, **finite-diagnostic** lane now tests whether the finite Fourier-Galerkin NS recurrence can
-be evolved directly on integer Fourier records and whether nested finite refinements can provide an
-operational stopping diagnostic without promoting that diagnostic into a continuum claim.
+The first numerical stage tested whether the finite Fourier-Galerkin NS recurrence can be evolved directly on integer Fourier records and whether nested refinements can provide an operational stopping diagnostic without promoting that diagnostic into a continuum claim.
 
-Read these together:
+Read:
 
-- `reproduction/NS_DISCRETE_EPSILON_COMPLETION.md` — NS-specific algorithm, recorded run, and claim boundary.
-- `reproduction/checks/check_discrete_epsilon_completion.py` — independent NumPy reproduction checker.
-- `reproduction/results/discrete_epsilon_completion_v01.json` — frozen 2026-09-10 finite-diagnostic result.
-- `CLAIMS.md` — explicit separation of finite algebra, nested stability, continuum completion, and physical validation.
+- `reproduction/NS_DISCRETE_EPSILON_COMPLETION.md` — finite algorithm and recorded run;
+- `reproduction/checks/check_discrete_epsilon_completion.py` — independent NumPy checker;
+- `reproduction/results/discrete_epsilon_completion_v01.json` — frozen 2026-09-10 result;
+- `paper/NS_SPACETIME_TAIL_CERTIFICATE.md` — analytic refinement of the missing tail-certificate problem;
+- `CLAIMS.md` — current claim boundary.
 
-The general algorithm/certification layer lives in **Information Discrete Mathematics**, not here:
-`github.com/morrocwi/information-discrete-math`, specifically `idm/ns_epsilon.py` and
-`docs/DISCRETE_EPSILON_COMPLETION.md`.
+The general implementation lives in Information Discrete Mathematics:
 
-Equation/definition provenance is registered **Toledo-first** in
-`github.com/morrocwi/toledo/registry/proposals/discrete_epsilon_completion.json`:
+- `idm/ns_retained.py` — finite Fourier-Galerkin recurrence;
+- `idm/ns_epsilon.py` — nested defect and fail-closed epsilon gate;
+- `idm/ns_tail_certificate.py` — spectral-tail certificate helpers.
 
-- `PROP-EPSC-01` — Nested Readout Consistency Defect;
-- `PROP-EPSC-02` — NS Fourier boundary-energy diagnostic;
-- `PROP-EPSC-03` — fail-closed epsilon-completion gate;
-- `PROP-EPSC-04` — **OPEN** computable omitted-information tail certificate.
+Equation/proposal provenance is registered Toledo-first in `registry/proposals/discrete_epsilon_completion.json` as `PROP-EPSC-01` through `PROP-EPSC-09`.
 
-The key boundary is fail-closed:
+### What was learned
 
+The original open target was
+
+\[
+\|(I-P_K)u\|\le\beta_K,\qquad \beta_K\to0.
+\]
+
+The key refinement is that `beta_K` must be indexed by the **declared target norm/readout and admissible assumptions**.
+
+For an arbitrary terminal divergence-free `L2` state, finite retained Fourier coefficients alone cannot identify the omitted tail: an arbitrary high-frequency divergence-free conjugate pair can be added without changing `P_Ku`.
+
+For an unforced Leray-Hopf trajectory on the `2*pi` periodic three-torus, however,
+
+\[
+\boxed{
+\|(I-P_K)u\|_{L^2(0,T;L^2_x)}
+\le
+\frac{\|u_0\|_2}{\sqrt{2\nu}(K+1)}
+}
+\]
+
+by the spectral tail inequality plus the Leray-Hopf energy inequality. This bound is computable from declared problem data and tends to zero.
+
+Thus the status is no longer simply "PROP-EPSC-04 open." It is:
+
+```text
+spacetime L2/readout completion: analytic certificate available
+arbitrary prescribed terminal full-state completion: conditional/open
 ```
-finite nested diagnostic may PASS
-continuum / infinite-object epsilon certificate remains HOLD
-until a proved PROP-EPSC-04 beta_K bound is supplied
-```
 
-This post-paper lane is **not part of the deposited v0.1.0 paper claim** unless a future release
-explicitly incorporates it. It does not change the repository's non-claim on the Clay Millennium
-problem.
+If a pointwise `H^s` bound is separately certified at time `T`, then
+
+\[
+\|(I-P_K)u(T)\|_2\le\frac{M_s(T)}{(K+1)^s}.
+\]
+
+The hard part is therefore not the Fourier tail inequality itself but obtaining globally valid pointwise regularity control in 3-D.
+
+### Non-claim
+
+This partial closure does **not** prove global regularity, finite-time blow-up, uniqueness of weak solutions, physical adequacy of a coarse cutoff, or the Clay Millennium problem. It identifies exactly which finite readouts can already receive a rigorous omitted-information certificate and where the classical 3-D obstacle remains.
