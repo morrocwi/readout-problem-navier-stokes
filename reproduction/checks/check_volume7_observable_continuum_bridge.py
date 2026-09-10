@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Finite checks for the energy-observability -> EPSC composition bridge.
 
-This checker validates only finite bookkeeping/algebra and representative
-translation invariance of energy readers. It does NOT prove the all-N
-observability conjecture or construct a certified inverse from energy jets.
+This checker validates finite bookkeeping/algebra and representative translation
+invariance of energy readers. Separate EPSC-18 checkers now certify a strictly
+positive quantitative local inverse radius for the full N=1 symmetry slice. This
+file therefore keeps only the *practical/arbitrary-N* inverse frontier open.
+
+It does NOT prove the all-N observability conjecture, a measurement-ready inverse,
+continuum regularity, or a Clay Navier-Stokes result.
 
 [SimulatedData] Simulation=Yes
 """
@@ -151,17 +155,24 @@ def main():
     ))
     claims.append(claim(
         "V7-EPSC-18-CERTIFIED-ENERGY-JET-INVERSE",
-        "quantitative certified inverse from energy jets to retained quotient state",
+        "strictly positive full N=1 certified energy-jet local inverse radius",
+        "Dr",
+        "DERIVED",
+        "full N=1 symmetry-slice local inverse plus explicit and row-aware positive-radius certificates are reproduced separately; the current radius is mathematically positive but not measurement-ready",
+    ))
+    claims.append(claim(
+        "V7-EPSC-18-MEASUREMENT-READY-INVERSE",
+        "measurement-ready or arbitrary-finite-N certified energy-jet inverse radius",
         "Open",
         "OPEN",
-        "rank saturation is local qualitative identifiability and does not yet provide rho_N",
+        "requires effective entrywise interval/preconditioned conditioning, branch/noise propagation, and extension beyond the certified N=1 local chart",
     ))
     claims.append(claim(
         "V7-EPSC-19-NOISE-STABLE-MEASUREMENT-CERTIFICATE",
         "noise-stable measurement-to-continuum certificate",
         "Open",
         "OPEN",
-        "requires certified conditioning/noise propagation through the finite observability inverse",
+        "requires a measurement-ready certified rho_N before composition with the omitted-tail certificate",
     ))
     claims.append(claim(
         "V7-NSOBS-ALL-N-SATURATION",
