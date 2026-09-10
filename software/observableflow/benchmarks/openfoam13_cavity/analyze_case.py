@@ -53,6 +53,64 @@ def run_one(case: Path, fields: list[str], *, pod_rank: int, max_depth: int, max
     )
 
 
+def _assess_design(block: dict, kind: str, *, max_condition: float, max_noiseless_nrmse: float, max_noisy_nrmse: float) -> dict:
+    design = block.get(f"{kind}_design")
+    noiseless = block.get(f"{kind}_holdout_noiseless")
+    noisy = block.get(f"{kind}_holdout_noisy")
+    reasons: list[str] = []
+    if not design or not design.get("feasible"):
+        reasons.append("rank/information feasibility failed")
+    if not noiseless:
+        reasons.append("no noiseless holdout reconstruction")
+    if not noisy:
+        reasons.append("no noisy holdout reconstruction")
+    if design and design.get("condition_number", float("inf")) > max_condition:
+        reasons.append(f"condition_number>{max_condition:g}")
+    if noiseless and noiseless.get("nrmse", float("inf")) > max_noiseless_nrmse:
+        reasons.append(f"noiseless_nrmse>{max_noiseless_nrmse:g}")
+    if noisy and noisy.get("nrmse", float("inf")) > max_noisy_nrmse:
+        reasons.append(f"noisy_nrmse>{max_noisy_nrmse:g}")
+    return {
+        "kind": kind,
+        "pass": not reasons,
+        "reasons": reasons,
+        "design": design,
+        "holdout_noiseless": noiseless,
+        "holdout_noisy": noisy,
+    }
+
+
+def _deployment_verdict(block: dict, *, max_condition: float, max_noiseless_nrmse: float, max_noisy_nrmse: float) -> dict:
+    candidates = [
+        _assess_design(block, "static", max_condition=max_condition, max_noiseless_nrmse=max_noiseless_nrmse, max_noisy_nrmse=max_noisy_nrmse),
+        _assess_design(block, "temporal", max_condition=max_condition, max_noiseless_nrmse=max_noiseless_nrmse, max_noisy_nrmse=max_noisy_nrmse),
+    ]
+    passing = [c for c in candidates if c["pass"]]
+    selected = None
+    if passing:
+        selected = min(
+            passing,
+            key=lambda c: (
+                c["design"]["total_cost"],
+                c["design"]["condition_number"],
+                len(c["design"]["selected"]),
+                c["design"]["depth"],
+            ),
+        )
+    return {
+        "pass": selected is not None,
+        "selected_kind": None if selected is None else selected["kind"],
+        "selected_design": None if selected is None else selected["design"],
+        "criteria": {
+            "max_condition_number": max_condition,
+            "max_noiseless_nrmse": max_noiseless_nrmse,
+            "max_noisy_nrmse": max_noisy_nrmse,
+            "note": "Declared engineering benchmark gates; not a theorem or universal physical threshold.",
+        },
+        "candidates": candidates,
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Analyze the real OpenFOAM-13 cavity run with ObservableFlow")
     ap.add_argument("case")
@@ -60,6 +118,9 @@ def main() -> None:
     ap.add_argument("--pod-rank", type=int, default=4)
     ap.add_argument("--max-depth", type=int, default=12)
     ap.add_argument("--max-sensors", type=int, default=8)
+    ap.add_argument("--max-condition", type=float, default=1e3)
+    ap.add_argument("--max-noiseless-nrmse", type=float, default=0.5)
+    ap.add_argument("--max-noisy-nrmse", type=float, default=1.0)
     args = ap.parse_args()
     case = Path(args.case)
 
@@ -69,7 +130,7 @@ def main() -> None:
     result = {
         "data_label": "[SimulatedData]",
         "simulation": True,
-        "benchmark": "OpenFOAM-13 lid-driven cavity / ObservableFlow v0.3",
+        "benchmark": "OpenFOAM-13 lid-driven cavity / ObservableFlow v0.4",
         "scope": "Real OpenFOAM solver output; dense probe grid is a sampled reference surrogate, not the native full CFD mesh.",
         "upstream": {
             "repository": UPSTREAM_REPO,
@@ -98,21 +159,30 @@ def main() -> None:
             "reference": _hash_tree(case / "postProcessing" / "observableFlowReference"),
         },
     }
+    result["deployment_verdict"] = _deployment_verdict(
+        result["pressure_velocity"],
+        max_condition=args.max_condition,
+        max_noiseless_nrmse=args.max_noiseless_nrmse,
+        max_noisy_nrmse=args.max_noisy_nrmse,
+    )
 
     mm = result["pressure_velocity"]
     if not mm.get("temporal_design") or not mm["temporal_design"].get("feasible"):
-        raise SystemExit("FAIL: no feasible multimodal temporal design")
-    if mm.get("holdout_noiseless") is None or mm.get("holdout_noisy") is None:
-        raise SystemExit("FAIL: holdout reconstruction was not produced")
+        raise SystemExit("FAIL: no rank-feasible multimodal temporal design")
+    if mm.get("temporal_holdout_noiseless") is None or mm.get("static_holdout_noiseless") is None:
+        raise SystemExit("FAIL: temporal/static holdout reconstruction was not produced")
 
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({
-        "pressure_only_temporal": result["pressure_only"]["temporal_design"],
-        "pressure_velocity_temporal": result["pressure_velocity"]["temporal_design"],
-        "pressure_velocity_holdout_noiseless": result["pressure_velocity"]["holdout_noiseless"],
-        "pressure_velocity_holdout_noisy": result["pressure_velocity"]["holdout_noisy"],
+        "pressure_velocity_static": mm["static_design"],
+        "pressure_velocity_static_holdout_noiseless": mm["static_holdout_noiseless"],
+        "pressure_velocity_static_holdout_noisy": mm["static_holdout_noisy"],
+        "pressure_velocity_temporal": mm["temporal_design"],
+        "pressure_velocity_temporal_holdout_noiseless": mm["temporal_holdout_noiseless"],
+        "pressure_velocity_temporal_holdout_noisy": mm["temporal_holdout_noisy"],
+        "deployment_verdict": result["deployment_verdict"],
     }, indent=2, sort_keys=True))
 
 
