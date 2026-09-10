@@ -1,0 +1,28 @@
+{
+  "N": 2,
+  "final_rank_R244": 245,
+  "milestones": {
+    "10": {"elapsed_sec": 1.377, "rank": 11},
+    "30": {"elapsed_sec": 9.733, "rank": 31},
+    "60": {"elapsed_sec": 33.859, "rank": 61},
+    "120": {"elapsed_sec": 117.292, "rank": 121},
+    "180": {"elapsed_sec": 254.699, "rank": 181},
+    "220": {"elapsed_sec": 319.402, "rank": 221},
+    "243": {"elapsed_sec": 362.449, "rank": 244},
+    "244": {"elapsed_sec": 364.832, "rank": 245}
+  },
+  "mode_count": 124,
+  "numba_threads": 5,
+  "prime": 251,
+  "projection_columns": 245,
+  "projection_seed": 20260911,
+  "real_state_dimension": 248,
+  "scalar_min_possible_order": 244,
+  "shells": [1, 2, 3, 4, 5, 6, 8, 9, 12],
+  "state_seed": 20260910,
+  "state_series_sec": 3.798215866088867,
+  "status": "PASS",
+  "tangent_series_sec": 364.83240485191345,
+  "translation_ceiling": 245,
+  "viscosity": "1/200"
+}
