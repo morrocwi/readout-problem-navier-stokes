@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T15:03:08.433423+00:00",
+  "generated_at_utc": "2026-09-10T15:12:51.554118+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 147,
+  "total_claims": 150,
   "tier_counts": {
-    "finite_diagnostic": 66,
-    "Open": 23,
-    "Dr": 57,
+    "finite_diagnostic": 67,
+    "Open": 24,
+    "Dr": 58,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 65,
-    "OPEN": 23,
+    "PASS": 66,
+    "OPEN": 24,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 11
+    "DERIVED": 12
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -944,6 +944,30 @@
     },
     {
       "volume": 7,
+      "id": "V7-EPSC18-N1-FINITE-OPERATOR-MAJORANTS",
+      "name": "finite N=1 quadratic Galerkin and shell-energy operator majorants",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "C=600; CL bound=9; C*B bound<=230400; Q bound=64; max center coordinate=3"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-EXPLICIT-POSITIVE-RADIUS",
+      "name": "explicit positive quantitative local inverse radius for the full N=1 symmetry slice",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "integer-scaled minor nonzero=True; choose r=1/D with D having 7934 decimal digits; 10^(-7934) < r <= 10^(-7933); q<=1/2; inverse Lipschitz factor <=2*A_bound (A_bound has 7768 digits)"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-PRACTICAL-INTERVAL-RADIUS",
+      "name": "practically informative interval/Krawczyk radius for the N=1 energy-jet inverse",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the explicit positive radius uses Cramer/Hadamard plus global operator majorants and is intentionally extremely conservative; entrywise interval Jacobians and a numerically effective preconditioner are still needed"
+    },
+    {
+      "volume": 7,
       "id": "V7-EPSC18-N1-TRANSLATION-SLICE",
       "name": "explicit three-coordinate gauge is transverse to N=1 spatial translation",
       "tier": "finite_diagnostic",
@@ -1258,6 +1282,10 @@
     },
     {
       "script": "check_volume7_energy_transfer_observability.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n1_explicit_radius.py",
       "returncode": 0
     },
     {
