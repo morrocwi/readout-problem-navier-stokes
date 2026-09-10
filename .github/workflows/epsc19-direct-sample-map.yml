@@ -13,6 +13,7 @@ on:
       - 'reproduction/checks/check_volume7_eps18_n1_small_witness.py'
       - 'reproduction/checks/check_volume7_eps19_n1_sample_interpolation_conditioning.py'
       - 'reproduction/checks/check_volume7_eps19_n1_direct_sample_inverse.py'
+      - 'reproduction/checks/check_volume7_eps36_shell_symmetry_obstruction.py'
       - '.github/workflows/epsc19-direct-sample-map.yml'
   workflow_dispatch:
 
@@ -27,5 +28,7 @@ jobs:
           python-version: '3.11'
       - name: Install checker dependencies
         run: python -m pip install --upgrade pip numpy
+      - name: Run finite shell-symmetry branch-capture obstruction
+        run: python reproduction/checks/check_volume7_eps36_shell_symmetry_obstruction.py
       - name: Run direct raw-sample inverse certificate
         run: python reproduction/checks/check_volume7_eps19_n1_direct_sample_inverse.py
