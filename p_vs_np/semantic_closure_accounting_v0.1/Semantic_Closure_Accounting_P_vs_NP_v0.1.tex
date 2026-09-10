@@ -39,7 +39,7 @@
 A Readout-First Architecture Toward P versus NP}
 \author{Yaoharee Lahtee\\
 \small Independent Researcher --- Information Discrete Mathematics / Readout Genesis}
-\date{September 10, 2026\\\small Preprint v0.1}
+\date{September 10, 2026\\\small Preprint v0.1; route-closure corrigendum September 11, 2026}
 
 \begin{document}
 \maketitle
@@ -47,7 +47,7 @@ A Readout-First Architecture Toward P versus NP}
 \begin{abstract}
 We develop a finite, readout-first framework for expressing Boolean circuit lower-bound arguments in the language of semantic retention, recomputation, and certified closure. The construction is derived from two existing research systems, \emph{Readout Genesis} and \emph{Information Discrete Mathematics} (IDM), but is presented here as a self-contained complexity-theoretic architecture. The paper isolates four structural components. First, a fan-in-two DeMorgan circuit can be compiled into a semantic ledger with one ledger entry per gate while preserving parent references, DAG sharing, and terminal Boolean semantics. Second, a No-Early-Collapse principle yields a \emph{Retain--Recompute--Resolve} trichotomy: if two histories remain distinguishable by a future reader, an exact downstream computation cannot make all three corresponding channels identical. Third, a resource-aware accounting kernel converts independently certified semantic demand and bounded per-gate capacity into a gate lower bound. Fourth, any lower bound proved for the compiled semantic ledgers transfers back to the original circuit model under the size-preserving compilation.
 
-The paper also records negative controls that prevent false completions. In particular, exponential future-readout width does not imply exponential unrestricted circuit size: equality on two $m$-bit blocks has $2^m$ residual functions after the first block is fixed, yet admits a linear-size shared circuit. Likewise, retaining the full input uses only linear space, so any relevant theorem must charge recomputation/decoder work rather than retained bits alone. These observations leave one load-bearing problem open: construct a non-circular, sharing-aware semantic demand $H_n$ for $\SAT_n$ and prove a capacity theorem valid for every small shared circuit, with $H_n/K_n$ superpolynomial. We state this precisely as future work. Accordingly, this manuscript \emph{does not claim a proof of $P\neq NP$}; it provides a formal architecture that reduces the remaining research burden to a sharply stated unrestricted-circuit lower-bound premise.
+The paper also records negative controls that prevent false completions. In particular, exponential future-readout width does not imply exponential unrestricted circuit size: equality on two $m$-bit blocks has $2^m$ residual functions after the first block is fixed, yet admits a linear-size shared circuit. Likewise, retaining the full input uses only linear space, so any relevant theorem must charge recomputation/decoder work rather than retained bits alone. These observations leave one load-bearing problem open: construct a non-circular, sharing-aware semantic demand $H_n$ for $\SAT_n$ and prove a capacity theorem valid for every small shared circuit, with $H_n/K_n$ not polynomially bounded. We state this precisely as future work. Accordingly, this manuscript \emph{does not claim a proof of $P\neq NP$}; it provides a formal architecture that reduces the remaining research burden to a sharply stated unrestricted-circuit lower-bound premise.
 \end{abstract}
 
 \paragraph{Claim boundary.}
@@ -348,7 +348,7 @@ Let $\SAT_n$ denote the Boolean function deciding satisfiability for a fixed can
 \begin{enumerate}
   \item \textbf{Semantic demand.} $H_n(\SAT_n)$ is defined without reference to minimum circuit size, minimum remaining work, the full SAT truth table, a SAT oracle, or circuit equivalence.
   \item \textbf{Universal circuit accounting.} Every correct size-$s$ circuit for $\SAT_n$ compiles to a semantic ledger whose total legal RRR capacity is at most $sK_n$ and whose demand is at least $H_n(\SAT_n)$.
-  \item \textbf{Superpolynomial demand/capacity ratio.} For every polynomial $p$, for all sufficiently large $n$,
+  \item \textbf{No polynomial upper bound on the demand/capacity ratio.} For every polynomial $p$ and every $N$, there exists $n\ge N$ such that
   \[
   H_n(\SAT_n)>p(n)K_n.
   \]
@@ -362,10 +362,29 @@ Assume $\SAT\in\Ppoly$. Then there exists a polynomial $p$ and a family of circu
 \[
 H_n(\SAT_n)\le |C_n|K_n\le p(n)K_n,
 \]
-contradicting Property 3 for sufficiently large $n$. Hence $\SAT\notin\Ppoly$. Since $P\subseteq\Ppoly$ and SAT is NP-complete, $P=NP$ would imply $\SAT\in P\subseteq\Ppoly$, a contradiction.
+Property 3 applied to this polynomial $p$ supplies arbitrarily large $n$ with $H_n(\SAT_n)>p(n)K_n$, contradicting the accounting inequality at such an $n$. Hence $\SAT\notin\Ppoly$. Since $P\subseteq\Ppoly$ and SAT is NP-complete, $P=NP$ would imply $\SAT\in P\subseteq\Ppoly$, a contradiction.
 \end{proof}
 
-The theorem is intentionally conditional. It shows that the bridges and arithmetic are sufficient \emph{if and only if} the missing semantic demand/capacity premise can be supplied in a non-circular way.
+The theorem is intentionally conditional. It shows that the bridges and arithmetic are sufficient \emph{provided that} the missing semantic demand/capacity premise can be supplied in a non-circular way. No converse is proved.
+
+\subsection{Route-closure theorem: demand already lower-bounds circuit size}
+Let $CC(f_n)$ denote the minimum size of a correct circuit for a Boolean function $f_n$ in the declared circuit model. Suppose the universal accounting premise holds for every correct circuit $C$:
+\[
+H_n(f_n)\le |C|K_n.
+\]
+Applying it to a minimum-size correct circuit immediately gives
+\[
+\boxed{H_n(f_n)\le CC(f_n)K_n.}
+\]
+Consequently, for every integer gate budget $B$,
+\[
+BK_n<H_n(f_n)\quad\Longrightarrow\quad B<CC(f_n).
+\]
+This multiplication-only implication is also formalized in the accompanying IDM file \texttt{IDM\_DemandCircuitDominance.v}.
+
+\begin{remark}[Route-closure consequence]
+A non-polynomial lower bound on $H_n(\SAT_n)/K_n$ under an accounting theorem valid for all unrestricted shared circuits is already a non-polynomial Boolean-circuit lower bound for SAT. Thus the semantic accounting architecture organizes the missing breakthrough but does not make it weaker. The tautological assignment $H_n(f_n)=CC(f_n)$ and $K_n=1$ would be tight but is circular and is excluded by Property 1.
+\end{remark}
 
 \section{Future Work: The Open Load-Bearing Theorem}
 \label{sec:future}
@@ -373,13 +392,14 @@ The theorem is intentionally conditional. It shows that the bridges and arithmet
 The central future-work problem is now precise.
 
 \begin{conjecture}[SAT Semantic Demand Theorem --- open]
-Construct an explicit semantic demand $H_n$ and a per-gate capacity scale $K_n$ for the canonical SAT function such that:
+Construct an explicit semantic demand $H_n$ and a per-gate capacity scale $K_n$ for the canonical SAT function such that the ratio is not eventually bounded by any polynomial. In multiplication-only form:
 \[
 \boxed{
-H_n(\SAT_n)=n^{\omega(1)}K_n
+\forall p\text{ polynomial},\;\forall N,\;\exists n\ge N:\quad
+H_n(\SAT_n)>p(n)K_n
 }
 \]
-in the sense that $H_n(\SAT_n)/(K_n n^c)\to\infty$ for every fixed $c$, while the capacity theorem remains valid for every shared bounded-fan-in Boolean circuit after basis simulation.
+while the capacity theorem remains valid for every shared bounded-fan-in Boolean circuit after basis simulation.
 \end{conjecture}
 
 Any admissible candidate must satisfy all of the following.
@@ -450,7 +470,7 @@ Conversely, if a non-circular $H_n/K_n$ separation were found, the remaining rou
 
 We have presented a readout-first architecture for Boolean circuit lower bounds in which semantic distinctions cannot disappear for free: they must be retained, recomputed, or certifiably resolved. A shared DeMorgan circuit compiles to this ledger with no size expansion, and a genuine semantic-ledger lower bound transfers back to circuits. Resource-aware RRR accounting then reduces a size lower bound to a demand-versus-capacity inequality.
 
-The architecture is not a solution of P versus NP. The unresolved theorem is substantive: SAT must be shown to possess a superpolynomial semantic demand relative to the legal capacity of every small shared circuit, under a definition that is non-circular, recomputation-aware, sharing-aware, and robust to standard complexity barriers. Isolating that statement is the main outcome of the present manuscript and the intended basis for subsequent work.
+The architecture is not a solution of P versus NP. The unresolved theorem is substantive: SAT must be shown to possess semantic demand relative to legal per-gate capacity that is not polynomially bounded for every small shared circuit, under a definition that is non-circular, recomputation-aware, sharing-aware, and robust to standard complexity barriers. Isolating that statement is the main outcome of the present manuscript and the intended basis for subsequent work.
 
 \appendix
 \section{Artifact Map}
