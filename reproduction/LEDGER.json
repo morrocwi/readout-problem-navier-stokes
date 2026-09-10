@@ -1,22 +1,23 @@
 {
-  "generated_at_utc": "2026-09-10T08:35:20.248392+00:00",
+  "generated_at_utc": "2026-09-10T08:54:00.090207+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6, v0.1-v0.6)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)"
   ],
-  "total_claims": 108,
+  "total_claims": 113,
   "tier_counts": {
-    "finite_diagnostic": 48,
-    "Open": 13,
-    "Dr": 46,
+    "finite_diagnostic": 50,
+    "Open": 14,
+    "Dr": 48,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 47,
-    "OPEN": 13,
+    "PASS": 49,
+    "OPEN": 14,
     "NOT_RUN": 1,
-    "N/A": 47
+    "N/A": 47,
+    "DERIVED": 2
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -883,6 +884,46 @@
       "tier": "Dr",
       "status": "N/A",
       "evidence": "Uses polynomial NS Galerkin dynamics + Hilbert basis theorem + analytic-output identity theorem; proof and exact lineage are stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md."
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-SPECTRAL-CORE",
+      "name": "finite H1-to-L2 Fourier tail inequality core",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "tested K=0..4 on deterministic finite spectrum; all inequalities pass=True"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-TERMINAL-NOGO-WITNESS",
+      "name": "high-mode perturbation leaves retained terminal record unchanged",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "q=(5, 0, 0) lies outside K=4; retained change=0; tail scales by 100x"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-04-ST",
+      "name": "Leray-Hopf spacetime L2 omitted-tail certificate",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "analytic proof in paper/NS_SPACETIME_TAIL_CERTIFICATE.md: spectral inequality + Leray-Hopf energy inequality; finite script checks only the spectral/algebraic core"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-READOUT-LIFT",
+      "name": "Lipschitz readout lift of certified spacetime tail",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "direct Lipschitz composition; time-average corollary by Cauchy-Schwarz"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-04-TERMINAL",
+      "name": "arbitrary prescribed terminal full-state certificate",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "finite terminal coefficients alone are non-identifying; a separately certified pointwise H^s bound would yield beta_K=M_s/(K+1)^s"
     }
   ],
   "raw_run_results": [
@@ -940,6 +981,10 @@
     },
     {
       "script": "check_volume6_ns_xi_min.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_spacetime_tail.py",
       "returncode": 0
     }
   ]
