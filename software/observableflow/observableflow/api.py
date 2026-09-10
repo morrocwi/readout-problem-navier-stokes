@@ -10,7 +10,7 @@ import numpy as np
 from .core import Sensor, analyze_design
 from .optimize import greedy_optimize
 
-app = FastAPI(title="ObservableFlow API", version="0.1.0")
+app = FastAPI(title="ObservableFlow API", version="0.2.0")
 
 
 class SensorIn(BaseModel):
@@ -47,7 +47,7 @@ def _sensors(items: list[SensorIn]) -> list[Sensor]:
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "engine": "observableflow", "version": "0.1.0"}
+    return {"status": "ok", "engine": "observableflow", "version": "0.2.0"}
 
 
 @app.post("/v1/analyze")
