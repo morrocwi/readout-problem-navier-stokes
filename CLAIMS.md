@@ -39,7 +39,11 @@ Primary sources:
 - `reproduction/checks/check_volume7_eps18_n1_small_witness.py`
 - `reproduction/checks/check_volume7_eps18_n1_explicit_radius.py`
 - `reproduction/checks/check_volume7_eps18_n1_rowwise_radius.py`
+- `reproduction/checks/check_volume7_eps18_n1_exact_preconditioner.py`
+- `reproduction/checks/check_volume7_eps18_n1_componentwise_radius.py`
 - `paper/NS_EPSC18_N1_ROWWISE_RADIUS.md`
+- `paper/NS_EPSC18_N1_EXACT_PRECONDITIONER.md`
+- `paper/NS_EPSC18_N1_COMPONENTWISE_RADIUS.md`
 
 | Full-N=1 inverse claim | Status |
 |---|---|
@@ -49,12 +53,17 @@ Primary sources:
 | A local real inverse exists on that full 49-dimensional finite symmetry slice | **Derived (`Dr`).** Ordinary finite-dimensional inverse-function theorem after the exact nonzero minor certificate. |
 | A small-integer full-rank center exists | **Finite exact certificate PASS.** Deterministic seed `20260910`, `max |x_j|=3`. |
 | There exists an explicit strictly positive quantitative local-inverse radius | **Derived (`Dr`). CLOSED at fixed `N=1`.** The first conservative Cramer/Hadamard construction gives `10^-7934 < r <= 10^-7933` with `q<=1/2`. |
-| Retaining one row majorant per selected observation improves that rigorous radius | **Derived/PASS.** The row-aware construction gives `10^-3878 < r <= 10^-3877`; the denominator loses 4056 decimal digits relative to the uniform-row proof. |
-| The present radius is a realistic sensor/noise tolerance | **No.** It remains astronomically small and is only a conservative mathematical existence/conditioning certificate. |
-| A practically informative measurement-derived `rho_1` is already available | **No. OPEN (`PROP-EPSC-24`).** An actual entrywise interval Jacobian, effective rational preconditioner, branch containment and noise propagation are still required. |
+| Retaining one row majorant per selected observation improves that rigorous radius | **Derived/PASS (`PROP-EPSC-26`).** `10^-3878 < r <= 10^-3877`; 4056 decimal orders better in the lower-bracket scale than the uniform proof. |
+| The actual characteristic-zero selected `49x49` Jacobian has been reconstructed rather than inferred only from modular nonvanishing | **Finite exact certificate PASS (`PROP-EPSC-27`).** All 49 selected rows are cross-checked against the modular construction after exact `C^n n!` scaling; the exact nonzero determinant has 2561 decimal digits. |
+| The exact center inverse is catastrophically large at the determinant-bound scale | **No.** Exact Fraction Gauss-Jordan gives `1.28 < ||J_0^-1||_inf < 1.29` (finite diagnostic PASS). |
+| Exact center preconditioning materially improves the rigorous radius | **Derived (`PROP-EPSC-27`).** With the preceding scalar Hessian envelope, `10^-59 < r <= 10^-58`, `q<=1/2`; this removes more than 3800 further decimal orders of determinant-bound slack. |
+| The full scaled finite quadratic Galerkin coefficient tensor has been constructed exactly | **Finite diagnostic PASS.** The `52x52x52` tensor has 2096 nonzero integer coefficients and exact induced infinity bilinear row-sum bound 36000. |
+| Componentwise rational derivative majorants further tighten the exact-preconditioned radius | **Derived/PASS (`PROP-EPSC-28`).** On a certified local box of half-width `1/1000`, the componentwise recurrence gives `10^-28 < r <= 10^-27` and `q<=1/2`; the radius is certified to remain inside the box. |
+| The `10^-28` scale is a realistic sensor/noise tolerance | **No.** It is a much less pessimistic mathematical state-space certificate, but remains far below a practical measurement tolerance. |
+| A practically informative measurement-derived `rho_1` is already available | **No. OPEN (`PROP-EPSC-24`).** A genuinely local/entrywise interval Jacobian or equivalent tight enclosure, robust branch containment and measurement-noise propagation are still required. |
 | The fixed-`N=1` local inverse proves arbitrary-`N` inversion | **No.** No automatic extension to arbitrary finite cutoff is claimed. |
 
-The Toledo proposal chain for this stage is `PROP-EPSC-22..26`. These are proposal/provenance identifiers, not canonical verified theorem codes.
+The Toledo proposal chain for this stage now runs through `PROP-EPSC-28`. These are proposal/provenance identifiers, not canonical verified theorem codes.
 
 ## Energy-transfer observability bridge
 
@@ -115,12 +124,13 @@ The synthesis separates **inner completeness** (what observations determine insi
 | If `inf_g ||P_N u(T)-g xhat_N||_2 <= rho_N` and `||Q_N u(T)||_2 <= beta_N`, then `inf_g ||u(T)-g xhat_N||_2 <= sqrt(rho_N^2+beta_N^2)` | **Derived analytic composition (`PROP-EPSC-17`).** Orthogonality gives the Pythagorean radius. |
 | The generic triangle bound `rho_N+beta_N` is the sharp composition required here | **No.** Orthogonality gives the sharper square-root composition. |
 | Translation ambiguity prevents a quotient-state continuum certificate | **No.** The composition is naturally stated modulo the isometric translation group. |
-| Rank saturation alone already supplies `rho_N` | **No.** Rank alone does not. For full `N=1`, later work supplies a strictly positive local radius, but a practical measurement-derived `rho_1` is still missing. |
-| No quantitative inner inverse exists anywhere in the programme | **No.** There is a reduced three-mode quantitative inverse (`PROP-EPSC-20`) and now a full-`N=1` strictly positive local radius (`PROP-EPSC-22..26`). |
+| Rank saturation alone already supplies `rho_N` | **No.** Rank alone does not. The later full-`N=1` work supplies an explicit local radius, but not yet a measurement-derived branch/noise-stable `rho_1`. |
+| No quantitative inner inverse exists anywhere in the programme | **No.** There is a reduced three-mode quantitative inverse (`PROP-EPSC-20`) and now a full-`N=1` quantitative local chain through `PROP-EPSC-28`. |
+| The full `N=1` certificate is already measurement-ready | **No.** The present best reproduced finite state-space bracket is `10^-28 < r <= 10^-27`; practical branch/noise conditioning remains open (`PROP-EPSC-24`). |
 | A noise-stable end-to-end certificate from measured energy time series is already proved | **No. Full problem remains OPEN (`PROP-EPSC-19`).** Measurement-scale conditioning/branch stability remains missing. |
 | All-resolution energy saturation is required for the conditional composition theorem itself | **No.** `PROP-EPSC-17` is conditional and resolution-local; `PROP-NSOBS-07` is the separate all-resolution observability question. |
 
-The EPSC proposal family is registered in Toledo through `PROP-EPSC-26`; energy observability is registered through `PROP-NSOBS-11`. Proposal identifiers are not automatically canonical Toledo theorem codes.
+The EPSC proposal family is registered in Toledo through `PROP-EPSC-28`; energy observability is registered through `PROP-NSOBS-11`. Proposal identifiers are not automatically canonical Toledo theorem codes.
 
 ## Current measurement-to-continuum chain
 
@@ -128,7 +138,9 @@ The EPSC proposal family is registered in Toledo through `PROP-EPSC-26`; energy 
 shell-energy measurements / finite windows
     -> certified transfer summaries                         [NSOBS-09/10; EPSC-21]
     -> full N=1 local retained inverse exists               [EPSC-22]
-    -> explicit strictly positive N=1 radius                [EPSC-25/26]
+    -> positive quantitative N=1 radius                     [EPSC-25/26]
+    -> exact characteristic-zero preconditioner             [EPSC-27]
+    -> componentwise finite nonlinear enclosure             [EPSC-28]
     -> practical measurement-derived rho_1                  [EPSC-24 OPEN]
     -> certified omitted-tail beta_N                        [EPSC outer lane]
     -> sqrt(rho_N^2 + beta_N^2)                             [EPSC-17]
@@ -140,8 +152,9 @@ The major open frontiers are now narrower and deliberately distinct:
 ```text
 PROP-NSOBS-07  all-resolution earliest-order saturation: connectivity closed; minor independence open
 PROP-EPSC-16   scalable/tight outer comparison-path certification
-PROP-EPSC-24   practical entrywise/preconditioned full-N=1 measurement radius
+PROP-EPSC-24   practical local/entrywise branch-stable full-N=1 measurement radius
 PROP-EPSC-19   full noisy measurement-to-continuum propagation
+all-N inverse  extend the explicit finite retained inverse beyond the certified N=1 chart
 ```
 
 The methodological rule remains: **finite observability or finite algebra does not automatically imply a useful retained reconstruction radius; a certified retained reconstruction does not automatically bound the omitted continuum tail; continuum mathematical certification does not automatically imply physical turbulence validation.**
