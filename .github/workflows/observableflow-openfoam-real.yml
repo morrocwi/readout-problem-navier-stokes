@@ -68,10 +68,16 @@ jobs:
           mm=d['pressure_velocity']
           assert mm['n_train'] > mm['pod_rank'] and mm['n_test'] >= 2
           assert mm['temporal_design'] and mm['temporal_design']['feasible']
-          assert mm['holdout_noiseless'] and mm['holdout_noisy']
-          print('PASS', mm['temporal_design'])
-          print('holdout noiseless', mm['holdout_noiseless'])
-          print('holdout noisy', mm['holdout_noisy'])
+          assert mm['static_design'] and mm['static_design']['feasible']
+          assert mm['temporal_holdout_noiseless'] and mm['temporal_holdout_noisy']
+          assert mm['static_holdout_noiseless'] and mm['static_holdout_noisy']
+          verdict=d['deployment_verdict']
+          assert isinstance(verdict['pass'], bool)
+          assert verdict['criteria']['max_condition_number'] > 0
+          print('rank-feasible temporal', mm['temporal_design'])
+          print('temporal holdout', mm['temporal_holdout_noiseless'], mm['temporal_holdout_noisy'])
+          print('static holdout', mm['static_holdout_noiseless'], mm['static_holdout_noisy'])
+          print('deployment verdict', verdict['pass'], verdict['selected_kind'])
           PY
       - uses: actions/upload-artifact@v4
         with:
