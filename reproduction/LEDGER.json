@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T15:14:25.484465+00:00",
+  "generated_at_utc": "2026-09-10T15:26:52.462659+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 150,
+  "total_claims": 155,
   "tier_counts": {
-    "finite_diagnostic": 67,
-    "Open": 24,
-    "Dr": 58,
+    "finite_diagnostic": 68,
+    "Open": 25,
+    "Dr": 61,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 66,
-    "OPEN": 24,
+    "PASS": 67,
+    "OPEN": 25,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 12
+    "DERIVED": 15
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -993,10 +993,50 @@
     {
       "volume": 7,
       "id": "V7-EPSC18-N1-QUANTITATIVE-RADIUS",
-      "name": "non-vacuous certified numerical radius for the full N=1 local inverse",
+      "name": "strictly positive certified numerical radius for the full N=1 local inverse",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "proved by check_volume7_eps18_n1_explicit_radius.py and tightened by check_volume7_eps18_n1_rowwise_radius.py; this is a mathematical positive-radius certificate, not yet a practically informative measurement tolerance"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-PRACTICAL-RADIUS",
+      "name": "practically informative certified radius for the full N=1 energy-jet inverse",
       "tier": "Open",
       "status": "OPEN",
-      "evidence": "local existence is now explicit, but a directed-rounding/interval Jacobian or Krawczyk enclosure with useful q<1 and branch containment is still required before reporting rho_1 from measurements"
+      "evidence": "requires an effective entrywise interval Jacobian/preconditioner and robust branch/noise handling; the current rigorous positive radii remain extremely conservative"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-ROWWISE-COFACTOR-BOUND",
+      "name": "row-aware Hadamard cofactor bound for the full N=1 symmetry-slice inverse",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "49 selected rows; product-row cofactor construction exact=True; inverse infinity bound has 3871 decimal digits"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-ROWWISE-POSITIVE-RADIUS",
+      "name": "strictly positive row-aware quantitative radius for the full N=1 local inverse",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "choose r=1/D with D having 3878 decimal digits; 10^(-3878) < r <= 10^(-3877); q<=1/2"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-ROWWISE-IMPROVEMENT",
+      "name": "row-aware finite proof materially improves the previous uniform-row radius bound",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "old denominator digits=7934; row-aware denominator digits=3878; gain=4056 decimal orders in the power-of-ten bracket"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-PRACTICAL-PRECONDITIONED-RADIUS",
+      "name": "practically informative entrywise preconditioned interval radius for N=1",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the row-aware theorem removes more than four thousand orders of avoidable uniform-row slack, but the remaining radius is still far too small for a practical measurement tolerance; an actual entrywise Jacobian enclosure with an effective rational preconditioner remains required"
     },
     {
       "volume": 7,
@@ -1290,6 +1330,10 @@
     },
     {
       "script": "check_volume7_eps18_n1_local_inverse.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n1_rowwise_radius.py",
       "returncode": 0
     },
     {
