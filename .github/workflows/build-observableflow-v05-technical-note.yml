@@ -1,0 +1,38 @@
+name: build-observableflow-v05-technical-note
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'software/observableflow/closure/OBSERVABLEFLOW_V05_TECHNICAL_NOTE.tex'
+      - '.github/workflows/build-observableflow-v05-technical-note.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile ObservableFlow v0.5 technical note
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: OBSERVABLEFLOW_V05_TECHNICAL_NOTE.tex
+          working_directory: software/observableflow/closure
+      - name: Verify PDF exists
+        run: test -s software/observableflow/closure/OBSERVABLEFLOW_V05_TECHNICAL_NOTE.pdf
+      - name: Commit compiled PDF to main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add software/observableflow/closure/OBSERVABLEFLOW_V05_TECHNICAL_NOTE.pdf
+          if git diff --cached --quiet; then
+            echo 'No PDF change to commit.'
+            exit 0
+          fi
+          git commit -m 'Build ObservableFlow v0.5 closure technical note PDF'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
