@@ -1,0 +1,586 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\PK}{P_K}
+\newcommand{\QK}{Q_K}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Torus}{\mathbb T^3}
+
+\hypersetup{
+  pdftitle={Finite Readout Certificates for Navier--Stokes},
+  pdfauthor={Yaoharee Lahtee},
+  pdfsubject={Discrete epsilon-completion; Navier--Stokes; a posteriori certification},
+  pdfkeywords={Navier--Stokes, Fourier-Galerkin, epsilon-completion, Leray-Hopf, spectral tail, relative energy, a posteriori error}
+}
+
+\title{Finite Readout Certificates for Navier--Stokes:\\
+Discrete Epsilon-Completion, Spectral Tails, and A Posteriori Adapters}
+\author{Yaoharee Lahtee\\
+\small Open Civil Science Initiative, Bangkok, Thailand}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Finite numerical agreement is not, by itself, a certificate that an infinite-dimensional
+Navier--Stokes state has been reconstructed to a declared tolerance.  This paper develops a
+fail-closed formulation of that distinction.  A nested finite-refinement defect
+$\delta_K$ measures disagreement on shared retained information, while a separate quantity
+$\beta_{K,Y}$ is required to bound distinctions omitted by the finite representation in a
+declared target space $Y$.  We first prove an elementary obstruction: terminal Fourier
+coefficients below a cutoff cannot, over an unrestricted divergence-free $L^2$ class, determine a
+universal useful bound on the omitted terminal tail.  We then identify target spaces and retained
+records for which rigorous bounds do exist.  For an unforced Leray--Hopf solution on the periodic
+three-torus,
+\[
+\|(I-P_K)u\|_{L^2(0,T;L^2_x)}
+\le \frac{\|u_0\|_2}{\sqrt{2\nu}\,(K+1)},
+\]
+which yields a computable $O(K^{-1})$ spacetime certificate without assuming global smoothness.
+A terminal $L^2$ certificate follows either from a separately certified pointwise $H^s$ bound or
+from a richer retained energy/dissipation tape.  Finally, a residual-based relative-energy
+estimate connects a smooth finite Fourier comparison path to a Leray--Hopf solution and isolates
+the remaining numerical obligation: a validated continuous-time enclosure of the actual RK4
+tape.  The associated finite Fourier residual is itself a finite triad computation.  Executable
+finite diagnostics and a cross-repository provenance ledger accompany the analysis.  None of the
+results proves global regularity, finite-time blow-up, uniqueness of weak solutions, or any part of
+the Clay Millennium Navier--Stokes problem.
+\end{abstract}
+
+\section{Introduction}
+
+A finite computation answers a finite question.  A continuum claim requires an additional bridge.
+This elementary observation becomes operationally important in numerical PDE work, where several
+distinct statements are easily conflated:
+\[
+\text{finite algebra correct}
+\quad\not\Rightarrow\quad
+\text{continuum complete}
+\quad\not\Rightarrow\quad
+\text{physically validated turbulence}.
+\]
+The present paper studies how the middle implication can be made explicit and fail-closed for
+incompressible Navier--Stokes computations.
+
+The starting point is the Discrete Epsilon-Completion (EPSC) programme.  At refinement level $K$,
+a finite state or readout $x_K$ is compared with the restriction of the next refinement.  Small
+nested disagreement is useful evidence, but it does not control distinctions that both finite
+representations omit.  We therefore separate two quantities:
+\begin{align}
+\delta_K &= \|R_K x_{K+1}-x_K\|, \\
+\beta_{K,Y} &= \text{a proved upper bound on omitted information in target }Y.
+\end{align}
+Only when the relevant hypotheses are certified does the fail-closed gate permit
+\[
+\delta_K+\beta_{K,Y}\le\eps
+\quad\Longrightarrow\quad
+\mathrm{CERTIFIED}_\eps(Y).
+\]
+If the required $\beta_{K,Y}$ is unavailable, the verdict is \texttt{HOLD} regardless of how small
+$\delta_K$ appears numerically.
+
+The contribution here is not a new energy inequality or a new weak--strong stability theorem.
+Those analytic ingredients are classical.  The contribution is the explicit separation of target,
+retained record, adapter, and omitted-information certificate, together with a concrete Fourier
+implementation path and machine-executable finite checks.  This separation identifies precisely
+which parts of the finite-to-continuum claim are already certified and which remain open.
+
+\section{Setting and notation}
+
+Let $u$ solve incompressible Navier--Stokes on the $2\pi$-periodic three-torus $\Torus$,
+\begin{equation}\label{eq:NS}
+\partial_t u + \mathbb P[(u\cdot\nabla)u] - \nu\Delta u = \mathbb P f,
+\qquad \nabla\cdot u=0,
+\end{equation}
+with viscosity $\nu>0$, where $\mathbb P$ is the Leray projector.  We use the Fourier
+normalization
+\[
+\|u\|_2^2=\sum_{k\in\mathbb Z^3}|\widehat u_k|^2,
+\qquad
+\|\nabla u\|_2^2=\sum_{k\in\mathbb Z^3}|k|^2|\widehat u_k|^2.
+\]
+Let $P_K$ retain the cube $\|k\|_\infty\le K$ and write $Q_K=I-P_K$.  Every omitted mode then
+satisfies $|k|_2\ge K+1$.
+
+For the finite computation, the production representation is a set of integer mode labels and
+complex divergence-free coefficients.  A finite Fourier--Galerkin trajectory obeys
+\begin{equation}\label{eq:galerkin}
+\frac{d\widehat v_k}{dt}
+=-\nu|k|^2\widehat v_k
+-iP_k\sum_{p+q=k}(q\cdot\widehat v_p)\widehat v_q,
+\qquad \|k\|_\infty\le K,
+\end{equation}
+with all sums finite after the cutoff is fixed.  The implementation used in the accompanying
+repository evaluates these ordered triads directly and does not require a spatial grid in the
+production path.  This is a computational statement about the finite recurrence, not an
+ontological statement that continuum space has been eliminated.
+
+\section{Discrete epsilon-completion}
+
+\begin{definition}[Nested consistency defect]
+Given a restriction map $R_K$ from refinement $K+1$ to the information represented at level $K$,
+define
+\begin{equation}\label{eq:delta}
+\delta_K(x):=\|R_Kx_{K+1}-x_K\|.
+\end{equation}
+\end{definition}
+
+For Fourier Navier--Stokes diagnostics, one may also record the outer retained-shell energy
+\begin{equation}\label{eq:boundary}
+E_{\partial K}(u)=\frac12\sum_{\|k\|_\infty=K}|\widehat u_k|^2.
+\end{equation}
+This is a finite diagnostic proxy for unresolved activity.  It is not a theorem-level substitute
+for a bound on the full omitted tail.
+
+\begin{definition}[Target-indexed omitted-information certificate]
+Let $Y$ be a declared target norm or readout space and $\mathcal R_K$ a declared finite retained
+record under assumptions $\mathcal A$.  An EPSC tail certificate is a computable quantity
+$\beta_{K,Y}(\mathcal R_K;\mathcal A)\ge0$ such that
+\begin{equation}\label{eq:beta}
+\|Q_Kx\|_Y\le \beta_{K,Y}(\mathcal R_K;\mathcal A).
+\end{equation}
+For asymptotic completion one additionally requires $\beta_{K,Y}\to0$ along the declared
+refinement sequence.
+\end{definition}
+
+This definition makes explicit that ``complete'' is incomplete language unless the reader/norm,
+admissible class, and available retained record are specified.
+
+\section{Terminal finite-record obstruction}
+
+\begin{proposition}[Low terminal modes do not identify an unrestricted tail]\label{prop:nogo}
+Fix $K\ge0$.  Over the class of divergence-free, real-valued $L^2$ Fourier states, the retained
+terminal record $P_Ku$ alone does not determine any finite universal upper bound on
+$\|Q_Ku\|_2$.
+\end{proposition}
+
+\begin{proof}
+Choose $q=(K+1,0,0)$ and a nonzero vector $a\perp q$.  Define a real divergence-free perturbation
+$v$ by placing Fourier coefficients only at $q$ and $-q$, with
+$\widehat v_q=a$ and $\widehat v_{-q}=\overline a$.  Then $P_Kv=0$, while
+$\|Q_Kv\|_2=\sqrt{2}|a|$.  Scaling $a$ leaves the retained record unchanged and makes the omitted
+tail arbitrarily large.  Hence no function of $P_Ku$ alone can give a finite universal terminal
+bound on the unrestricted class.
+\end{proof}
+
+\begin{remark}
+Proposition~\ref{prop:nogo} is an identifiability statement about a terminal state class.  It does
+not assert that Navier--Stokes dynamics realizes every such perturbation at a prescribed time.
+Rather, it shows why a useful terminal certificate must contain additional admissible-class or
+dynamical information.
+\end{remark}
+
+\section{A positive spacetime certificate}
+
+\begin{lemma}[Spectral tail inequality]\label{lem:spectral}
+For $s>0$ and any $u$ with finite homogeneous $H^s$ seminorm,
+\begin{equation}\label{eq:Hs}
+\|Q_Ku\|_2
+\le \frac{\||\nabla|^s u\|_2}{(K+1)^s}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Every omitted mode has $|k|\ge K+1$.  Therefore
+\[
+\sum_{\|k\|_\infty>K}|\widehat u_k|^2
+\le (K+1)^{-2s}
+\sum_{\|k\|_\infty>K}|k|^{2s}|\widehat u_k|^2,
+\]
+and taking square roots gives the result.
+\end{proof}
+
+\begin{theorem}[Unforced Leray--Hopf spacetime tail certificate]\label{thm:spacetime}
+Let $u$ be a Leray--Hopf weak solution of the unforced equation on $[0,T]$.  Then
+\begin{equation}\label{eq:spacetime}
+\boxed{
+\|Q_Ku\|_{L^2(0,T;L^2_x)}
+\le
+\beta_K^{\mathrm{ST}}
+:=\frac{\|u_0\|_2}{\sqrt{2\nu}\,(K+1)}
+}
+\end{equation}
+and $\beta_K^{\mathrm{ST}}\to0$ as $K\to\infty$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:spectral} with $s=1$ gives
+\[
+\|Q_Ku(t)\|_2^2\le (K+1)^{-2}\|\nabla u(t)\|_2^2.
+\]
+The Leray--Hopf energy inequality gives
+\[
+\frac12\|u(t)\|_2^2
++\nu\int_0^t\|\nabla u(s)\|_2^2\,ds
+\le\frac12\|u_0\|_2^2.
+\]
+Integrating the spectral bound and discarding the nonnegative terminal kinetic energy yields
+\[
+\int_0^T\|Q_Ku\|_2^2dt
+\le \frac{\|u_0\|_2^2}{2\nu(K+1)^2}.
+\]
+Taking square roots proves~\eqref{eq:spacetime}.
+\end{proof}
+
+For forcing $f\in L^2(0,T;H^{-1})$, Young's inequality gives the conservative variant
+\begin{equation}\label{eq:forced}
+\|Q_Ku\|_{L^2_tL^2_x}
+\le
+\frac{1}{K+1}
+\left(
+\frac{\|u_0\|_2^2}{\nu}
++\frac{\|f\|_{L^2_tH^{-1}}^2}{\nu^2}
+\right)^{1/2}.
+\end{equation}
+
+\begin{corollary}[Lipschitz readout lift]\label{cor:lipschitz}
+If a declared readout $\mathcal Q:Y\to Z$ is $L_{\mathcal Q}$-Lipschitz in a space $Y$ for which an
+EPSC certificate $\|u-P_Ku\|_Y\le\beta_{K,Y}$ has been established, then
+\[
+\|\mathcal Q(u)-\mathcal Q(P_Ku)\|_Z
+\le L_{\mathcal Q}\beta_{K,Y}.
+\]
+\end{corollary}
+
+For example, for the time average $\bar u=T^{-1}\int_0^T u(t)dt$,
+Cauchy--Schwarz gives
+\[
+\|Q_K\bar u\|_2\le \beta_K^{\mathrm{ST}}/\sqrt T.
+\]
+
+\section{Terminal certificates from richer retained records}
+
+\subsection{A conditional $H^s$ certificate}
+
+If a separate argument certifies
+\[
+\||\nabla|^su(T)\|_2\le M_s(T),
+\]
+then Lemma~\ref{lem:spectral} immediately gives
+\begin{equation}\label{eq:terminalHs}
+\boxed{
+\|Q_Ku(T)\|_2\le\frac{M_s(T)}{(K+1)^s}.
+}
+\end{equation}
+The difficult part in three dimensions is not the spectral inequality but obtaining an appropriate
+globally valid pointwise regularity bound.  EPSC therefore does not bypass the classical regularity
+obstacle for arbitrary terminal reconstruction.
+
+\subsection{An energy/dissipation tape}
+
+The terminal no-go concerns low terminal coefficients alone.  The energy inequality provides a
+natural richer retained record.
+
+\begin{theorem}[Terminal energy-budget certificate]\label{thm:energybudget}
+Let $u$ be an unforced Leray--Hopf solution.  Suppose finite certified data satisfy
+\[
+U_0\ge\|u_0\|_2,
+\qquad
+L_K(T)\le\|P_Ku(T)\|_2,
+\]
+and
+\[
+D_K(T)\le
+\nu\int_0^T\|\nabla P_Ku(t)\|_2^2dt.
+\]
+Then, whenever the right-hand side is nonnegative,
+\begin{equation}\label{eq:energybudget}
+\boxed{
+\|Q_Ku(T)\|_2
+\le
+\beta_K^{\mathrm{EB}}
+:=
+\left[U_0^2-L_K(T)^2-2D_K(T)\right]^{1/2}.
+}
+\end{equation}
+A materially negative bracket signals inconsistent directional certificates and must produce a
+fail-closed verdict rather than being clamped to zero.
+\end{theorem}
+
+\begin{proof}
+Orthogonality of Fourier projection gives
+\[
+\|u(T)\|_2^2=\|P_Ku(T)\|_2^2+\|Q_Ku(T)\|_2^2,
+\]
+and likewise
+\[
+\|\nabla u\|_2^2
+=\|\nabla P_Ku\|_2^2+\|\nabla Q_Ku\|_2^2.
+\]
+Insert both decompositions into the energy inequality and discard the nonnegative unresolved
+dissipation term.  Replacing exact quantities by bounds in the indicated directions yields
+~\eqref{eq:energybudget}.
+\end{proof}
+
+With exact projected quantities, define the energy-inequality slack
+\begin{equation}\label{eq:defect}
+\mathcal D_E(T)
+:=\|u_0\|_2^2-\|u(T)\|_2^2
+-2\nu\int_0^T\|\nabla u\|_2^2dt\ge0.
+\end{equation}
+Then the exact squared budget decomposes as
+\begin{equation}\label{eq:floor}
+(\beta_K^{\mathrm{EB}})^2
+=\|Q_Ku(T)\|_2^2
++2\nu\int_0^T\|\nabla Q_Ku\|_2^2dt
++\mathcal D_E(T).
+\end{equation}
+Consequently
+\[
+\lim_{K\to\infty}(\beta_K^{\mathrm{EB}})^2=\mathcal D_E(T).
+\]
+If energy equality holds, $\mathcal D_E(T)=0$ and this particular terminal certificate tends to
+zero.  For a general Leray--Hopf solution the actual Fourier tail still tends to zero at each fixed
+$L^2$ time, but the energy-budget certificate can retain a nonzero floor because the energy
+inequality alone does not account for the slack.
+
+\section{A residual-based Galerkin-to-continuum adapter}
+
+Theorem~\ref{thm:energybudget} concerns the actual continuum projection.  A numerical Galerkin
+trajectory must not be silently substituted for $P_Ku$.  A standard relative-energy estimate gives
+an explicit adapter.
+
+Let $v$ be a smooth divergence-free comparison path and define its full-equation residual
+\begin{equation}\label{eq:residual}
+r
+:=\partial_t v+\mathbb P[(v\cdot\nabla)v]-\nu\Delta v-\mathbb P f.
+\end{equation}
+Let $e_0\ge\|u_0-v(0)\|_2$ and define
+\begin{equation}\label{eq:AB}
+A_T:=2\int_0^T\|\nabla v(t)\|_\infty dt,
+\qquad
+B_T:=\int_0^T\|r(t)\|_{H^{-1}}^2dt.
+\end{equation}
+
+\begin{theorem}[Relative-energy adapter]\label{thm:adapter}
+Let $u$ be a Leray--Hopf weak solution of~\eqref{eq:NS} and $v$ a sufficiently smooth,
+divergence-free comparison path with the same boundary conditions and forcing convention.  Then
+\begin{equation}\label{eq:adapter}
+\boxed{
+\sup_{0\le t\le T}\|u(t)-v(t)\|_2^2
+\le
+e^{A_T}\left(e_0^2+\frac{B_T}{\nu}\right).
+}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $w=u-v$.  Testing the difference equation with $w$ and using the incompressible cancellation
+leaves the deformation term $\langle (w\cdot\nabla)v,w\rangle$.  Therefore
+\[
+\frac12\frac{d}{dt}\|w\|_2^2+\nu\|\nabla w\|_2^2
+\le \|\nabla v\|_\infty\|w\|_2^2
++\|r\|_{H^{-1}}\|\nabla w\|_2.
+\]
+Young's inequality absorbs half the viscous term and gives
+\[
+\frac{d}{dt}\|w\|_2^2
+\le 2\|\nabla v\|_\infty\|w\|_2^2
++\nu^{-1}\|r\|_{H^{-1}}^2.
+\]
+Gronwall's inequality and the definitions~\eqref{eq:AB} prove~\eqref{eq:adapter}.
+\end{proof}
+
+If $v(T)$ is supported in $P_K$, then $Q_Kv(T)=0$, so
+\begin{equation}\label{eq:relativebeta}
+\boxed{
+\|Q_Ku(T)\|_2
+\le
+\beta_K^{\mathrm{RE}}
+:=e^{A_T/2}
+\left(e_0^2+\frac{B_T}{\nu}\right)^{1/2}.
+}
+\end{equation}
+This is a terminal continuum bound obtained from a comparison path and certified residual summary;
+it does not require identifying the numerical state with the continuum projection.
+
+\section{The unresolved residual is a finite triad tape}
+
+For an exact $K$-supported Fourier--Galerkin path $v$, the retained equations cancel the projected
+part of~\eqref{eq:residual}.  The nonlinear product can only generate modes in the finite
+$2K$ cube.  For omitted output mode $q$,
+\begin{equation}\label{eq:residualmode}
+\widehat r_q
+=
+P_q\left[
+ i\sum_{p+s=q}(s\cdot\widehat v_p)\widehat v_s
+\right],
+\qquad \|q\|_\infty>K,
+\end{equation}
+and
+\begin{equation}\label{eq:hminusone}
+\|r\|_{H^{-1}}^2
+=
+\sum_{q\ne0}\frac{|\widehat r_q|^2}{|q|^2}.
+\end{equation}
+For fixed $K$ these are finite sums.  Likewise, a conservative Fourier-polynomial bound is
+\begin{equation}\label{eq:gradlinf}
+\|\nabla v\|_\infty
+\le
+\sum_{k}|k|\,|\widehat v_k|.
+\end{equation}
+Thus the analytic adapter reduces the remaining end-to-end numerical work to certified time
+integration/enclosure of finite quantities.
+
+\section{Validated RK4 continuous-time enclosure: the remaining frontier}
+
+The current finite solver uses explicit RK4 at discrete nodes.  Nodewise residual samples do not
+certify the integrals in~\eqref{eq:AB}.  The remaining numerical obligation is therefore precise:
+construct from the floating-point RK4 tape a validated continuous-time finite Fourier path
+$v_h(t)$ and computable enclosures
+\begin{equation}\label{eq:enclosure}
+A_T\le\overline A_T,
+\qquad
+B_T\le\overline B_T.
+\end{equation}
+Once~\eqref{eq:enclosure} is available together with a certified initial mismatch, the
+relative-energy theorem gives the end-to-end bound
+\begin{equation}\label{eq:endtoend}
+\|Q_Ku(T)\|_2
+\le
+e^{\overline A_T/2}
+\left(e_0^2+\frac{\overline B_T}{\nu}\right)^{1/2}.
+\end{equation}
+
+A practical validated implementation can use a piecewise-polynomial continuous extension of each
+RK4 step, outward-rounded interval bounds for its coefficients, interval evaluation of the finite
+triad residual on each time cell, and certified quadrature/enclosure of the resulting nonnegative
+polynomial or interval majorant.  This paper does not claim that this final interval-enclosure layer
+has already been completed.  In the accompanying Toledo registry it remains the explicit open
+target \texttt{PROP-EPSC-15}.
+
+\section{Executable finite evidence}
+
+The analytic claims above are deliberately separated from finite numerical diagnostics.  The
+accompanying reproduction system currently records the following finite checks.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Check & Recorded result & Tier \\
+\midrule
+Analytic shear finite recurrence & max error $3.886\times10^{-16}$ & finite diagnostic \\
+Direct triad vs padded FFT, $K=2$ & RHS diff $1.041\times10^{-16}$ & finite diagnostic \\
+One RK4 step, direct vs FFT & diff $8.674\times10^{-19}$ & finite diagnostic \\
+Taylor--Green nested gate, $K=4$ & $\delta_K=3.551\times10^{-8}$ & finite diagnostic \\
+Taylor--Green nested gate, $K=5$ & $\delta_K=7.741\times10^{-10}$ & finite diagnostic \\
+Spectral tail algebra & PASS on deterministic finite spectra & finite diagnostic \\
+Terminal no-go witness & PASS; high-mode amplitude scalable & finite diagnostic \\
+Energy-budget finite algebra & PASS & finite diagnostic \\
+Relative-energy finite helper algebra & PASS & finite diagnostic \\
+\bottomrule
+\end{tabular}
+\caption{Finite executable evidence.  These checks validate finite algebra or recorded numerical
+instances; they do not upgrade the analytic theorems to machine proofs and do not certify turbulent
+DNS adequacy.}
+\label{tab:evidence}
+\end{table}
+
+The short Taylor--Green nested-refinement run used $\nu=0.01$, $\Delta t=0.005$, and $T=0.05$.
+The operational nested diagnostic passed at $K=4$ and was confirmed at $K=5$ under its declared
+thresholds.  This does not imply that $K=5$ contains all continuum information.  A separate
+external-reference test at coarse turbulent resolution previously found that $K\le3$ did not
+reproduce the published $Re=1600$ Taylor--Green dissipation curve; the present short-horizon
+stability check does not overturn that result.
+
+\section{Repository architecture and provenance}
+
+The research is intentionally split across four public repositories so that interpretation,
+provenance, executable mathematics, and domain-specific evidence cannot silently collapse into one
+another:
+\begin{itemize}
+\item \texttt{information-discrete-math}: reusable EPSC algorithms and certificate helpers;
+\item \texttt{toledo}: proposal/equation lineage and verification status;
+\item \texttt{readout-problem-navier-stokes}: Navier--Stokes analysis, manuscript, finite evidence,
+      reproduction ledger, and claim boundary;
+\item \texttt{readout\_genesis}: interpretation/application map only; NS results are not promoted to
+      root ontology.
+\end{itemize}
+The EPSC lineage is registered as \texttt{PROP-EPSC-01} through \texttt{PROP-EPSC-15}.  Classical
+Fourier, energy, Sobolev, Leray--Hopf and relative-energy inequalities are registered for lineage
+and role, not claimed as original mathematics.
+
+AI systems were used for drafting, code integration, adversarial consistency checking, and
+reproducibility work.  The human author is responsible for the mathematical claims, source
+selection, interpretation, and final release decisions.  AI assistance is not treated as authorship
+or as certification of truth.
+
+\section{Claim boundary}
+
+The strongest positive statement in this paper is target-specific.  A rigorous omitted-tail
+certificate exists for Leray--Hopf trajectories in $L^2_tL^2_x$, and conditional/a-posteriori
+terminal certificates exist from declared richer information.  A residual-based adapter converts
+a certified smooth comparison path into a terminal $L^2$ bound.  The current numerical solver is
+not yet an end-to-end continuum certificate because the validated continuous-time enclosure of its
+floating-point RK4 tape remains open.
+
+In particular, this work does \emph{not} establish global smoothness, finite-time singularity,
+uniqueness of Leray--Hopf weak solutions, an autonomous finite closure of three-dimensional
+Navier--Stokes, universal computational speedup, or turbulent DNS accuracy at coarse cutoff.  It
+does not solve or partially solve the Clay Millennium existence-and-smoothness problem.  Its role
+is narrower: it turns an ambiguous statement that a finite calculation ``looks converged'' into a
+set of explicit mathematical obligations that can either be certified or fail closed.
+
+\section{Conclusion}
+
+The finite-to-infinite gap in Navier--Stokes computation is not one question.  It depends on what is
+being read, in which norm, from which retained record, under which assumptions, and through which
+adapter.  Terminal low-mode coefficients alone are non-identifying on an unrestricted class.  By
+contrast, the Leray--Hopf energy inequality yields an explicit $O(K^{-1})$ spacetime certificate;
+a richer energy/dissipation tape yields a terminal budget bound; and a residual-based
+relative-energy estimate turns a certified finite comparison path into a terminal continuum bound.
+The remaining implementation frontier is now finite and concrete: validated continuous-time
+residual enclosure of the RK4 tape.  This separation is the central practical result of the EPSC
+programme.
+
+\begin{thebibliography}{9}
+\bibitem{Leray1934}
+J. Leray,
+\newblock Sur le mouvement d'un liquide visqueux emplissant l'espace,
+\newblock \emph{Acta Mathematica} 63 (1934), 193--248.
+
+\bibitem{Hopf1951}
+E. Hopf,
+\newblock "Uber die Anfangswertaufgabe f\"ur die hydrodynamischen Grundgleichungen,
+\newblock \emph{Mathematische Nachrichten} 4 (1951), 213--231.
+
+\bibitem{Temam}
+R. Temam,
+\newblock \emph{Navier--Stokes Equations: Theory and Numerical Analysis},
+\newblock AMS Chelsea Publishing.
+
+\bibitem{ConstantinFoias}
+P. Constantin and C. Foias,
+\newblock \emph{Navier--Stokes Equations},
+\newblock University of Chicago Press, 1988.
+
+\bibitem{Fefferman}
+C. L. Fefferman,
+\newblock Existence and smoothness of the Navier--Stokes equation,
+\newblock Clay Mathematics Institute Millennium Problem description, 2000.
+
+\bibitem{Lahtee2026}
+Y. Lahtee,
+\newblock A Readout Problem for Fefferman's Existence and Smoothness of the Navier--Stokes Equation,
+\newblock Zenodo, DOI: 10.5281/zenodo.22673246, 2026.
+\end{thebibliography}
+
+\end{document}
