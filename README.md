@@ -2,32 +2,34 @@
 
 Author: Yaoharee Lahtee. License: CC BY 4.0 (see `LICENSE`). Original paper DOI: [10.5281/zenodo.22673246](https://doi.org/10.5281/zenodo.22673246).
 
-This repository contains two clearly separated research layers:
+This repository contains three clearly separated research layers:
 
-1. the deposited v0.1.0 readout paper (`paper/main.tex`, `paper/main.pdf`), which poses the Navier-Stokes readout dichotomy and proves finite-state/retained-layer results; and
-2. the later **Discrete Epsilon-Completion (EPSC)** research lane, which develops finite-to-continuum omitted-information certificates without changing the original deposited claim.
+1. the deposited v0.1.0 readout paper (`paper/main.tex`, `paper/main.pdf`), which poses the Navier-Stokes readout dichotomy and proves finite-state/retained-layer results;
+2. the finite **energy-observability** lane, which studies what total/shell energy histories can determine inside a fixed Fourier-Galerkin state modulo translation; and
+3. the later **Discrete Epsilon-Completion (EPSC)** lane, which develops finite-to-continuum omitted-information certificates and now composes them with finite observability.
 
-**Neither layer proves global regularity, finite-time blow-up, uniqueness of arbitrary weak solutions, or the Clay Millennium Navier-Stokes problem.** See `CLAIMS.md`.
+**None of these layers proves global regularity, finite-time blow-up, uniqueness of arbitrary weak solutions, or the Clay Millennium Navier-Stokes problem.** See `CLAIMS.md`.
 
 ## Papers and analytic notes
 
 - `paper/main.tex`, `paper/main.pdf` — original deposited paper.
-- `paper/NS_ENERGY_OBSERVABILITY_ALL_K_FINAL.tex` — concise finite-resolution energy-observability note: universal all-`K` structural ceilings, positive-viscosity rank universality, and exact saturation certificates at the declared `K=1,2,3` reader/resolution pairs.
-- `paper/EPSC_NAVIER_STOKES_CERTIFICATES.tex` — standalone EPSC manuscript.
+- `paper/NS_ENERGY_OBSERVABILITY_ALL_K_FINAL.tex`, `.pdf` — finite-resolution energy observability: universal all-`N` structural ceilings, positive-viscosity rank universality, exact saturation certificates at four declared reader/resolution pairs, and an all-`N` saturation conjecture.
+- `paper/EPSC_NAVIER_STOKES_CERTIFICATES.tex`, `.pdf` — standalone EPSC manuscript.
+- `paper/NS_OBSERVABLE_TO_CONTINUUM_CERTIFICATES.tex` — synthesis manuscript connecting certified finite observability to certified continuum error budgets.
 - `paper/NS_SPACETIME_TAIL_CERTIFICATE.md` — Leray-Hopf spacetime Fourier-tail certificate.
 - `paper/NS_TERMINAL_ENERGY_BUDGET_CERTIFICATE.md` — terminal a-posteriori energy-budget certificate.
 - `paper/NS_RELATIVE_ENERGY_ADAPTER_CERTIFICATE.md` — relative-energy adapter plus the exact continuous-time RK4-tape enclosure construction.
 
 ## Four-repository architecture
 
-- `morrocwi/information-discrete-math` — general executable mathematics and certificate machinery;
+- `morrocwi/information-discrete-math` — general executable mathematics, certificate and composition machinery;
 - `morrocwi/toledo` — equation/proposal provenance and tier/status;
 - `morrocwi/readout_genesis` — interpretation/application map only;
-- this repository — Navier-Stokes specialization, manuscripts, experiments, reproduction and claim boundaries.
+- this repository — Navier-Stokes specialization, manuscripts, experiments, observability certificates, reproduction and claim boundaries.
 
 ## Reproduction
 
-Run the original development-series ledger:
+Run the development-series/EPSC ledger:
 
 ```bash
 bash reproduction/reproduce_all.sh
@@ -36,18 +38,42 @@ bash reproduction/reproduce_all.sh
 For the final finite energy-observability paper, use the dedicated lane:
 
 ```bash
-# quick integrity check of committed certificates
 bash reproduction/reproduce_energy_observability.sh --quick
-
-# full exact finite-field rerun of positive-viscosity, K=1, K=2 and K=3 checks
 bash reproduction/reproduce_energy_observability.sh
 ```
 
-See `reproduction/ENERGY_OBSERVABILITY_REPRODUCE.md` and `reproduction/results/energy_observability_manifest_v1.json` for the pinned environment, expected ranks, provenance hashes and claim boundary. A dedicated GitHub Actions workflow runs the quick integrity check on relevant pushes and exposes the full exact suite through manual workflow dispatch.
+See `reproduction/ENERGY_OBSERVABILITY_REPRODUCE.md` and `reproduction/results/energy_observability_manifest_v1.json` for the pinned environment, expected ranks, provenance hashes and claim boundary.
 
-The generated development-series ledger separates finite/script checks, standard analytic derivations (`Dr`), and explicitly open obligations. The EPSC work is tracked as the later Volume-7 research lane rather than being retroactively inserted into the deposited Volumes 1-6 series.
+The generated development-series ledger separates finite/script checks, standard analytic derivations (`Dr`), and explicitly open obligations. The EPSC and observable-to-continuum work remain post-paper research lanes rather than being retroactively inserted into the deposited Volumes 1-6 series.
 
-## Discrete Epsilon-Completion
+## Energy observability: inner completeness
+
+For cutoff `N`, the declared real finite-state dimension is
+
+\[
+d_N=2((2N+1)^3-1).
+\]
+
+For the total-energy Lie jet,
+
+\[
+\operatorname{rank}D\mathcal E_R\le\min(R+1,d_N-3),
+\qquad R_E^{\min}=d_N-4.
+\]
+
+For the full shell-energy reader with `m_N` shell channels,
+
+\[
+\operatorname{rank}D\mathcal J_R\le\min(m_N+(m_N-1)R,d_N-3),
+\]
+
+\[
+R_I^{\min}=\left\lceil\frac{d_N-3-m_N}{m_N-1}\right\rceil.
+\]
+
+Exact modular certificates attain the translation ceiling at the earliest structurally admissible order for four recorded cases: `N=1` total energy, `N=1` shell energies, `N=2` total energy, and `N=3` shell energies. This is **local finite-state completeness modulo spatial translations** at those certified cases, not global or noise-stable inversion. Generic earliest-order saturation for every finite `N` remains `PROP-NSOBS-07` OPEN.
+
+## Discrete Epsilon-Completion: outer completeness
 
 The base fail-closed structure is
 
@@ -57,7 +83,7 @@ The base fail-closed structure is
 \|Q_Kx\|_Y\le\beta_{K,Y},
 \]
 
-with certification allowed only when the declared refinement defect and a **proved/certified** omitted-information bound satisfy the requested tolerance. A small nested defect or small boundary-shell energy alone is not a continuum certificate.
+with certification allowed only when the declared refinement evidence is paired with a **proved/certified** omitted-information bound. A small nested defect or boundary-shell energy alone is not a continuum certificate.
 
 For an unforced Leray-Hopf trajectory on the `2*pi` periodic three-torus,
 
@@ -69,31 +95,9 @@ For an unforced Leray-Hopf trajectory on the `2*pi` periodic three-torus,
 }
 \]
 
-provides an explicit computable spacetime `beta_K -> 0` without assuming global smoothness.
+provides an explicit spacetime `beta_K -> 0` without assuming global smoothness.
 
-For prescribed terminal time, a separately certified pointwise `H^s` bound gives
-
-\[
-\|(I-P_K)u(T)\|_2\le M_s(T)/(K+1)^s.
-\]
-
-A richer retained energy/dissipation tape also gives
-
-\[
-\boxed{
-\|(I-P_K)u(T)\|_2^2
-\le
-\|u_0\|_2^2
--\|P_Ku(T)\|_2^2
--2\nu\int_0^T\|\nabla P_Ku\|_2^2dt
-}
-\]
-
-for the actual Leray-Hopf projection or certified directional bounds on those quantities.
-
-## Relative-energy adapter
-
-For a divergence-free comparison path `v`, define
+A terminal relative-energy route uses a divergence-free comparison path `v` with
 
 \[
 r=\partial_tv+P[(v\cdot\nabla)v]-\nu\Delta v-Pf,
@@ -102,10 +106,10 @@ r=\partial_tv+P[(v\cdot\nabla)v]-\nu\Delta v-Pf,
 \[
 A_T=2\int_0^T\|\nabla v\|_\infty dt,
 \qquad
-B_T=\int_0^T\|r\|_{H^{-1}}^2dt.
+B_T=\int_0^T\|r\|_{H^{-1}}^2dt,
 \]
 
-Then the standard relative-energy estimate gives
+and
 
 \[
 \sup_{t\le T}\|u(t)-v(t)\|_2^2
@@ -113,56 +117,54 @@ Then the standard relative-energy estimate gives
 e^{A_T}\left(e_0^2+B_T/\nu\right).
 \]
 
-If `v(T)` is supported in the retained cutoff, this is also a terminal omitted-tail bound for the actual Leray-Hopf solution.
+`PROP-EPSC-15` supplies an exact-dyadic piecewise-linear continuous-time reconstruction of stored RK4 nodes and rigorous finite residual summaries for the declared tape. Tightness/cost at larger cutoff and horizon is the distinct `PROP-EPSC-16` OPEN frontier.
 
-## EPSC-15: continuous-time certificate from the stored RK4 tape
+## Observable-to-continuum synthesis
 
-The previously open node-to-continuous-time step now has an executable construction. For every stored binary64 Fourier coefficient:
-
-1. treat the bit-pattern value as its **exact dyadic rational**;
-2. apply the Fourier Leray projector exactly in rational arithmetic;
-3. join consecutive projected nodes by a continuous piecewise-linear path;
-4. compute the full PDE residual of that path, rather than pretending the RK4 recurrence is exact.
-
-On each time cell the Fourier coefficients are affine, so the quadratic Navier-Stokes residual is degree at most two in normalized time. Its homogeneous `H^-1` norm squared is degree at most four and is integrated exactly as a rational finite sum. A Fourier coefficientwise `l1` majorant rigorously upper-bounds the gradient integral, and `exp(A_bar)` is bounded from above by a rational Taylor sum plus a geometric remainder.
-
-The reusable implementation lives in `information-discrete-math:idm/ns_rk4_path_certificate.py`; the independent NS witness is `reproduction/checks/check_volume7_rk4_continuous_enclosure.py`.
-
-For the recorded short Taylor-Green `K=1`, `nu=0.01`, `dt=0.01`, `T=0.05` witness, the finite checker reports approximately
-
-\[
-\overline A_T=0.599550229412277,
-\qquad
-\overline B_T=9.736386925864618\times10^{-5},
-\qquad
-\beta_T\le0.1331648457569634.
-\]
-
-These are conservative mathematical certificate values for that declared finite path, **not** evidence that `K=1` is an adequate turbulence/DNS resolution.
-
-## Toledo lineage and current frontier
-
-The EPSC family is registered Toledo-first through `PROP-EPSC-16`:
-
-- `PROP-EPSC-01..09` — base/refinement, spectral and spacetime certificate family;
-- `PROP-EPSC-10..12` — terminal energy-budget family and broad adapter obligation;
-- `PROP-EPSC-13` — residual-based Leray relative-energy adapter;
-- `PROP-EPSC-14` — finite Fourier residual tape;
-- `PROP-EPSC-15` — exact-dyadic piecewise-linear RK4-tape continuous-time enclosure;
-- `PROP-EPSC-16` — **OPEN** high-cutoff tightness and computational-scaling refinement.
-
-The supported chain is now
+The two layers answer different questions:
 
 ```text
-stored binary64 RK4 node tape
-    -> exact dyadic capture + exact Leray projection
-    -> continuous piecewise-linear finite Fourier path
-    -> exact/rigorous A_bar_T and B_bar_T
-    -> relative-energy theorem (Dr)
-    -> terminal continuum L2 / omitted-tail beta_K
+inner completeness:  do observations determine the retained finite state?
+outer completeness:  how much continuum state can remain outside the cutoff?
 ```
 
-The logical enclosure gap is closed for this declared finite path construction. The next question is practical: can the certificate remain tight and affordable as `K` and `T` grow?
+They compose only after the observation side supplies a **quantitative certified retained-state radius**. If
+
+\[
+\inf_{g\in G}\|P_Nu(T)-g\widehat x_N\|_2\le\rho_N
+\]
+
+and EPSC supplies
+
+\[
+\|(I-P_N)u(T)\|_2\le\beta_N,
+\]
+
+then orthogonality gives the new synthesis rule
+
+\[
+\boxed{
+\inf_{g\in G}\|u(T)-g\widehat x_N\|_2
+\le\sqrt{\rho_N^2+\beta_N^2}.
+}
+\]
+
+For the energy-reader application `G=T^3` is spatial translation. This conditional composition is registered as `PROP-EPSC-17` and implemented fail-closed in `information-discrete-math:idm/ns_observable_to_continuum.py`.
+
+Crucially, **rank saturation is not `rho_N`**. It provides local qualitative identifiability modulo symmetry, but not a certified inverse radius, branch control, conditioning, or noise bound. The quantitative inverse is `PROP-EPSC-18` OPEN; its noisy/stable extension is `PROP-EPSC-19` OPEN.
+
+## Toledo lineage and current frontiers
+
+The energy-observability family is registered as `PROP-NSOBS-01..08`. The EPSC family now runs through `PROP-EPSC-19`.
+
+The major open problems are deliberately separated:
+
+- `PROP-NSOBS-07` — prove/refute earliest-order generic energy-observability saturation for every finite resolution;
+- `PROP-EPSC-16` — make outer path certification tight and scalable for larger cutoff/horizon;
+- `PROP-EPSC-18` — construct a certified inverse from energy Lie jets to retained-state radius `rho_N`;
+- `PROP-EPSC-19` — propagate measurement/noise/differentiation uncertainty through the inverse and final continuum certificate.
+
+These are parts of one measurement-to-continuum programme, but they are not the same mathematical problem.
 
 ## Finite numerical evidence and non-claim
 
@@ -171,7 +173,8 @@ The short Taylor-Green refinement diagnostic (`nu=0.01`, `dt=0.005`, `T=0.05`) p
 The repository's governing distinction is:
 
 ```text
-finite algebra / nested stability
+finite observability / finite algebra
+    != certified retained-state inversion
     != continuum mathematical certification
     != physical turbulence validation
 ```
