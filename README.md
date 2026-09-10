@@ -2,13 +2,13 @@
 
 Author: Yaoharee Lahtee. License: CC BY 4.0 (see `LICENSE`). Original paper DOI: [10.5281/zenodo.22673246](https://doi.org/10.5281/zenodo.22673246).
 
-This repository contains three clearly separated research layers:
+This repository contains three separated research layers:
 
 1. the deposited v0.1.0 readout paper (`paper/main.tex`, `paper/main.pdf`), which poses the Navier-Stokes readout dichotomy and proves finite-state/retained-layer results;
-2. the finite **energy-observability** lane, which studies what total/shell energy histories determine inside a fixed Fourier-Galerkin state modulo translation; and
-3. the later **Discrete Epsilon-Completion (EPSC)** lane, which develops finite-to-continuum omitted-information certificates and composes them with finite observability.
+2. the finite **energy-observability** lane, which studies what total/shell-energy histories determine inside a fixed Fourier-Galerkin state modulo translation; and
+3. the later **Discrete Epsilon-Completion (EPSC)** lane, which develops finite-to-continuum omitted-information certificates and composes them with certified finite observability.
 
-**None of these layers proves global regularity, finite-time blow-up, uniqueness of arbitrary weak solutions, or the Clay Millennium Navier-Stokes problem.** See `CLAIMS.md`.
+**None of these layers proves global regularity, finite-time blow-up, uniqueness of arbitrary weak solutions, physical DNS adequacy at an arbitrary cutoff, or the Clay Millennium Navier-Stokes problem.** See `CLAIMS.md`.
 
 ## Papers and analytic notes
 
@@ -19,7 +19,9 @@ This repository contains three clearly separated research layers:
 - `paper/NS_SPACETIME_TAIL_CERTIFICATE.md` — Leray-Hopf spacetime Fourier-tail certificate.
 - `paper/NS_TERMINAL_ENERGY_BUDGET_CERTIFICATE.md` — terminal a-posteriori energy-budget certificate.
 - `paper/NS_RELATIVE_ENERGY_ADAPTER_CERTIFICATE.md` — relative-energy adapter and exact continuous-time RK4-tape enclosure.
-- `paper/NS_EPSC18_N1_ROWWISE_RADIUS.md` — full-`N=1` local inverse and row-aware quantitative-radius tightening.
+- `paper/NS_EPSC18_N1_ROWWISE_RADIUS.md` — row-aware full-`N=1` quantitative local-inverse radius.
+- `paper/NS_EPSC18_N1_EXACT_PRECONDITIONER.md` — actual characteristic-zero selected Jacobian and exact rational preconditioner.
+- `paper/NS_EPSC18_N1_COMPONENTWISE_RADIUS.md` — exact coefficient-tensor/componentwise tightening of the `N=1` radius.
 
 ## Four-repository architecture
 
@@ -36,7 +38,7 @@ Run the development-series/EPSC ledger:
 bash reproduction/reproduce_all.sh
 ```
 
-For the final finite energy-observability paper, use the dedicated lane:
+For the finite energy-observability paper, use the dedicated lane:
 
 ```bash
 bash reproduction/reproduce_energy_observability.sh --quick
@@ -72,56 +74,53 @@ For the full shell-energy reader with `m_N` shell channels,
 R_I^{\min}=\left\lceil\frac{d_N-3-m_N}{m_N-1}\right\rceil.
 \]
 
-Exact modular certificates attain the translation ceiling at the earliest structurally admissible order for four recorded cases: `N=1` total energy, `N=1` shell energies, `N=2` total energy, and `N=3` shell energies. Generic earliest-order saturation for every finite `N` remains `PROP-NSOBS-07` OPEN.
+Exact modular certificates attain the translation ceiling at the earliest structurally admissible order for four recorded cases: `N=1` total energy, `N=1` shell energies, `N=2` total energy, and `N=3` shell energies. Generic earliest-order saturation for every finite `N` remains `PROP-NSOBS-07` OPEN. A constructive all-cutoff triad-connectivity lemma closes one kinematic obstruction but does not prove the required all-`N` minor nonvanishing/algebraic independence.
 
-A constructive all-cutoff triad-connectivity lemma removes one kinematic obstruction to that conjecture, but does not prove nonvanishing/algebraic independence of enough observation minors.
+## Full N=1 retained inverse: current quantitative chain
 
-## Full N=1 retained inverse
+At `N=1`, the finite real state dimension is 52. Spatial translation contributes three invisible directions. An explicit translation-transverse 49-dimensional coordinate slice and an exact modular nonzero selected `49x49` shell-energy Taylor-jet minor give a local real inverse on that finite slice.
 
-At `N=1`, the finite real state dimension is 52. Spatial translation contributes three invisible directions, and an explicit translation-transverse 49-dimensional coordinate slice has been constructed. An exact modular certificate supplies a nonzero selected 49-by-49 shell-energy Taylor-jet minor, hence a local real inverse exists on that finite slice.
-
-A deterministic small-integer full-rank center with `max |x_j|=3` was found. The first quantitative proof used one worst-row Cramer/Hadamard bound and certified
-
-\[
-10^{-7934}<r_{\rm uniform}\le10^{-7933},
-\qquad q\le\frac12.
-\]
-
-The row-aware refinement `PROP-EPSC-26` keeps one Jacobian-row and one Hessian-row majorant per selected observation. If
-
-\[
-R_j\ge\|J_{0,j*}\|_1,
-\qquad
-H_j\ge\sup_{x\in B}\|D J_{j*}(x)\|_{\infty\to1},
-\]
-
-then
-
-\[
-\|J_0^{-1}(J(x)-J_0)\|_\infty
-\le
-r\sum_j\left(\prod_{k\ne j}R_k\right)H_j.
-\]
-
-Choosing
+A deterministic small-integer full-rank center with `max |x_j|=3` anchors successive fail-closed quantitative certificates:
 
 \[
 \boxed{
-r_{\rm row}=\frac{1}{2\sum_j(\prod_{k\ne j}R_k)H_j}
+10^{-7934}
+\longrightarrow
+10^{-3878}
+\longrightarrow
+10^{-59}
+\longrightarrow
+10^{-28}.
 }
 \]
 
-again gives `q<=1/2`. The reproduced denominator drops from 7934 to 3878 decimal digits, so
+The four stages remove different sources of proof slack:
 
-\[
-\boxed{10^{-3878}<r_{\rm row}\le10^{-3877}.}
-\]
+1. **Uniform Cramer/Hadamard:** `10^-7934 < r <= 10^-7933`, `q<=1/2`.
+2. **Row-aware Cramer/Hadamard (`PROP-EPSC-26`):** `10^-3878 < r <= 10^-3877`, improving the lower-bracket scale by 4056 decimal orders.
+3. **Exact characteristic-zero preconditioner (`PROP-EPSC-27`):** reconstruct the actual `C^n n!`-scaled integer selected Jacobian `J_0`, cross-check all selected rows modulo `p=1,000,003`, invert `J_0` exactly over `Q`, and certify
 
-This is a 4056-decimal-order improvement in the rigorous power-of-ten bracket. It closes existence of a **strictly positive quantitative full-`N=1` local inverse radius**, but it is still astronomically too small to call measurement-ready. The practical `rho_1` problem remains `PROP-EPSC-24` OPEN and requires an actual entrywise interval Jacobian, an effective rational preconditioner, branch containment and noise propagation.
+   \[
+   1.28<\|J_0^{-1}\|_\infty<1.29,
+   \qquad
+   10^{-59}<r\le10^{-58}.
+   \]
+
+   The nonzero exact determinant has 2561 decimal digits.
+4. **Componentwise coefficient-tensor enclosure (`PROP-EPSC-28`):** construct the exact scaled `52x52x52` quadratic coefficient tensor, with 2096 nonzero coefficients and exact induced infinity row-sum bound 36000, then propagate componentwise rational state/first-/second-derivative majorants on a radius-`10^-3` local box. With the same exact `A=J_0^{-1}`, the reproduced certificate gives
+
+   \[
+   \boxed{10^{-28}<r_{cw}\le10^{-27}},
+   \qquad q\le\frac12.
+   \]
+
+   This is a further 31-decimal-order improvement over the scalar exact-preconditioner envelope, and the derived radius is certified to lie inside the box used for the majorants.
+
+The result now closes existence of a **strictly positive quantitatively certified full-`N=1` local inverse radius** in a substantially less pessimistic finite enclosure. It still does **not** supply a practical sensor/noise tolerance. A measurement-informative branch-stable `rho_1`, robust noise propagation and arbitrary-`N` inversion remain open.
 
 ## Discrete Epsilon-Completion: outer completeness
 
-The base fail-closed structure is
+The fail-closed structure is
 
 \[
 \delta_K=\|R_Kx_{K+1}-x_K\|,
@@ -129,7 +128,7 @@ The base fail-closed structure is
 \|Q_Kx\|_Y\le\beta_{K,Y},
 \]
 
-with certification allowed only when refinement evidence is paired with a proved/certified omitted-information bound. A small nested defect or boundary-shell energy alone is not a continuum certificate.
+with certification allowed only when finite refinement evidence is paired with a proved/certified omitted-information bound. Small nested defect or boundary-shell energy alone is not a continuum certificate.
 
 For an unforced Leray-Hopf trajectory on the `2*pi` periodic three-torus,
 
@@ -143,11 +142,13 @@ For an unforced Leray-Hopf trajectory on the `2*pi` periodic three-torus,
 
 provides an explicit spacetime `beta_K -> 0` without assuming global smoothness.
 
-A terminal relative-energy route uses a divergence-free comparison path `v` with residual
+A terminal relative-energy route uses a divergence-free comparison path `v`, residual
 
 \[
 r=\partial_tv+P[(v\cdot\nabla)v]-\nu\Delta v-Pf,
 \]
+
+and
 
 \[
 A_T=2\int_0^T\|\nabla v\|_\infty dt,
@@ -155,7 +156,7 @@ A_T=2\int_0^T\|\nabla v\|_\infty dt,
 B_T=\int_0^T\|r\|_{H^{-1}}^2dt,
 \]
 
-and
+with
 
 \[
 \sup_{t\le T}\|u(t)-v(t)\|_2^2
@@ -195,26 +196,25 @@ then orthogonality gives
 }
 \]
 
-For the energy-reader application `G=T^3` is spatial translation. `PROP-EPSC-17` records this conditional composition.
+For the energy-reader application `G=T^3` is spatial translation. `PROP-EPSC-17` records this conditional composition. A mathematical local radius is now available at the one certified full `N=1` chart, but a measurement-derived, branch/noise-stable `rho_1` and arbitrary-`N` analogue are still open.
 
-The present full-`N=1` result supplies a mathematical positive local radius, not yet a useful measurement-derived `rho_1`. Arbitrary-`N`, branch-stable and noise-stable inversion therefore remains open.
+## Current proposal frontiers
 
-## Toledo lineage and current frontiers
+The energy-observability proposal family runs through `PROP-NSOBS-11`. The EPSC proposal family runs through `PROP-EPSC-28`. These are proposal/provenance identifiers, not automatically canonical Toledo theorem codes.
 
-The energy-observability proposal family runs through `PROP-NSOBS-11`. The EPSC proposal family currently runs through `PROP-EPSC-26`. These are proposal/provenance identifiers, not automatically canonical Toledo theorem codes.
+The principal open fronts are:
 
-The major open problems are deliberately separated:
-
-- `PROP-NSOBS-07` — prove/refute earliest-order generic energy-observability saturation for every finite resolution;
-- `PROP-EPSC-16` — make outer path certification tighter and scalable for larger cutoff/horizon;
-- `PROP-EPSC-24` — replace the conservative full-`N=1` determinant/derivative radius by an effective measurement-scale interval/preconditioned `rho_1`;
-- `PROP-EPSC-19` — propagate measurement/window uncertainty through that retained inverse and the outer EPSC certificate.
+- `PROP-NSOBS-07` — all-resolution earliest-order generic energy-observability saturation;
+- `PROP-EPSC-16` — tighter/scalable outer path certification at larger cutoff/horizon;
+- `PROP-EPSC-24` — practical branch-stable, noise-aware full-`N=1` retained-state radius, now narrowed past determinant and scalar-majorant slack;
+- `PROP-EPSC-19` — full noisy measurement-to-continuum propagation;
+- arbitrary-finite-`N` extension of the explicit retained inverse remains open.
 
 ## Finite numerical evidence and non-claim
 
-The short Taylor-Green refinement diagnostic (`nu=0.01`, `dt=0.005`, `T=0.05`) passed its declared nested operational gate at K=4 and K=5. This remains a finite diagnostic, not a proof that K=5 contains all continuum information.
+The short Taylor-Green refinement diagnostic (`nu=0.01`, `dt=0.005`, `T=0.05`) passed its declared nested operational gate at K=4 and K=5. This is a finite diagnostic, not a proof that K=5 contains all continuum information.
 
-The prior negative coarse turbulent validation also remains in force: K<=3 did not reproduce the published Re=1600 Taylor-Green dissipation curve in the external-reference test. Finite algebra correctness is therefore distinct from physical/continuum adequacy.
+The prior negative coarse turbulent validation remains in force: K<=3 did not reproduce the published Re=1600 Taylor-Green dissipation curve in the external-reference test. Finite algebra correctness is therefore distinct from physical or continuum adequacy.
 
 The repository's governing distinction is:
 
