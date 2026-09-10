@@ -1,0 +1,56 @@
+name: reproduce-energy-observability
+
+on:
+  push:
+    paths:
+      - 'paper/NS_ENERGY_OBSERVABILITY_ALL_K_FINAL.tex'
+      - 'reproduction/ENERGY_OBSERVABILITY_REPRODUCE.md'
+      - 'reproduction/reproduce_energy_observability.sh'
+      - 'reproduction/requirements-energy-observability.txt'
+      - 'reproduction/checks/check_energy_observability_manifest.py'
+      - 'reproduction/checks/check_positive_viscosity_scaling.py'
+      - 'reproduction/checks/check_volume6_ns_observability.py'
+      - 'reproduction/checks/check_k2_energy_observability.py'
+      - 'reproduction/checks/check_k3_shell_energy_observability.py'
+      - 'reproduction/results/k2_energy_observability_mod251.json'
+      - 'reproduction/results/k3_shell_energy_observability_mod683.json'
+      - 'reproduction/results/energy_observability_manifest_v1.json'
+      - '.github/workflows/reproduce-energy-observability.yml'
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Run the full exact K=1, K=2, K=3 finite-field reproduction suite'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+  quick-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify committed observability certificates and structure
+        run: bash reproduction/reproduce_energy_observability.sh --quick
+
+  full-exact:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.full == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned reproduction environment
+        run: python -m pip install -r reproduction/requirements-energy-observability.txt
+      - name: Run full exact finite-field reproduction suite
+        run: bash reproduction/reproduce_energy_observability.sh --full
+      - name: Upload reproduction logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: energy-observability-reproduction-logs
+          path: reproduction/results/reproduced_energy_observability/
