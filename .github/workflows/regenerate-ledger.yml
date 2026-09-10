@@ -52,15 +52,36 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reproduction/LEDGER.json reproduction/LEDGER.md
-          if git diff --cached --quiet; then
-            echo "Ledger already current."
-          else
-            git commit -m "regenerate reproduction ledger"
-            # Several human commits may arrive while the full reproduction matrix is running.
-            # Rebase the generated-only ledger commit before pushing instead of failing on a
-            # harmless non-fast-forward race.
+
+          # The full reproduction matrix can take several minutes. If main advances
+          # meanwhile (often because another ledger run finishes), never rebase two
+          # independently generated LEDGER files. Refresh to the newest main, regenerate
+          # from that exact source tree, and retry the generated-only commit instead.
+          for attempt in 1 2 3; do
+            echo "ledger publish attempt $attempt"
             git fetch origin main
-            git rebase origin/main
-            git push origin HEAD:main
-          fi
+            if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+              echo "main advanced during reproduction; refreshing source and regenerating ledger"
+              git reset --hard origin/main
+              python reproduction/generate_ledger.py
+            fi
+
+            git add reproduction/LEDGER.json reproduction/LEDGER.md
+            if git diff --cached --quiet; then
+              echo "Ledger already current."
+              exit 0
+            fi
+
+            git commit -m "regenerate reproduction ledger"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            echo "push raced with another main update; retrying from newest main"
+            git fetch origin main
+            git reset --hard origin/main
+            python reproduction/generate_ledger.py
+          done
+
+          echo "could not publish regenerated ledger after 3 race-safe attempts" >&2
+          exit 1
