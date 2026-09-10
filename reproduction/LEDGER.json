@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T16:07:51.834812+00:00",
+  "generated_at_utc": "2026-09-10T16:20:21.692799+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 165,
+  "total_claims": 169,
   "tier_counts": {
-    "finite_diagnostic": 73,
-    "Open": 27,
-    "Dr": 64,
+    "finite_diagnostic": 75,
+    "Open": 28,
+    "Dr": 65,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 72,
-    "OPEN": 27,
+    "PASS": 74,
+    "OPEN": 28,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 18
+    "DERIVED": 19
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -1080,6 +1080,38 @@
     },
     {
       "volume": 7,
+      "id": "V7-EPSC18-N1-ROW-CHART-SEARCH",
+      "name": "deterministic conditioning search over structurally admissible N=1 shell-row pairs",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "six deterministic starts; best floating objective=6.389166e+26; final hill-climb swaps=15; final chart exact modular rank=49"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-ROW-OPTIMIZED-RADIUS",
+      "name": "exactly certified componentwise radius on the selected N=1 observation chart",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "final candidate is re-inverted over Q with nonzero exact determinant; 10^(-28) < r <= 10^(-27); q<=1/2; baseline first-independent chart was 10^(-28) < r <= 10^(-27)"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-ROW-OPTIMIZATION-GAIN",
+      "name": "row-chart optimization improves the certified N=1 componentwise radius",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "exact radius ratio best/current > 1=True; power-of-ten lower-bracket index moves from 28 to 28"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-MEASUREMENT-READY-AFTER-ROW-SEARCH",
+      "name": "measurement-ready robust inverse after finite observation-row optimization",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the finite chart is optimized and then exactly recertified, but practical measurement readiness still requires branch/noise containment and a sufficiently large physically interpreted radius"
+    },
+    {
+      "volume": 7,
       "id": "V7-EPSC18-N1-ROWWISE-COFACTOR-BOUND",
       "name": "row-aware Hadamard cofactor bound for the full N=1 symmetry-slice inverse",
       "tier": "Dr",
@@ -1418,6 +1450,10 @@
     },
     {
       "script": "check_volume7_eps18_n1_local_inverse.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n1_row_selection.py",
       "returncode": 0
     },
     {
