@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T09:05:57.720750+00:00",
+  "generated_at_utc": "2026-09-10T09:10:50.056108+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 117,
+  "total_claims": 122,
   "tier_counts": {
-    "finite_diagnostic": 51,
-    "Open": 15,
-    "Dr": 50,
+    "finite_diagnostic": 54,
+    "Open": 16,
+    "Dr": 51,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 50,
-    "OPEN": 15,
+    "PASS": 53,
+    "OPEN": 16,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 4
+    "DERIVED": 5
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -888,6 +888,46 @@
     },
     {
       "volume": 7,
+      "id": "V7-EPSC-RE-ALGEBRA",
+      "name": "relative-energy adapter finite formula and projection contraction",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "beta=3.231528e-01; omitted tail=1.264911e+01 <= full error=1.300000e+01"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-GALERKIN-RESIDUAL-SHEAR",
+      "name": "finite unresolved nonlinear residual vanishes for shear solution",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "snapshot unresolved convective residual L2=0.000e+00"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-GRAD-LINF-FOURIER",
+      "name": "finite Fourier coefficient upper bound for comparison-path gradient",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "single-mode coefficient bound=10"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-RELATIVE-ENERGY-ADAPTER",
+      "name": "residual-based Leray-Hopf terminal L2 adapter theorem",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "paper/NS_RELATIVE_ENERGY_ADAPTER_CERTIFICATE.md: standard relative-energy inequality + H^-1 Young bound + Gronwall"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-RK4-CONTINUOUS-ENCLOSURE",
+      "name": "validated continuous-time A_T/B_T enclosure from current floating-point RK4 tape",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "remaining engineering proof obligation: rigorous interpolation and interval upper bounds for grad-Linf and H^-1 residual integrals"
+    },
+    {
+      "volume": 7,
       "id": "V7-EPSC-SPECTRAL-CORE",
       "name": "finite H1-to-L2 Fourier tail inequality core",
       "tier": "finite_diagnostic",
@@ -1014,6 +1054,10 @@
     },
     {
       "script": "check_volume6_ns_xi_min.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_relative_energy_adapter.py",
       "returncode": 0
     },
     {
