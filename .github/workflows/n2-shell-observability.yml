@@ -7,6 +7,7 @@ on:
       - 'reproduction/checks/check_k2_shell_energy_observability.py'
       - 'reproduction/checks/check_k2_shell_explicit_quotient_chart.py'
       - 'reproduction/checks/check_volume7_eps18_n2_small_witness.py'
+      - 'reproduction/checks/check_volume7_eps18_n2_explicit_radius.py'
       - 'reproduction/checks/check_k2_energy_observability.py'
       - '.github/workflows/n2-shell-observability.yml'
   workflow_dispatch:
@@ -28,3 +29,5 @@ jobs:
         run: python reproduction/checks/check_k2_shell_explicit_quotient_chart.py
       - name: Find a small-integer N=2 quotient-chart center
         run: python reproduction/checks/check_volume7_eps18_n2_small_witness.py
+      - name: Certify a conservative positive N=2 inverse radius
+        run: python reproduction/checks/check_volume7_eps18_n2_explicit_radius.py
