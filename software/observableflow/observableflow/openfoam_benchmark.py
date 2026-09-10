@@ -7,7 +7,7 @@ import json
 import numpy as np
 
 from .core import AnalysisResult
-from .openfoam import ProbeDataset, PODReduction, load_probes, pod_reduce_snapshots, fit_lti_probe_model, _align_times
+from .openfoam import ProbeDataset, load_probes, pod_reduce_snapshots, fit_lti_probe_model, _align_times
 
 
 @dataclass(frozen=True)
@@ -35,6 +35,10 @@ class ProbeReferenceBenchmarkResult:
     train_measurement_rmse: float
     temporal_design: dict | None
     static_design: dict | None
+    temporal_holdout_noiseless: dict | None
+    temporal_holdout_noisy: dict | None
+    static_holdout_noiseless: dict | None
+    static_holdout_noisy: dict | None
     holdout_noiseless: dict | None
     holdout_noisy: dict | None
     noise_fraction_of_train_std: float
@@ -145,6 +149,34 @@ def reconstruct_holdout_states(
     )
 
 
+def _evaluate_design(
+    design: AnalysisResult | None,
+    X_test: np.ndarray,
+    Y_test: np.ndarray,
+    *,
+    A: np.ndarray,
+    C: np.ndarray,
+    state_offset: np.ndarray,
+    measurement_offset: np.ndarray,
+    sensor_noise: np.ndarray,
+    seed: int,
+) -> tuple[ReconstructionMetrics | None, ReconstructionMetrics | None]:
+    if design is None or not design.feasible or len(X_test) <= design.depth:
+        return None, None
+    noiseless = reconstruct_holdout_states(
+        X_test, Y_test, A=A, C=C,
+        state_offset=state_offset, measurement_offset=measurement_offset,
+        design=design,
+    )
+    noisy = reconstruct_holdout_states(
+        X_test, Y_test, A=A, C=C,
+        state_offset=state_offset, measurement_offset=measurement_offset,
+        design=design, noise_std=sensor_noise,
+        rng=np.random.default_rng(seed),
+    )
+    return noiseless, noisy
+
+
 def benchmark_probe_reference_case(
     case_dir: str | Path,
     *,
@@ -167,7 +199,9 @@ def benchmark_probe_reference_case(
 
     The dense reference grid is a sampled surrogate for the CFD state, not the native full mesh.
     POD is fit on the training interval only. Sensor/depth selection uses the training ROM only;
-    hold-out reconstruction uses untouched later OpenFOAM measurements.
+    hold-out reconstruction uses untouched later OpenFOAM measurements. Both the cheapest temporal
+    design and the depth-zero static design are evaluated so rank feasibility cannot be mistaken for
+    stable deployability.
     """
     if not 0.5 <= train_fraction < 1.0:
         raise ValueError("train_fraction must satisfy 0.5 <= train_fraction < 1")
@@ -215,20 +249,18 @@ def benchmark_probe_reference_case(
         depth_unit_cost=depth_unit_cost, min_sigma=min_sigma, method="greedy"
     )
 
-    noiseless = None
-    noisy = None
-    if isinstance(temporal, AnalysisResult) and temporal.feasible and len(X_test) > temporal.depth:
-        noiseless = reconstruct_holdout_states(
-            X_test, Y_test, A=A, C=C,
-            state_offset=state_offset, measurement_offset=measurement_offset,
-            design=temporal,
-        )
-        noisy = reconstruct_holdout_states(
-            X_test, Y_test, A=A, C=C,
-            state_offset=state_offset, measurement_offset=measurement_offset,
-            design=temporal, noise_std=sensor_noise,
-            rng=np.random.default_rng(seed),
-        )
+    temporal_noiseless, temporal_noisy = _evaluate_design(
+        temporal if isinstance(temporal, AnalysisResult) else None,
+        X_test, Y_test, A=A, C=C,
+        state_offset=state_offset, measurement_offset=measurement_offset,
+        sensor_noise=sensor_noise, seed=seed,
+    )
+    static_noiseless, static_noisy = _evaluate_design(
+        static if isinstance(static, AnalysisResult) else None,
+        X_test, Y_test, A=A, C=C,
+        state_offset=state_offset, measurement_offset=measurement_offset,
+        sensor_noise=sensor_noise, seed=seed + 1,
+    )
 
     return ProbeReferenceBenchmarkResult(
         n_times=n, n_train=split, n_test=n-split,
@@ -239,8 +271,13 @@ def benchmark_probe_reference_case(
         train_measurement_rmse=model.measurement_rmse,
         temporal_design=None if temporal is None else temporal.to_dict(),
         static_design=None if static is None else static.to_dict(),
-        holdout_noiseless=None if noiseless is None else noiseless.to_dict(),
-        holdout_noisy=None if noisy is None else noisy.to_dict(),
+        temporal_holdout_noiseless=None if temporal_noiseless is None else temporal_noiseless.to_dict(),
+        temporal_holdout_noisy=None if temporal_noisy is None else temporal_noisy.to_dict(),
+        static_holdout_noiseless=None if static_noiseless is None else static_noiseless.to_dict(),
+        static_holdout_noisy=None if static_noisy is None else static_noisy.to_dict(),
+        # Backward-compatible aliases: historical holdout fields refer to the temporal design.
+        holdout_noiseless=None if temporal_noiseless is None else temporal_noiseless.to_dict(),
+        holdout_noisy=None if temporal_noisy is None else temporal_noisy.to_dict(),
         noise_fraction_of_train_std=float(noise_fraction),
         candidate_object=candidate_object, reference_object=reference_object,
         candidate_fields=tuple(candidate_fields), reference_fields=tuple(reference_fields),
