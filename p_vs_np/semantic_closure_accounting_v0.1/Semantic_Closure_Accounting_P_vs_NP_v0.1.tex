@@ -1,0 +1,543 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black,pdftitle={Semantic Closure Accounting for Boolean Circuits: A Readout-First Architecture Toward P versus NP},pdfauthor={Yaoharee Lahtee}}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Open Problem}
+
+\newcommand{\SAT}{\mathrm{SAT}}
+\newcommand{\RRR}{\mathrm{RRR}}
+\newcommand{\poly}{\mathrm{poly}}
+\newcommand{\Ppoly}{\mathrm{P}/\mathrm{poly}}
+\newcommand{\CircuitSize}{\mathrm{CircuitSize}}
+\newcommand{\LedgerSize}{\mathrm{LedgerSize}}
+\newcommand{\Readout}{\mathcal{O}}
+\newcommand{\Retain}{\mathsf{Retain}}
+\newcommand{\Recompute}{\mathsf{Recompute}}
+\newcommand{\Resolve}{\mathsf{Resolve}}
+
+\title{\textbf{Semantic Closure Accounting for Boolean Circuits:}\\
+A Readout-First Architecture Toward P versus NP}
+\author{Yaoharee Lahtee\\
+\small Independent Researcher --- Information Discrete Mathematics / Readout Genesis}
+\date{September 10, 2026\\\small Preprint v0.1}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We develop a finite, readout-first framework for expressing Boolean circuit lower-bound arguments in the language of semantic retention, recomputation, and certified closure. The construction is derived from two existing research systems, \emph{Readout Genesis} and \emph{Information Discrete Mathematics} (IDM), but is presented here as a self-contained complexity-theoretic architecture. The paper isolates four structural components. First, a fan-in-two DeMorgan circuit can be compiled into a semantic ledger with one ledger entry per gate while preserving parent references, DAG sharing, and terminal Boolean semantics. Second, a No-Early-Collapse principle yields a \emph{Retain--Recompute--Resolve} trichotomy: if two histories remain distinguishable by a future reader, an exact downstream computation cannot make all three corresponding channels identical. Third, a resource-aware accounting kernel converts independently certified semantic demand and bounded per-gate capacity into a gate lower bound. Fourth, any lower bound proved for the compiled semantic ledgers transfers back to the original circuit model under the size-preserving compilation.
+
+The paper also records negative controls that prevent false completions. In particular, exponential future-readout width does not imply exponential unrestricted circuit size: equality on two $m$-bit blocks has $2^m$ residual functions after the first block is fixed, yet admits a linear-size shared circuit. Likewise, retaining the full input uses only linear space, so any relevant theorem must charge recomputation/decoder work rather than retained bits alone. These observations leave one load-bearing problem open: construct a non-circular, sharing-aware semantic demand $H_n$ for $\SAT_n$ and prove a capacity theorem valid for every small shared circuit, with $H_n/K_n$ superpolynomial. We state this precisely as future work. Accordingly, this manuscript \emph{does not claim a proof of $P\neq NP$}; it provides a formal architecture that reduces the remaining research burden to a sharply stated unrestricted-circuit lower-bound premise.
+\end{abstract}
+
+\paragraph{Claim boundary.}
+The P versus NP problem remains open in the standard literature and in the Clay Mathematics Institute formulation \cite{CookCMI,CMIPvsNP}. Nothing in this manuscript is asserted to settle it. All separation statements below are either finite structural theorems, restricted-model observations, or explicitly conditional implications.
+
+\section{Introduction}
+
+The central difficulty in P versus NP is not the number of output bits. Every Boolean decision problem has a one-bit answer. If one defines a ``readout'' $q(x)$ only by its output cardinality, then the degenerate choice
+\[
+q(x)=L(x), \qquad D(b)=b
+\]
+is already an exact one-bit representation for every language $L$. The computational question is therefore the cost of \emph{constructing} a sufficient readout and of decoding or reconstructing the information it suppresses.
+
+This paper develops an accounting language for that cost. Its origin is a readout-first principle: two states may be merged only when every declared future reader that matters to the task agrees on them. In complexity theory, however, this principle is useful only if it is combined with a resource ledger. A polynomial-time machine or a shared circuit may forget information, retain it, reconstruct it later, or replace it with a derived invariant. A correct lower-bound method must charge all such legal escape routes.
+
+Our objective is thus not to argue that SAT ``contains exponentially many possibilities.'' Such counting by itself is too weak. Instead we build a finite translation from circuits to semantic ledgers and isolate the exact missing theorem needed to turn semantic obligations into a superpolynomial circuit lower bound.
+
+The contributions are:
+\begin{enumerate}
+  \item an explicit circuit-to-ledger compilation preserving sharing and Boolean semantics;
+  \item a finite Retain--Recompute--Resolve (RRR) no-collapse theorem;
+  \item a resource-aware RRR arithmetic kernel converting semantic demand and per-gate capacity into a circuit-size bound;
+  \item a transfer theorem from semantic-ledger lower bounds back to circuits;
+  \item negative controls showing why residual-count, retained-bit, provenance, and elimination-width arguments do not by themselves prove unrestricted circuit lower bounds;
+  \item a precise statement of the remaining \emph{SAT Semantic Demand} problem, together with admissibility conditions designed to prevent circularity and answer leakage.
+\end{enumerate}
+
+\section{Decision Readouts and the One-Bit Degeneracy}
+
+Let $X_n$ be the set of valid inputs of length $n$ and let $L_n:X_n\to\{0,1\}$ be a Boolean decision problem. A readout is a map
+\[
+q_n:X_n\to R_n
+\]
+with decoder $D_n:R_n\to\{0,1\}$. It is exactly decision-sufficient when
+\[
+D_n(q_n(x))=L_n(x) \quad \forall x\in X_n.
+\]
+
+\begin{definition}[Mixed decision fiber]
+A readout $q_n$ has a mixed decision fiber if there exist $x,y\in X_n$ such that
+\[
+q_n(x)=q_n(y), \qquad L_n(x)\neq L_n(y).
+\]
+\end{definition}
+
+\begin{lemma}[Mixed fibers block exact decoding]
+If $q_n$ has a mixed decision fiber, then no deterministic decoder $D_n$ can satisfy $D_n\circ q_n=L_n$ on all inputs.
+\end{lemma}
+\begin{proof}
+If $q_n(x)=q_n(y)$, then a deterministic decoder receives the same record on $x$ and $y$, hence produces the same output, contradicting $L_n(x)\neq L_n(y)$.
+\end{proof}
+
+This elementary observation is formally represented in the accompanying Coq development. It is useful as a correctness firewall but is insufficient for complexity separation because the readout itself may already compute the target.
+
+\begin{proposition}[Resource-aware factorization]
+Let $\mathcal C$ be a deterministic computational class containing the identity and closed under composition. Then
+\[
+L\in\mathcal C
+\iff
+\exists q,D\in\mathcal C\text{ such that }L=D\circ q.
+\]
+\end{proposition}
+\begin{proof}
+The forward direction takes $q=L$ and $D=\mathrm{id}$. The reverse direction follows from closure under composition.
+\end{proof}
+
+For $\mathcal C=P$, the statement says that asking for a polynomial-time constructible and polynomial-time decodable exact readout is equivalent to asking whether the language lies in $P$. Thus readout sufficiency becomes useful only after we isolate intermediate resources that can be bounded independently of the answer.
+
+\section{Circuit-to-Genesis Semantic Ledgers}
+
+We work with finite fan-in-two DeMorgan DAGs whose gates are inputs, negations, conjunctions, and disjunctions. Sharing is explicit: a parent index may be referenced by multiple later gates. Let
+\[
+C=(g_0,g_1,\ldots,g_{s-1})
+\]
+be a topologically ordered circuit, and let an output index select the terminal Boolean reader.
+
+\begin{definition}[Semantic ledger compilation]
+The compilation $\mathsf{CGSL}$ maps each gate $g_i$ to one ledger entry
+\[
+\ell_i=(i,g_i)
+\]
+while preserving the parent indices of $g_i$. No sub-DAG is unfolded.
+\end{definition}
+
+The accompanying Coq source \texttt{IDM\_CircuitGenesisBridge.v} formalizes the following finite facts.
+
+\begin{theorem}[Circuit-to-ledger preservation]
+For every finite topologically ordered fan-in-two DeMorgan circuit $C$:
+\begin{enumerate}
+  \item erasing ledger wrappers recovers the original gate list exactly;
+  \item the ledger has exactly one entry per circuit gate;
+  \item topological indices are preserved;
+  \item evaluating the ledger yields the same gate-value sequence as evaluating the circuit;
+  \item the terminal Boolean readout is preserved; and
+  \item parent descriptors are preserved.
+\end{enumerate}
+Consequently,
+\[
+\LedgerSize(\mathsf{CGSL}(C))=\CircuitSize(C)
+\]
+for this representation.
+\end{theorem}
+
+The purpose of this theorem is bookkeeping, not hardness. It guarantees that a future lower bound established inside the semantic-ledger model is not automatically invalidated by an exponential compilation blow-up. Equally importantly, the ledger does not add provenance-only charges beyond the circuit's own extensional DAG structure.
+
+\section{Future Readers and No Early Collapse}
+
+Let $H$ denote a set of past histories, $U$ a family of admissible future continuations or interventions, and
+\[
+\Readout:H\times U\to Y
+\]
+the terminal readout. At a cut, an exact downstream computation may retain information, preserve a seed from which information can be recomputed, or store a certificate that the relevant distinction has already been semantically resolved.
+
+Write these three channels as
+\[
+R:H\to\mathcal R,\qquad
+Q:H\to\mathcal Q,\qquad
+C:H\to\mathcal C_0,
+\]
+and let
+\[
+\mathrm{Dec}:\mathcal R\times\mathcal Q\times\mathcal C_0\times U\to Y
+\]
+be an exact decoder satisfying
+\[
+\mathrm{Dec}(R(h),Q(h),C(h),u)=\Readout(h,u)
+\]
+for every $h,u$.
+
+\begin{theorem}[Three-channel no-free-collapse]
+If two histories remain distinguishable by some future continuation,
+\[
+\Readout(h,u)\neq\Readout(h',u),
+\]
+then an exact decoder cannot receive identical values in all three legal channels. With decidable equality on the channel values,
+\[
+\boxed{
+\Readout(h,u)\neq\Readout(h',u)
+\Longrightarrow
+R(h)\neq R(h')\;\lor\;Q(h)\neq Q(h')\;\lor\;C(h)\neq C(h').
+}
+\]
+\end{theorem}
+\begin{proof}
+If all three channels agree, the deterministic decoder is invoked on identical inputs for $h$ and $h'$ and must therefore return identical outputs, contradicting the assumed future-readout distinction.
+\end{proof}
+
+This is the finite semantic content of the Retain--Recompute--Resolve principle:
+\[
+\boxed{\Retain\quad\lor\quad\Recompute\quad\lor\quad\Resolve.}
+\]
+The distinction may remain encoded on the boundary, be reconstructed from still-available information, or be discharged by a certified closure step proving that the future reader has become insensitive to it.
+
+\subsection{Finite obligation aggregation}
+
+Let $\Omega$ be a finite set of distinct semantic obligations. Suppose every obligation is assigned to at least one of the three channels and let the explicit channel lists be $\Omega_R,\Omega_Q,\Omega_C$. Then
+\[
+|\Omega|
+\le
+|\Omega_R|+|\Omega_Q|+|\Omega_C|.
+\]
+This is simply a finite covering inequality, but it is useful because it makes the three legal escape routes explicit rather than hiding recomputation or closure outside the lower-bound model.
+
+\subsection{The recomputation degeneracy}
+
+\begin{proposition}[Uncharged recomputation trivializes RRR]
+If the recomputation seed may contain the entire source history, $Q(h)=h$, and the downstream decoder may invoke the target readout at uncharged cost, then every future-readout problem has an exact RRR realization with trivial retention and closure channels.
+\end{proposition}
+\begin{proof}
+Take $R$ and $C$ constant, set $Q(h)=h$, and define $\mathrm{Dec}(R_0,h,C_0,u)=\Readout(h,u)$.
+\end{proof}
+
+This proposition is central. For an $n$-bit input, the complete input itself is an $O(n)$-bit sufficient seed. Consequently, a lower bound on retained state cannot by itself yield a superpolynomial time lower bound. The difficult quantity is the cost of transforming, decoding, reconstructing, or resolving semantic demand.
+
+\section{Resource-Aware RRR Accounting}
+
+Let $D$ denote an independently certified semantic demand. Let $R,Q,C$ now denote \emph{charged resource amounts} spent on retention, recomputation, and certified resolution. Suppose a circuit has $s$ gates and one gate can contribute at most capacities
+\[
+\kappa_R,\qquad \kappa_Q,\qquad \kappa_C
+\]
+to the three accounts.
+
+\begin{theorem}[RRR capacity bound]
+If
+\[
+D\le R+Q+C,
+\]
+and
+\[
+R\le s\kappa_R,\qquad
+Q\le s\kappa_Q,\qquad
+C\le s\kappa_C,
+\]
+then
+\[
+\boxed{
+D\le s(\kappa_R+\kappa_Q+\kappa_C).
+}
+\]
+\end{theorem}
+\begin{proof}
+Summing the three capacity bounds yields
+\[
+R+Q+C\le s(\kappa_R+\kappa_Q+\kappa_C),
+\]
+and the demand inequality completes the result.
+\end{proof}
+
+Thus if a target admits an independently justified demand $D$ satisfying
+\[
+B(\kappa_R+\kappa_Q+\kappa_C)<D,
+\]
+then no circuit with at most $B$ gates can realize the target under the declared semantic accounting. The arithmetic is elementary; the substantive problem is to define $D$ and prove the capacity bounds without hiding the desired circuit lower bound inside them.
+
+\section{Transfer Back to Boolean Circuits}
+
+Let $\mathcal C$ be a circuit type and $\mathcal L$ a semantic-ledger type. Suppose
+\[
+\mathsf{compile}:\mathcal C\to\mathcal L
+\]
+preserves correctness and satisfies
+\[
+\LedgerSize(\mathsf{compile}(C))\le\CircuitSize(C).
+\]
+
+\begin{theorem}[Ledger lower bounds transfer]
+If every correct ledger for a target has size greater than $B$, then every correct circuit for that target has size greater than $B$.
+\end{theorem}
+\begin{proof}
+Assume a correct circuit $C$ had size at most $B$. Compilation yields a correct ledger of size at most $B$, contradicting the ledger lower bound.
+\end{proof}
+
+In the concrete CGSL construction above, compilation has exact one-to-one size. Therefore a genuine semantic-ledger lower bound is not stranded in a stronger model merely because of representation overhead.
+
+\section{Negative Controls}
+
+A lower-bound architecture is useful only if it rejects plausible but false completions. We record four such controls.
+
+\subsection{Exponential future width does not imply exponential circuit size}
+
+Define equality on two $m$-bit blocks by
+\[
+\mathrm{EQ}_m(x,y)=\mathbf 1[x=y].
+\]
+If the first block $x$ is fixed, the residual function on $y$ is
+\[
+g_x(y)=\mathbf 1[y=x].
+\]
+Hence the family of residual functions contains exactly $2^m$ distinct members. Any state machine that must answer every future $y$-query from a single middle state must therefore distinguish $2^m$ middle states.
+
+Nevertheless, equality admits a shared DeMorgan circuit of linear size. For each bit pair compute
+\[
+e_i=(x_i\wedge y_i)\vee(\neg x_i\wedge\neg y_i)
+\]
+and combine the $e_i$ with an AND tree. An explicit DAG implementation uses at most $6m-1$ non-input gates in the accompanying diagnostic.
+
+Therefore
+\[
+\boxed{
+\#\{\text{future residual functions}\}
+\not\lesssim
+\CircuitSize(f)
+}
+\]
+in unrestricted shared circuits. The reason is sharing: one gate may simultaneously service many future semantic contexts. A valid demand/capacity theorem must model that compression.
+
+\subsection{Raw retained bits are not time}
+
+An input of length $n$ can always be retained verbatim in $n$ bits. If the decoder is unconstrained, the hard computation may simply be postponed. Hence information-counting alone can give useful memory or streaming bounds but cannot establish a superpolynomial time lower bound for SAT.
+
+\subsection{Elimination width is model-specific}
+
+IDM's retained-contraction procedures can exhibit exponential work as induced boundary width grows. Such results are valid for the declared elimination/contraction model. An arbitrary Boolean circuit need not follow that schedule. A separate simulation theorem is required before a variable-elimination lower bound can be promoted to an unrestricted circuit lower bound.
+
+\subsection{Provenance is not semantic complexity}
+
+Readout Genesis retains lineage for reproducibility, but ordinary circuits may merge extensionally identical computations. A P-versus-NP lower bound may therefore charge only distinctions that a future Boolean reader can still separate, not historical provenance by itself.
+
+\section{Barrier Audit}
+
+The readout vocabulary does not automatically escape known barriers in complexity theory. Any future completion must be checked against them explicitly.
+
+\paragraph{Relativization.}
+Baker, Gill, and Solovay exhibited relativized worlds with $P^A=NP^A$ and others with $P^B\neq NP^B$ \cite{BGS75}. A proof whose decisive step relativizes cannot settle the unrelativized problem by itself.
+
+\paragraph{Natural proofs.}
+Razborov and Rudich identified a barrier for large, constructive properties used to prove general Boolean circuit lower bounds under standard cryptographic hardness assumptions \cite{RazborovRudich97}. Any proposed semantic demand that is efficiently recognizable and large over the space of Boolean functions must be checked against this framework rather than presumed novel because it uses different vocabulary.
+
+\paragraph{Algebrization.}
+Aaronson and Wigderson showed that many techniques extending relativization through algebraic oracles still cannot resolve major complexity separations \cite{AaronsonWigderson09}. A rank-, polynomial-, or algebraic-readout completion must therefore explain why its decisive step is not merely an algebrizing reformulation.
+
+\section{A Conditional Separation Schema}
+
+The preceding pieces allow the unresolved step to be stated cleanly.
+
+Let $\SAT_n$ denote the Boolean function deciding satisfiability for a fixed canonical encoding length $n$. Suppose there exist functions $H_n$ and $K_n$ with the following properties.
+
+\begin{enumerate}
+  \item \textbf{Semantic demand.} $H_n(\SAT_n)$ is defined without reference to minimum circuit size, minimum remaining work, the full SAT truth table, a SAT oracle, or circuit equivalence.
+  \item \textbf{Universal circuit accounting.} Every correct size-$s$ circuit for $\SAT_n$ compiles to a semantic ledger whose total legal RRR capacity is at most $sK_n$ and whose demand is at least $H_n(\SAT_n)$.
+  \item \textbf{Superpolynomial demand/capacity ratio.} For every polynomial $p$, for all sufficiently large $n$,
+  \[
+  H_n(\SAT_n)>p(n)K_n.
+  \]
+\end{enumerate}
+
+\begin{theorem}[Conditional separation]
+If the three properties above hold, then $\SAT\notin\Ppoly$, and consequently $P\neq NP$.
+\end{theorem}
+\begin{proof}
+Assume $\SAT\in\Ppoly$. Then there exists a polynomial $p$ and a family of circuits $C_n$ computing $\SAT_n$ with $|C_n|\le p(n)$. Universal circuit accounting and the RRR capacity bound imply
+\[
+H_n(\SAT_n)\le |C_n|K_n\le p(n)K_n,
+\]
+contradicting Property 3 for sufficiently large $n$. Hence $\SAT\notin\Ppoly$. Since $P\subseteq\Ppoly$ and SAT is NP-complete, $P=NP$ would imply $\SAT\in P\subseteq\Ppoly$, a contradiction.
+\end{proof}
+
+The theorem is intentionally conditional. It shows that the bridges and arithmetic are sufficient \emph{if and only if} the missing semantic demand/capacity premise can be supplied in a non-circular way.
+
+\section{Future Work: The Open Load-Bearing Theorem}
+\label{sec:future}
+
+The central future-work problem is now precise.
+
+\begin{conjecture}[SAT Semantic Demand Theorem --- open]
+Construct an explicit semantic demand $H_n$ and a per-gate capacity scale $K_n$ for the canonical SAT function such that:
+\[
+\boxed{
+H_n(\SAT_n)=n^{\omega(1)}K_n
+}
+\]
+in the sense that $H_n(\SAT_n)/(K_n n^c)\to\infty$ for every fixed $c$, while the capacity theorem remains valid for every shared bounded-fan-in Boolean circuit after basis simulation.
+\end{conjecture}
+
+Any admissible candidate must satisfy all of the following.
+\begin{enumerate}
+  \item \textbf{No circularity.} $H_n$ cannot be defined as minimum circuit size, minimum RRR cost, minimum remaining work, or another quantity equivalent to the target lower bound.
+  \item \textbf{No target leakage.} A certificate or verifier for $H_n$ cannot invoke SAT, circuit equivalence, MCSP, or import the correct full truth table.
+  \item \textbf{Semantic invariance.} Harmless rewrites, variable renamings, and extensionally equivalent shared subcircuits cannot create artificial hardness.
+  \item \textbf{Sharing awareness.} One gate may service many semantic obligations; the equality negative control must be accepted rather than falsely ruled out.
+  \item \textbf{Recomputation awareness.} Keeping or rereading the original input is legal, but the work required to reconstruct the relevant semantic effect must be charged.
+  \item \textbf{Basis discipline.} A bound proved for a restricted basis or proof system requires an explicit simulation theorem before being transferred to unrestricted circuits.
+  \item \textbf{Barrier discipline.} The decisive property must be audited for relativization, algebrization, and Natural-Proofs-style failure modes.
+\end{enumerate}
+
+\subsection{Genesis/IDM-native candidate ingredients}
+
+Several existing internal objects are plausible sources of such a demand, but none is presently known to satisfy the theorem.
+
+\paragraph{Future-reader equivalence.}
+At a cut, histories can be quotiented by equality of all declared future readouts. This yields exact state-width lower bounds but, as equality demonstrates, does not alone control unrestricted circuit size.
+
+\paragraph{Closure-and-lineage ledger.}
+Readout Genesis explicitly treats closure and lineage as a ledger and defines cut semantics in terms of unresolved boundary obligation, information crossing, and interface cost. The promising direction is to extract an \emph{extensional} certificate from this ledger, not to charge provenance as such.
+
+\paragraph{Delayed-return burden.}
+A distinction may disappear from the exposed boundary and become relevant again after reconvergence. The RRR language suggests a tradeoff: retain its semantic effect across the interval, reconstruct it later, or prove it permanently irrelevant. A useful theorem would need to quantify how much one shared gate can discharge across many such episodes.
+
+\paragraph{Retained burden vectors.}
+Rather than a single scalar potential, a candidate invariant may need several coordinates, e.g.
+\[
+\mathfrak B_t=(D_t,B_t,R_t,C_t,G_t,X_t),
+\]
+representing future distinctions, live boundary burden, reconstruction debt, closure multiplicity, generation/sharing multiplicity, and delayed-return/reconvergence burden. The required theorem would be a representation-robust tradeoff law showing that large reductions in one coordinate force compensating cost in others. No such universal law is proved here.
+
+\subsection{Uniform refuter formulation}
+
+An equivalent constructive target is a refuter. For a proposed bound $B(n)$, seek an algorithm
+\[
+\mathcal R_n(C)=x
+\]
+that receives only the syntax/lineage of a circuit $C$ of size at most $B(n)$ and produces an input $x$ such that
+\[
+C(x)\neq\SAT_n(x),
+\]
+without using a SAT oracle, an equivalence oracle, or a hidden truth table. If such a refuter were available uniformly for every polynomial $B(n)$, the corresponding circuit family would be excluded. The challenge is to construct the refuter from local semantic ledger information without solving the target problem internally.
+
+\subsection{Formal verification roadmap}
+
+The finite bridge, RRR, transfer, and cost files should be independently compiled with the declared Coq version and their assumptions inspected. Future formal work should then proceed in the following order:
+\begin{enumerate}
+  \item freeze a canonical SAT encoding and Boolean circuit basis;
+  \item formalize the exact notion of semantic obligation after quotienting reader-equivalent histories;
+  \item formalize resource costs for retention, reconstruction, and resolution;
+  \item mechanize the equality sharing counterexample as a permanent negative control;
+  \item test candidate burden laws exhaustively on small circuits before attempting asymptotics;
+  \item promote a candidate law only after it survives sharing, recomputation, harmless rewrites, and basis simulation;
+  \item only then attempt the asymptotic SAT-demand theorem.
+\end{enumerate}
+
+\section{Discussion}
+
+The main conceptual shift is from \emph{information quantity} to \emph{semantic obligation under resource-bounded transformation}. A Boolean answer may be one bit, and an input may be stored in linear space, yet the transformation from input to correct answer can still be difficult. The RRR language makes the standard escape routes explicit rather than forbidding them by model choice.
+
+This architecture also clarifies what would and would not constitute progress. Proving that a chosen coarse summary loses SAT information is a restricted readout lower bound. Proving exponential OBDD width is a branching-program lower bound. Proving high elimination width is an elimination-model lower bound. These may be valuable, but none transfers to unrestricted circuits without an explicit simulation or a universal semantic capacity theorem.
+
+Conversely, if a non-circular $H_n/K_n$ separation were found, the remaining route would be short: CGSL supplies the circuit-to-ledger map, RRR supplies the legal semantic channels, the cost kernel supplies the finite gate inequality, and the transfer theorem returns the result to circuits. The current work therefore aims to make the missing breakthrough impossible to confuse with surrounding bookkeeping.
+
+\section{Conclusion}
+
+We have presented a readout-first architecture for Boolean circuit lower bounds in which semantic distinctions cannot disappear for free: they must be retained, recomputed, or certifiably resolved. A shared DeMorgan circuit compiles to this ledger with no size expansion, and a genuine semantic-ledger lower bound transfers back to circuits. Resource-aware RRR accounting then reduces a size lower bound to a demand-versus-capacity inequality.
+
+The architecture is not a solution of P versus NP. The unresolved theorem is substantive: SAT must be shown to possess a superpolynomial semantic demand relative to the legal capacity of every small shared circuit, under a definition that is non-circular, recomputation-aware, sharing-aware, and robust to standard complexity barriers. Isolating that statement is the main outcome of the present manuscript and the intended basis for subsequent work.
+
+\appendix
+\section{Artifact Map}
+
+The research branch associated with this manuscript contains the following principal artifacts. File names are shown exactly as they appear in the repository.
+
+\begin{description}[style=nextline,leftmargin=1.5em,labelindent=0pt,font=\normalfont\ttfamily\small]
+\item[formal/IDM\_DecisionReadout.v]
+Mixed-fiber obstruction, one-bit degeneracy, and refinement lemmas.
+
+\item[formal/IDM\_SATIntervention.v]
+Deferred intervention-query injectivity and retained-record lower bound.
+
+\item[formal/IDM\_FutureReadoutWidth.v]
+Future-readout state-width theorem and the equality witness.
+
+\item[formal/IDM\_CircuitGenesisBridge.v]
+One-entry-per-gate circuit-to-ledger compilation preserving sharing and terminal semantics.
+
+\item[formal/IDM\_RetainRecomputeResolve.v]
+RRR no-collapse theorem, finite obligation aggregation, and recomputation degeneracy.
+
+\item[formal/IDM\_RRRCostLowerBound.v]
+Finite demand-versus-capacity arithmetic kernel.
+
+\item[formal/IDM\_CircuitLedgerTransfer.v]
+Transfer of semantic-ledger lower bounds to circuit lower bounds.
+
+\item[research/p\_vs\_np\_readout/rrr\_circuit\_audit.py]
+Equality-sharing negative control.
+
+\item[research/p\_vs\_np\_readout/P\_VS\_NP\_CLOSURE\_AUDIT.md]
+Branch-level claim boundary and statement of the remaining open theorem.
+\end{description}
+
+\section{Reproducibility and Status Discipline}
+
+The source repository uses an evidence ladder distinguishing machine-checked finite theorems, exact finite computations, diagnostics, declared derivations, and open claims. The present paper follows the same discipline. A theorem stated as a finite logical consequence may have accompanying Coq source, but repository CI status and \texttt{Print Assumptions} output should be checked at the cited commit before assigning a machine-verified tier. The open SAT Semantic Demand Theorem is not promoted by finite experiments.
+
+Repository: \url{https://github.com/morrocwi/information-discrete-math}\\
+Research branch: \texttt{research/p-vs-np-readout}\\
+Draft pull request: \url{https://github.com/morrocwi/information-discrete-math/pull/117}\\
+Readout Genesis: \url{https://github.com/morrocwi/readout_genesis}
+
+\begin{thebibliography}{99}
+
+\bibitem{CookCMI}
+Stephen A. Cook.
+\newblock The P versus NP Problem.
+\newblock In \emph{The Millennium Prize Problems}, Clay Mathematics Institute problem description, revised 2000.
+\newblock \url{https://www.claymath.org/wp-content/uploads/2022/02/MPPc.pdf}.
+
+\bibitem{CMIPvsNP}
+Clay Mathematics Institute.
+\newblock P vs NP, Millennium Prize Problem overview.
+\newblock \url{https://www.claymath.org/millennium/p-vs-np/}.
+
+\bibitem{BGS75}
+Theodore Baker, John Gill, and Robert Solovay.
+\newblock Relativizations of the $P=?NP$ Question.
+\newblock \emph{SIAM Journal on Computing}, 4(4):431--442, 1975.
+\newblock doi:10.1137/0204037.
+
+\bibitem{RazborovRudich97}
+Alexander A. Razborov and Steven Rudich.
+\newblock Natural Proofs.
+\newblock \emph{Journal of Computer and System Sciences}, 55(1):24--35, 1997.
+\newblock doi:10.1006/jcss.1997.1494.
+
+\bibitem{AaronsonWigderson09}
+Scott Aaronson and Avi Wigderson.
+\newblock Algebrization: A New Barrier in Complexity Theory.
+\newblock \emph{ACM Transactions on Computation Theory}, 1(1):2:1--2:54, 2009.
+\newblock doi:10.1145/1490270.1490272.
+
+\bibitem{LahteeIDM}
+Yaoharee Lahtee.
+\newblock Information Discrete Mathematics.
+\newblock Software and technical corpus, v1.5.1 repository; deposited treatise v1.6.0, Zenodo DOI 10.5281/zenodo.22644131, 2026.
+\newblock \url{https://github.com/morrocwi/information-discrete-math}.
+
+\bibitem{LahteeGenesis}
+Yaoharee Lahtee.
+\newblock Readout Genesis.
+\newblock Technical research corpus, 2026.
+\newblock \url{https://github.com/morrocwi/readout_genesis}.
+
+\end{thebibliography}
+
+\end{document}
