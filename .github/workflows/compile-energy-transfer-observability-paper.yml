@@ -1,0 +1,42 @@
+name: compile-energy-transfer-observability-paper
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "paper/NS_ENERGY_TRANSFER_OBSERVABILITY_BRIDGE.tex"
+      - ".github/workflows/compile-energy-transfer-observability-paper.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile energy-transfer observability manuscript
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: NS_ENERGY_TRANSFER_OBSERVABILITY_BRIDGE.tex
+          working_directory: paper
+      - name: Upload manuscript PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: NS_ENERGY_TRANSFER_OBSERVABILITY_BRIDGE
+          path: paper/NS_ENERGY_TRANSFER_OBSERVABILITY_BRIDGE.pdf
+          if-no-files-found: error
+      - name: Commit compiled PDF on main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add paper/NS_ENERGY_TRANSFER_OBSERVABILITY_BRIDGE.pdf
+          if git diff --cached --quiet; then
+            echo "Compiled PDF unchanged."
+          else
+            git commit -m "compile energy-transfer observability bridge manuscript"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
