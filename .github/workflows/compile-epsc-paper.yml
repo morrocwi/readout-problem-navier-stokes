@@ -83,7 +83,7 @@ jobs:
                   "now supplies a rigorous continuous-time enclosure for that path.  The remaining outer numerical\n"
                   "frontier is tightness and computational scaling at larger cutoff/horizon (\\texttt{PROP-EPSC-16});\n"
                   "measurement-to-continuum composition with energy observability is treated separately in\n"
-                  "\\texttt{NS_OBSERVABLE_TO_CONTINUUM_CERTIFICATES.tex}."
+                  "\\texttt{NS\\_OBSERVABLE\\_TO\\_CONTINUUM\\_CERTIFICATES.tex}."
               ),
               (
                   "The remaining implementation frontier is now finite and concrete: validated continuous-time\n"
@@ -105,9 +105,6 @@ jobs:
               elif new in text:
                   pass
               else:
-                  # Some anchors describe historical pre-EPSC-15 wording and may already have
-                  # been refreshed by an earlier bot commit. Only fail on the two current-tail
-                  # consistency anchors that must exist in either old or new form.
                   if "current numerical solver" in old or "remaining implementation frontier" in old:
                       raise SystemExit("EPSC status refresh anchor not found; refuse silent drift")
 
