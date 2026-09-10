@@ -518,7 +518,7 @@ another:
 \item \texttt{readout\_genesis}: interpretation/application map only; NS results are not promoted to
       root ontology.
 \end{itemize}
-The EPSC lineage is registered as \texttt{PROP-EPSC-01} through \texttt{PROP-EPSC-16}.  Classical
+The EPSC lineage is registered as \texttt{PROP-EPSC-01} through \texttt{PROP-EPSC-19}.  Classical
 Fourier, energy, Sobolev, Leray--Hopf and relative-energy inequalities are registered for lineage
 and role, not claimed as original mathematics.
 
@@ -532,9 +532,11 @@ or as certification of truth.
 The strongest positive statement in this paper is target-specific.  A rigorous omitted-tail
 certificate exists for Leray--Hopf trajectories in $L^2_tL^2_x$, and conditional/a-posteriori
 terminal certificates exist from declared richer information.  A residual-based adapter converts
-a certified smooth comparison path into a terminal $L^2$ bound.  The current numerical solver is
-not yet an end-to-end continuum certificate because the validated continuous-time enclosure of its
-floating-point RK4 tape remains open.
+a certified comparison path into a terminal $L^2$ bound.  The declared stored-RK4-tape construction
+now supplies a rigorous continuous-time enclosure for that path.  The remaining outer numerical
+frontier is tightness and computational scaling at larger cutoff/horizon (\texttt{PROP-EPSC-16});
+measurement-to-continuum composition with energy observability is treated separately in
+\texttt{NS\_OBSERVABLE\_TO\_CONTINUUM\_CERTIFICATES.tex}.
 
 In particular, this work does \emph{not} establish global smoothness, finite-time singularity,
 uniqueness of Leray--Hopf weak solutions, an autonomous finite closure of three-dimensional
@@ -551,9 +553,11 @@ adapter.  Terminal low-mode coefficients alone are non-identifying on an unrestr
 contrast, the Leray--Hopf energy inequality yields an explicit $O(K^{-1})$ spacetime certificate;
 a richer energy/dissipation tape yields a terminal budget bound; and a residual-based
 relative-energy estimate turns a certified finite comparison path into a terminal continuum bound.
-The remaining implementation frontier is now finite and concrete: validated continuous-time
-residual enclosure of the RK4 tape.  This separation is the central practical result of the EPSC
-programme.
+The continuous-time residual enclosure of the declared stored RK4 tape is now supplied by the
+exact-dyadic piecewise-linear construction.  The remaining outer implementation frontier is making
+that certification tight and affordable at larger $K$ and longer $T$ (\texttt{PROP-EPSC-16}).
+A companion synthesis paper separates this outer problem from the certified energy-observability
+inverse and noise-stability frontiers (\texttt{PROP-EPSC-18/19}).
 
 \begin{thebibliography}{9}
 \bibitem{Leray1934}
