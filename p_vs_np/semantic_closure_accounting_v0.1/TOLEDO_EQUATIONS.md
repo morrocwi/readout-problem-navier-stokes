@@ -4,6 +4,10 @@ Toledo registration source:
 
 `morrocwi/toledo/registry/proposals/semantic_closure_accounting_p_vs_np_v0_1.json`
 
+Registration commit:
+
+`0b17d60321f0a8ffaa0ebdd9f845fce05b347f30`
+
 The canonical registry was checked first. Existing reader-equivalence / readout-sufficiency machinery is treated as prior Toledo/Readout-Genesis structure rather than re-registered under a new equation number. The entries below are manuscript-specific derivations or assembled complexity-theoretic readings.
 
 | Proposal ID | Working code | Manuscript object | Tier / status |
