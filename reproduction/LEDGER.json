@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T16:00:04.099072+00:00",
+  "generated_at_utc": "2026-09-10T16:07:51.834812+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 160,
+  "total_claims": 165,
   "tier_counts": {
-    "finite_diagnostic": 70,
-    "Open": 26,
-    "Dr": 63,
+    "finite_diagnostic": 73,
+    "Open": 27,
+    "Dr": 64,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 69,
-    "OPEN": 26,
+    "PASS": 72,
+    "OPEN": 27,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 17
+    "DERIVED": 18
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -944,6 +944,46 @@
     },
     {
       "volume": 7,
+      "id": "V7-EPSC18-N1-EXACT-BILINEAR-TENSOR",
+      "name": "exact finite coefficient tensor for the integer-scaled N=1 Galerkin bilinear map",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "52x52x52 finite tensor; nonzero coefficients=2096; exact induced infinity bilinear row-sum bound=36000"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-COMPONENTWISE-HESSIAN-ENCLOSURE",
+      "name": "componentwise rational Hessian-row enclosure on the N=1 local box",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "nonnegative coefficientwise Taylor/first-/second-derivative recurrence; box half-width=1/1000; derived radius is contained in box=True"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-COMPONENTWISE-PRECONDITIONED-RADIUS",
+      "name": "componentwise exact-preconditioned positive radius for the full N=1 local inverse",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "A=J0^-1 exact and componentwise H_j give 10^(-28) < r <= 10^(-27); q<=1/2; scalar exact-preconditioner baseline was 10^(-59) < r <= 10^(-58)"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-COMPONENTWISE-IMPROVEMENT",
+      "name": "componentwise finite majorants materially tighten the exact-preconditioned N=1 radius",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "power-of-ten lower-bracket index improves from 59 to 28; gain=31 decimal orders"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-PRACTICAL-LOCAL-INTERVAL",
+      "name": "practically informative branch-stable measurement radius after componentwise tightening",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "the rigorous finite radius is now between 10^-28 and 10^-27, a major tightening but still far below a practical measurement tolerance; exact local interval/Jacobian structure and measurement-noise branch containment remain open"
+    },
+    {
+      "volume": 7,
       "id": "V7-EPSC18-N1-EXACT-CHAR0-JACOBIAN",
       "name": "exact characteristic-zero integer-scaled 49x49 N=1 observability Jacobian",
       "tier": "finite_diagnostic",
@@ -1362,6 +1402,10 @@
     },
     {
       "script": "check_volume7_energy_transfer_observability.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n1_componentwise_radius.py",
       "returncode": 0
     },
     {
