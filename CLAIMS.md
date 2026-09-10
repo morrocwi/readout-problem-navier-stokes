@@ -25,10 +25,35 @@ Primary source: `paper/NS_ENERGY_OBSERVABILITY_ALL_K_FINAL.tex` / `.pdf`.
 | Exact modular certificates reach the translation ceiling in the four recorded cases `N=1` total, `N=1` shell, `N=2` total, `N=3` shell | **Finite exact certificate evidence.** |
 | Those saturation records imply local finite-state completeness modulo spatial translations at generic free-action states | **Derived local quotient statement (`Dr`).** Not global injectivity. |
 | The structural formulas expose a measurement-channel versus temporal-depth tradeoff | **Derived structural statement.** At `N=3`, one scalar channel has lower bound `R>=680`, while the 18-shell reader is exactly saturated at `R=39`. |
-| The same earliest-order saturation holds generically for every finite resolution `N` | **OPEN conjecture (`PROP-NSOBS-07`).** The four recorded exact cases do not prove it. |
-| Saturated rank alone gives a certified numerical inverse with known error radius under noisy measurements | **No.** Rank is local qualitative identifiability; conditioning, branch control, quantitative radius and noise propagation remain open. |
+| Shell energy admits the finite balance `dI_s/dt=T_s-2 nu s I_s+F_s`, with `sum_s T_s=0` in the unforced closed finite system | **Standard finite NS identity**, registered as `PROP-NSOBS-09` for provenance/application linkage. |
+| `(I,T)` contains extra local rank beyond `(I,dI/dt)` | **No.** For prescribed forcing, `T=dI/dt+2 nu S I-F`, an invertible affine reparameterization. Same Jacobian rank (`PROP-NSOBS-10`). |
+| Every new boundary mode at every cutoff is kinematically disconnected from the previous cutoff | **No.** For every `N>=2`, a constructive non-collinear triad connects every boundary mode to an old mode (`PROP-NSOBS-11`). The checker exhaustively verifies the construction through `N=8`. |
+| The same earliest-order saturation holds generically for every finite resolution `N` | **Still OPEN conjecture (`PROP-NSOBS-07`).** Connectivity is no longer the missing step; nonvanishing/algebraic independence of enough observation minors remains open. |
+| Saturated rank alone gives a certified numerical inverse with known error radius under noisy measurements | **No.** Rank is local qualitative identifiability; conditioning, branch control, quantitative radius and noise propagation remain open for the full Fourier quotient. |
 
-The observability proposal family is registered in Toledo as `PROP-NSOBS-01..08`.
+The observability proposal family is registered in Toledo as `PROP-NSOBS-01..11`.
+
+## Energy-transfer observability bridge
+
+Primary source: `reproduction/NS_ENERGY_TRANSFER_OBSERVABILITY_BRIDGE.md` and `reproduction/checks/check_volume7_energy_transfer_observability.py`.
+
+The bridge makes a correction to the interpretation: internal energy transfer is useful because it keeps shell-to-shell redistribution visible and permits finite-window balance measurements. It does **not** evade the Lie-jet rank ceiling, since `(I,T)` and `(I,dI/dt)` are equivalent coordinates at first order for prescribed forcing.
+
+A constructive all-`N` triad-connectivity lemma is now derived analytically and finitely stress-tested through `N=8`. It narrows `PROP-NSOBS-07` but does not solve it.
+
+The existing analytic three-mode reduced subcase now has an explicit quantitative inverse radius:
+
+`r=(J1_a+2 nu x)/(2 c_a)`, `c_a=3/10`, and
+
+`|r-rhat| <= (sigma_J+2 nu sigma_x)/(2|c_a|)`.
+
+At `nu=1/200`, the bound is `(5/3) sigma_J + (1/60) sigma_x`. This is registered as `PROP-EPSC-20` and is a **partial EPSC-18 witness only**.
+
+The integrated shell balance
+
+`int T_s dt = I_s(t1)-I_s(t0)+2 nu s int I_s dt-int F_s dt`
+
+admits direct interval-radius propagation. This is `PROP-EPSC-21` and removes numerical differentiation from one EPSC-19 substep. It does **not** yet provide the full noisy Fourier-state inverse.
 
 ## Standalone EPSC research lane
 
@@ -68,31 +93,34 @@ The synthesis separates **inner completeness** (what observations determine insi
 | If a certified finite observation/inversion layer supplies `inf_g ||P_N u(T)-g xhat_N||_2 <= rho_N` and EPSC supplies `||Q_N u(T)||_2 <= beta_N`, then `inf_g ||u(T)-g xhat_N||_2 <= sqrt(rho_N^2+beta_N^2)` | **Derived analytic composition (`PROP-EPSC-17`).** Follows from orthogonality of the retained and omitted Fourier subspaces |
 | The generic triangle bound `rho_N+beta_N` is the sharp composition required here | **No.** Orthogonality permits the sharper Pythagorean radius `sqrt(rho_N^2+beta_N^2)` |
 | The unavoidable spatial-translation ambiguity in invariant energy readers prevents a quotient-state continuum certificate | **No.** The composition theorem is naturally stated modulo the isometric translation group preserving the cutoff |
-| Existing rank saturation already supplies the quantitative `rho_N` required by the composition theorem | **No.** This is precisely the open `PROP-EPSC-18` certified energy-jet inversion-radius problem |
-| A noise-stable end-to-end certificate from measured energy time series is already proved | **No. OPEN (`PROP-EPSC-19`).** Measurement noise, numerical differentiation, conditioning and branch stability must be certified |
+| Existing rank saturation already supplies the quantitative `rho_N` required by the composition theorem | **No.** This is the open full-cube `PROP-EPSC-18` problem |
+| No quantitative inner inverse exists anywhere in the programme | **No.** `PROP-EPSC-20` supplies one for the analytic reduced three-mode subcase; extension to the full finite Fourier quotient remains open |
+| A derivative-free certified noisy transfer observable is unavailable | **No.** `PROP-EPSC-21` supplies a finite-window transfer identity with interval-radius propagation |
+| A noise-stable end-to-end certificate from measured energy time series is already proved | **No. Full problem still OPEN (`PROP-EPSC-19`).** The later inversion/conditioning/branch-stability stage remains missing |
 | `PROP-EPSC-16` and the observability inverse are the same frontier | **No.** `EPSC-16` is outer-certificate cost/tightness; `EPSC-18/19` are inner reconstruction and noise-stability problems |
 | All-resolution energy saturation is required for the conditional composition theorem itself | **No.** `EPSC-17` is a general conditional composition rule. `NSOBS-07` is separately needed for an all-resolution observability statement |
 
-The EPSC family is registered in Toledo through `PROP-EPSC-19`; the energy-observability family is registered as `PROP-NSOBS-01..08`. These remain proposal/provenance records, not automatically canonical verified Toledo theorem codes.
+The EPSC family is registered in Toledo through `PROP-EPSC-21`; the energy-observability family is registered through `PROP-NSOBS-11`. These remain proposal/provenance records, not automatically canonical verified Toledo theorem codes.
 
 ## Current measurement-to-continuum chain
 
 ```text
-energy measurements / Lie jets
-    -> certified retained-state quotient radius rho_N       [PROP-EPSC-18 OPEN]
+shell-energy measurements / finite windows
+    -> certified transfer summaries                           [NSOBS-09/10; EPSC-21 partial]
+    -> certified retained-state quotient radius rho_N         [EPSC-18 OPEN; EPSC-20 closes triad subcase only]
     -> retained finite state / comparison path
-    -> certified omitted-tail beta_N                        [EPSC family; EPSC-15 supplies one path adapter]
-    -> sqrt(rho_N^2 + beta_N^2)                             [PROP-EPSC-17]
+    -> certified omitted-tail beta_N                          [EPSC family; EPSC-15 supplies one path adapter]
+    -> sqrt(rho_N^2 + beta_N^2)                               [PROP-EPSC-17]
     -> fail-closed continuum L2 tolerance verdict modulo translation
 ```
 
-The major open frontiers are deliberately distinct:
+The major open frontiers are now narrower and deliberately distinct:
 
 ```text
-PROP-NSOBS-07  all-resolution earliest-order saturation
+PROP-NSOBS-07  all-resolution earliest-order saturation: connectivity closed; minor independence open
 PROP-EPSC-16   scalable/tight outer path certification
-PROP-EPSC-18   certified quantitative energy-jet inverse
-PROP-EPSC-19   noise-stable measurement-to-continuum propagation
+PROP-EPSC-18   full-cube gauge-fixed, branch-certified quantitative inverse
+PROP-EPSC-19   full noisy propagation through that inverse; derivative-free transfer substep supplied
 ```
 
 The key methodological rule is unchanged: **finite observability or finite algebra does not by itself imply a certified finite reconstruction radius; a certified finite reconstruction does not by itself bound the omitted continuum tail; continuum mathematical certification does not by itself imply physical turbulence validation.**
