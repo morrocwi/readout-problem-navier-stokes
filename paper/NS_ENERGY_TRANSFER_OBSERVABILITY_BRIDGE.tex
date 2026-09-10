@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Energy Transfer as an Observable Coordinate:\\
+A Finite Navier--Stokes Bridge from Shell Balances to Certified Readout Inversion}
+\author{Yaoharee Lahtee\\\small Open Civil Science Initiative, Bangkok, Thailand}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A companion Fourier--Galerkin Navier--Stokes observability programme shows that total- and
+shell-energy Lie jets can generically determine a finite state modulo spatial translation in
+several exactly certified finite cases, but it leaves quantitative inversion and noisy recovery
+open.  This note isolates the role of nonlinear energy transfer in those open problems.  The
+main correction is negative but useful: for prescribed forcing, shell transfer
+$T=\dot I+2\nu S I-F$ is an invertible affine reparameterization of the first shell-energy jet,
+so transfer variables do not create observability rank beyond $(I,\dot I)$.  Their advantage is
+instead structural and numerical.  They make explicit the internal redistribution that total
+energy cancels, and they admit a derivative-free finite-window balance with direct interval-error
+propagation.  We also prove a constructive kinematic lemma: every Fourier mode added on the
+boundary of a cubic cutoff $N\ge2$ belongs to a non-collinear Navier--Stokes triad containing a
+mode from the previous cutoff.  This removes lack of triad connectivity as an obstruction to the
+all-resolution saturation conjecture, while leaving algebraic independence of observable minors
+open.  Finally, the programme's analytic three-mode subcase is upgraded to an explicit
+quantitative inverse radius.  These are partial closures of the inner-certificate frontier, not a
+proof of all-resolution observability, global injectivity, continuum regularity, or the Clay
+Millennium problem.
+\end{abstract}
+
+\section{Scope and claim discipline}
+
+Let $K_N=\{k\in\mathbb Z^3:0<\|k\|_\infty\le N\}$ be a finite cubic Fourier cutoff for periodic
+incompressible Navier--Stokes.  This note concerns the finite Fourier--Galerkin system and its
+energy readouts.  Standard Navier--Stokes energy identities are used as standard mathematics and
+are not claimed as original results.
+
+The work is motivated by a Readout Genesis interpretation in which restoration and transmitted
+difference are distinct roles.  That interpretation is not used as a premise for physical energy.
+In particular, no informational quantity is identified with SI Joules without a separate domain
+translation.  All mathematical claims below are established directly in the finite NS model.
+
+\section{Shell balance: transfer versus dissipation}
+
+For a squared-radius shell label $s$, let
+\[
+I_s(t)=\frac12\sum_{|k|^2=s}|\widehat u_k(t)|^2
+\]
+under the declared Fourier normalization.  The finite shell balance can be written
+\begin{equation}\label{eq:balance}
+\boxed{\dot I_s=T_s-2\nu s I_s+F_s,}
+\end{equation}
+where $T_s$ is the quadratic nonlinear transfer and $F_s$ is a prescribed shell-energy input.  In
+the unforced closed finite truncation the nonlinearity conserves total kinetic energy, hence
+\begin{equation}\label{eq:transferzero}
+\boxed{\sum_sT_s=0.}
+\end{equation}
+Thus the nonlinear term redistributes energy among retained shells while the viscous term removes
+it.  Summing~\eqref{eq:balance} over $s$ erases the internal transfer pattern by
+\eqref{eq:transferzero}; retaining the individual shell equations keeps that pattern visible.
+
+\section{Transfer is not an extra-rank oracle}
+
+Write $I=(I_1,\ldots,I_m)^T$ and $S=\mathrm{diag}(s_1,\ldots,s_m)$.  For known viscosity and
+prescribed forcing,
+\begin{equation}\label{eq:transfer}
+T=\dot I+2\nu S I-F.
+\end{equation}
+
+\begin{proposition}[First-jet/transfer equivalence]\label{prop:equiv}
+For prescribed $F$, the observation pairs $(I,T)$ and $(I,\dot I)$ have the same local Jacobian
+rank at every state where the derivatives are defined.
+\end{proposition}
+
+\begin{proof}
+Equation~\eqref{eq:transfer} gives
+\[
+\begin{bmatrix}I\\T\end{bmatrix}
+=
+\begin{bmatrix}I_m&0\\2\nu S&I_m\end{bmatrix}
+\begin{bmatrix}I\\\dot I\end{bmatrix}
+-
+\begin{bmatrix}0\\F\end{bmatrix}.
+\]
+The block triangular matrix has determinant one and is therefore invertible.  Multiplication by an
+invertible output-coordinate map preserves Jacobian rank.
+\end{proof}
+
+For the exact $N=1$ modular witness already used by the observability programme, the companion
+checker verifies
+\[
+\operatorname{rank}D(I,\dot I)=\operatorname{rank}D(I,T)=5,
+\]
+and verifies the differential transfer dependence $\sum_sDT_s=0$.  Hence transfer makes the
+mechanism visible but does not bypass the shell-jet rank ceiling.
+
+\section{Derivative-free finite-window transfer}
+
+Integrating~\eqref{eq:balance} over $[t_0,t_1]$ yields
+\begin{equation}\label{eq:window}
+\boxed{
+\int_{t_0}^{t_1}T_s\,dt
+=I_s(t_1)-I_s(t_0)
++2\nu s\int_{t_0}^{t_1}I_s\,dt
+-\int_{t_0}^{t_1}F_s\,dt.
+}
+\end{equation}
+This avoids numerical differentiation of measured energy data.  If certified absolute interval
+radii for the four right-hand terms are respectively $r_1,r_0,r_I,r_F$, interval arithmetic gives
+\begin{equation}\label{eq:windowrad}
+\boxed{
+\operatorname{rad}\!\left(\int_{t_0}^{t_1}T_sdt\right)
+\le r_1+r_0+2\nu s r_I+r_F.
+}
+\end{equation}
+This closes a specific noise-propagation subproblem: transfer-window uncertainty can be certified
+without constructing high-order time derivatives.  It does not yet provide a certified inverse
+from those windows to the complete Fourier state.
+
+\section{All-cutoff kinematic triad connectivity}
+
+\begin{lemma}[Boundary-to-old-cutoff triad connection]\label{lem:connect}
+For every integer $N\ge2$ and every $k\in K_N$ with $\|k\|_\infty=N$, there exist
+$p\in K_{N-1}$ and $q\in K_N$ such that
+\[
+p+q=k,\qquad p\times q\ne0.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose an index $i$ with $|k_i|=N$.  If $k$ has a nonzero component transverse to $i$, set
+$p=\operatorname{sgn}(k_i)e_i$ and $q=k-p$.  Then $\|p\|_\infty=1\le N-1$, $q\in K_N$, and the
+transverse component makes $p$ and $q$ non-collinear.  If instead $k=\pm Ne_i$, choose any
+$j\ne i$, set $p=e_j$ and $q=k-p$.  Again $p\in K_{N-1}$, $q\in K_N$, and $p\times q\ne0$.
+\end{proof}
+
+For non-collinear $p,q$, suitable divergence-free polarizations give a nontrivial quadratic
+Navier--Stokes interaction.  Thus every new boundary mode is kinematically attached to the previous
+cutoff.  The repository checker exhaustively verifies the constructive choice through $N=8$.
+
+\begin{remark}[What the lemma does not prove]
+Lemma~\ref{lem:connect} does not prove nonzero transfer at every state, because modal amplitudes may
+vanish and different triads may cancel.  It also does not prove independence of the observation
+rows.  Therefore it narrows but does not solve the all-$N$ earliest-order saturation conjecture.
+The remaining obstruction is algebraic: enough symmetry-reduced observation minors must be shown
+generically nonzero.
+\end{remark}
+
+\section{A quantitative inverse in the analytic triad subcase}
+
+The programme's existing three-mode analytic subcase uses reduced invariants $(x,y,z,r)$ and the
+coefficient
+\[
+c_a=\frac{3}{10},\qquad |a|^2=1.
+\]
+Its first shell-energy derivative obeys
+\begin{equation}\label{eq:triadjet}
+J_{1,a}=2c_ar-2\nu x.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:rinv}
+\boxed{r=\frac{J_{1,a}+2\nu x}{2c_a}.}
+\end{equation}
+If $x$ and $J_{1,a}$ have certified absolute radii $\sigma_x$ and $\sigma_J$, then
+\begin{equation}\label{eq:rrad}
+\boxed{
+|r-\widehat r|
+\le\frac{\sigma_J+2\nu\sigma_x}{2|c_a|}.
+}
+\end{equation}
+At $\nu=1/200$ this simplifies to
+\[
+|r-\widehat r|\le\frac53\sigma_J+\frac1{60}\sigma_x.
+\]
+The exact rational checker uses a perturbed sample and verifies an error of $49/60000$ against the
+certified bound $17/20000$.
+
+This is a genuine quantitative inner-inverse witness, but only for the reduced triad model.  It is
+not a certified inversion of the 52-real-dimensional $N=1$ cube.
+
+\section{Relation to the observable-to-continuum certificate}
+
+The companion EPSC synthesis gives the conditional composition
+\[
+\inf_{g\in G}\|u(T)-g\widehat x_N\|_2
+\le\sqrt{\rho_N^2+\beta_N^2},
+\]
+where $\rho_N$ is a certified retained-state reconstruction radius and $\beta_N$ is an independently
+certified omitted-tail radius.  The present note advances the inner side in two ways: it supplies a
+quantitative $\rho$-type bound in the exact reduced triad case, and it supplies derivative-free
+window transfer data with explicit uncertainty radii.  Neither result manufactures the full
+$\rho_N$ needed for a general finite Fourier state.
+
+\section{Updated open problems}
+
+The work leaves four deliberately separated frontiers.
+
+\begin{enumerate}
+\item \textbf{Full finite inverse (EPSC-18).}  Fix the spatial-translation gauge, control observation
+branches, and certify a quantitative inverse radius for the complete finite Fourier quotient.  The
+triad result~\eqref{eq:rrad} is only a low-dimensional witness.
+\item \textbf{Full noisy chain (EPSC-19).}  Propagate certified measurement-window errors through the
+full finite inverse and then through the EPSC tail composition.  Equation~\eqref{eq:windowrad}
+removes one differentiation bottleneck but not the inversion bottleneck.
+\item \textbf{All-$N$ saturation (NSOBS-07).}  Kinematic connectivity is supplied by
+Lemma~\ref{lem:connect}; the remaining issue is generic nonvanishing/algebraic independence of enough
+symmetry-reduced observation minors.
+\item \textbf{Outer-certificate scaling (EPSC-16).}  Improve the independent finite-to-continuum
+certificate's cost and tightness at high cutoff and long horizon.  This is not the same problem as
+observability inversion.
+\end{enumerate}
+
+\section{Conclusion}
+
+Energy transfer is useful in finite Navier--Stokes observability, but not because it secretly adds
+rank.  Its mathematically honest role is more specific: it is the coordinate in which internal
+redistribution becomes explicit, the conservation dependence behind the shell-reader rank count is
+visible, and finite-window observations can be certified without high-order differentiation.  The
+new all-cutoff connectivity lemma removes a structural obstruction to the all-resolution
+conjecture, while the reduced triad inverse gives a first explicit quantitative inner certificate.
+The full finite-state inverse, its noisy extension, and all-$N$ minor independence remain open and
+are stated as such.
+
+\paragraph{Reproducibility.}
+Executable checks and claim boundaries are maintained in
+\texttt{reproduction/checks/check\_volume7\_energy\_transfer\_observability.py},
+\texttt{reproduction/NS\_ENERGY\_TRANSFER\_OBSERVABILITY\_BRIDGE.md}, and the auto-generated
+reproduction ledger.  Reusable helper algebra is maintained in the sister
+\texttt{information-discrete-math} repository.  Toledo proposal records are provenance/status
+entries and are not automatically canonical theorem codes.
+
+\end{document}
