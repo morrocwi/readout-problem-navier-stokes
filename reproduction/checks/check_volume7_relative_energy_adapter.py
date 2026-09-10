@@ -3,7 +3,9 @@
 
 The continuum relative-energy theorem is analytic tier Dr.  This script checks
 only the finite algebraic consequences and Fourier residual formulas used by
-the implementation.
+the implementation.  The continuous-time RK4 tape enclosure is owned by
+check_volume7_rk4_continuous_enclosure.py so the reproduction ledger has one
+authoritative status row for that obligation.
 """
 from __future__ import annotations
 
@@ -103,13 +105,6 @@ def main():
             "tier": "Dr",
             "status": "DERIVED",
             "evidence": "paper/NS_RELATIVE_ENERGY_ADAPTER_CERTIFICATE.md: standard relative-energy inequality + H^-1 Young bound + Gronwall",
-        },
-        {
-            "id": "V7-EPSC-RK4-CONTINUOUS-ENCLOSURE",
-            "name": "validated continuous-time A_T/B_T enclosure from current floating-point RK4 tape",
-            "tier": "Open",
-            "status": "OPEN",
-            "evidence": "remaining engineering proof obligation: rigorous interpolation and interval upper bounds for grad-Linf and H^-1 residual integrals",
         },
     ]
 
