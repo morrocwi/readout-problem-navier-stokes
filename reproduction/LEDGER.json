@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T13:00:27.085987+00:00",
+  "generated_at_utc": "2026-09-10T14:01:17.792640+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 134,
+  "total_claims": 141,
   "tier_counts": {
-    "finite_diagnostic": 62,
-    "Open": 18,
-    "Dr": 53,
+    "finite_diagnostic": 63,
+    "Open": 21,
+    "Dr": 56,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 61,
-    "OPEN": 18,
+    "PASS": 62,
+    "OPEN": 21,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 7
+    "DERIVED": 10
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -860,7 +860,7 @@
       "name": "Direct NS ordered-triad sum reproduces the exact retained nonlinear tape",
       "tier": "finite_diagnostic",
       "status": "PASS",
-      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18"
+      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18"
     },
     {
       "volume": 6,
@@ -885,6 +885,62 @@
       "tier": "Dr",
       "status": "N/A",
       "evidence": "Uses polynomial NS Galerkin dynamics + Hilbert basis theorem + analytic-output identity theorem; proof and exact lineage are stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md."
+    },
+    {
+      "volume": 7,
+      "id": "V7-NSOBS-TRANSFER-JET-EQUIVALENCE",
+      "name": "shell transfer and first shell-energy jet carry the same local rank information",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "K=1 exact modular: rank(I,dI)=5, rank(I,T)=5, sum_s D T_s=0=True"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-18-TRIAD-QUANTITATIVE-INVERSE",
+      "name": "quantitative retained-state inverse radius in the analytic three-mode reduced subcase",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "r error=49/60000 <= bound=17/20000; this is a reduced-subcase witness, not the full N=1 cube"
+    },
+    {
+      "volume": 7,
+      "id": "V7-NSOBS-ALL-N-TRIAD-CONNECTIVITY-LEMMA",
+      "name": "every new boundary mode has a constructive non-collinear triad connection to the previous cutoff",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "analytic construction in reproduction/NS_ENERGY_TRANSFER_OBSERVABILITY_BRIDGE.md; exhaustive finite check through N=8=True"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-19-WINDOW-TRANSFER-RADIUS",
+      "name": "integrated shell-transfer observable admits direct certified interval-radius propagation",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "sample exact radius=21/500; removes numerical differentiation from this substep only"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-18-FULL-CUBE-INVERSE",
+      "name": "full finite Fourier quotient-state certified inverse radius",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "triad subcase is now quantitative, but full-cube gauge fixing, branch control and certified conditioning remain unresolved"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-19-FULL-NOISY-INVERSE",
+      "name": "full noise-stable measurement-to-continuum certificate",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "window transfer avoids derivative amplification for one observable layer; stable inversion to rho_N is still required"
+    },
+    {
+      "volume": 7,
+      "id": "V7-NSOBS-ALL-N-SATURATION-AFTER-CONNECTIVITY",
+      "name": "all-N earliest-order energy observability saturation",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "kinematic transfer connectivity is closed; nonvanishing/algebraic independence of enough observable minors remains open"
     },
     {
       "volume": 7,
@@ -1150,6 +1206,10 @@
     },
     {
       "script": "check_volume6_ns_xi_min.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_energy_transfer_observability.py",
       "returncode": 0
     },
     {
