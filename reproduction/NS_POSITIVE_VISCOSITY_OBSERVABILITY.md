@@ -2,15 +2,31 @@
 
 ## Status
 
-This note records the strengthened finite result for the first full cubic Fourier--Galerkin truncation
+For the finite cubic Fourier--Galerkin truncations
 
 \[
-K_1=\{-1,0,1\}^3\setminus\{0\}.
+K_N=\{-N,\ldots,N\}^3\setminus\{0\},
+\qquad
+d_N=2((2N+1)^3-1),
 \]
 
-It has 26 nonzero Fourier modes and 52 real divergence-free degrees of freedom. The result is finite-dimensional and does **not** address continuum Navier--Stokes regularity.
+this project now has exact finite scalar-energy observability witnesses at **two** resolutions:
 
-## 1. Readers and structural ceilings
+\[
+\boxed{
+K_1:\ d_1=52,\ \operatorname{rank}_{\rm gen}D\mathcal E_{48}=49,
+}
+\]
+
+\[
+\boxed{
+K_2:\ d_2=248,\ \operatorname{rank}_{\rm gen}D\mathcal E_{244}=245.
+}
+\]
+
+Both orders are the earliest possible for a scalar output, and both statements hold for every positive viscosity. These are finite-Galerkin results, not continuum regularity claims.
+
+## 1. Structural ceiling and optimal scalar order
 
 Write
 
@@ -18,214 +34,159 @@ Write
 \dot x=F_\nu(x)=\nu Ax+B(x,x),\qquad \nu>0,
 \]
 
-with the projected quadratic Navier--Stokes interaction `B`. Let `I=(I_1,I_2,I_3)` be the three exact shell energies for `|k|^2 in {1,2,3}` and let
+and let total retained kinetic energy be
 
 \[
-E=\mathbf 1^T I
+E(x)=\frac12\sum_{k\in K_N}|\widehat u_k|^2.
 \]
 
-be total retained kinetic energy. Define the Lie jets
-
-\[
-\mathcal J_R=(I,\mathcal L_F I,\ldots,\mathcal L_F^R I),
-\]
+Define
 
 \[
 \mathcal E_R=(E,\mathcal L_F E,\ldots,\mathcal L_F^R E).
 \]
 
-The exact shell balance and nonlinear energy conservation imply
+Spatial translations form a 3-dimensional continuous symmetry invisible to `E`, so at generic states
 
 \[
-\operatorname{rank}D\mathcal J_R\le 3+2R,
+\operatorname{rank}D\mathcal E_R\le d_N-3.
 \]
 
-while scalar coordinate count gives
+A scalar jet has only `R+1` coordinates, hence
 
 \[
-\operatorname{rank}D\mathcal E_R\le R+1.
+\boxed{
+\operatorname{rank}D\mathcal E_R\le\min(R+1,d_N-3).
+}
 \]
 
-Spatial translations form a 3-dimensional continuous symmetry invisible to both readers, hence
+Therefore the symmetry ceiling cannot be reached before
 
 \[
-\operatorname{rank}D\mathcal J_R\le 49,
-\qquad
-\operatorname{rank}D\mathcal E_R\le49.
+\boxed{R=d_N-4.}
 \]
 
-Therefore
+## 2. Exact finite witnesses
+
+### K=1
+
+`checks/check_volume6_ns_observability.py` gives an exact modular witness for the 52-dimensional cube. The scalar energy rank reaches
 
 \[
-\boxed{\operatorname{rank}D\mathcal J_R\le\min(3+2R,49)},
+49=d_1-3
 \]
+
+first at
 
 \[
-\boxed{\operatorname{rank}D\mathcal E_R\le\min(R+1,49)}.
+48=d_1-4.
 \]
 
-Rank 49 is impossible before `R=23` for the shell reader and before `R=48` for the scalar reader.
+### K=2
 
-## 2. Exact finite witness
-
-`checks/check_volume6_ns_observability.py` uses the rational K=1 Galerkin operator, the good prime
+`checks/check_k2_energy_observability.py` uses the 124 retained nonzero Fourier modes of `K_2`, giving
 
 \[
-p=1{,}000{,}003,
+d_2=248.
 \]
 
-and `nu=1/200`. It propagates formal Taylor and tangent series and computes exact ranks over `F_p`. Because `p>50`, Taylor coefficients and Lie derivatives through order 50 differ only by invertible factorial row scalings.
-
-The checker records
+It propagates the formal Taylor state and 245 projected tangent directions exactly over the good prime
 
 \[
-\operatorname{rank}_{\mathbb F_p}D\mathcal J_R=\min(3+2R,49),
+p=251
 \]
+
+at `nu=1/200`. Because `251>244` and all declared Galerkin/basis/viscosity denominators are invertible, Taylor-output and Lie-derivative ranks agree through order 244 up to invertible factorial row scalings.
+
+The recorded scalar ranks include
 
 \[
-\operatorname{rank}_{\mathbb F_p}D\mathcal E_R=\min(R+1,49),
-\qquad 0\le R\le50.
+\begin{array}{c|cccccccc}
+R&10&30&60&120&180&220&243&244\\\hline
+\operatorname{rank}&11&31&61&121&181&221&244&245.
+\end{array}
 \]
 
-A nonzero maximal minor modulo the good prime gives a nonzero characteristic-zero minor polynomial. Together with the structural ceilings this yields generic characteristic-zero rank saturation at `nu=1/200`.
-
-Hence
+Thus the projected `245 x 245` Jacobian is nonsingular at `R=244`. The full energy-jet Jacobian therefore has row rank 245 over `F_251`; a corresponding characteristic-zero maximal minor is not identically zero. Combining this with the translation ceiling gives
 
 \[
-\boxed{R_{\rm shell}^{\min}=23,\qquad R_{\rm energy}^{\min}=48}.
+\boxed{
+\operatorname{rank}_{\rm gen}D\mathcal E_{244}=245.
+}
 \]
 
-These are mathematically minimal orders, not merely the first orders observed by the checker.
+Since all smaller `R` satisfy `R+1<245`, the order 244 is optimal.
+
+The machine-readable output is `results/k2_energy_observability_mod251.json`, and the focused derivation is `NS_K2_ENERGY_OBSERVABILITY.md`.
 
 ## 3. Positive-viscosity universality
 
-The fixed-viscosity witness extends to **every** positive viscosity by an exact scaling conjugacy.
-
-Set
+The exact scaling
 
 \[
-x(t)=\nu y(s),\qquad s=\nu t.
-\]
-
-Since `B` is quadratic,
-
-\[
-F_\nu(\nu y)=\nu^2F_1(y).
-\]
-
-Each shell-energy component and total energy is quadratic, so for either reader `h`,
-
-\[
-\mathcal L_{F_\nu}^r h(\nu y)
-=\nu^{r+2}\mathcal L_{F_1}^r h(y),
-\]
-
-and
-
-\[
-D_x\mathcal L_{F_\nu}^r h(\nu y)
-=\nu^{r+1}D_y\mathcal L_{F_1}^r h(y).
-\]
-
-For every `nu>0` these are invertible state and row scalings. Therefore the generic jet ranks are independent of the positive viscosity:
-
-\[
-\boxed{
-\operatorname{rank}_{\rm gen}D\mathcal J_R=\min(3+2R,49),
-\qquad 0\le R\le50,
-}
-\]
-
-\[
-\boxed{
-\operatorname{rank}_{\rm gen}D\mathcal E_R=\min(R+1,49),
-\qquad 0\le R\le50.
-}
-\]
-
-In particular,
-
-\[
-\boxed{
-\operatorname{rank}_{\rm gen}D\mathcal J_{23}=49,
+x(t)=\nu y(\nu t),
 \qquad
-\operatorname{rank}_{\rm gen}D\mathcal E_{48}=49,
-\qquad \forall\nu>0.
+F_\nu(\nu y)=\nu^2F_1(y)
+\]
+
+uses only the linear viscous term and quadratic homogeneity of `B`. Since energy is quadratic,
+
+\[
+\mathcal L_{F_\nu}^rE(\nu y)
+=\nu^{r+2}\mathcal L_{F_1}^rE(y),
+\]
+
+\[
+D_x\mathcal L_{F_\nu}^rE(\nu y)
+=\nu^{r+1}D_y\mathcal L_{F_1}^rE(y).
+\]
+
+For every `nu>0` these are invertible state and row scalings. Therefore the generic rank is independent of positive viscosity. In particular,
+
+\[
+\boxed{
+K_1:\ \operatorname{rank}_{\rm gen}D\mathcal E_{48}=49,
+\qquad
+K_2:\ \operatorname{rank}_{\rm gen}D\mathcal E_{244}=245,
+\quad\forall\nu>0.
 }
 \]
 
-The inviscid endpoint is different: at `nu=0`, total kinetic energy is conserved, so the scalar energy jet collapses to `(E,0,0,...)`.
-
-`checks/check_positive_viscosity_scaling.py` reuses the same exact Galerkin operator and checks the vector-field and quadratic-reader scaling identities modulo the project prime for several rational positive viscosities. It is a reproducibility sanity check; the proof is the algebraic identity above.
+The endpoint `nu=0` is different because total kinetic energy is conserved.
 
 ## 4. Local geometry
 
-At a generic state the translation action is free. It is enough that the coefficients at the three axial modes `e_1,e_2,e_3` are nonzero: any translation fixing such a state must satisfy
+At generic states the translation action is free; the axial modes force any stabilizing translation to be trivial. Consequently the local quotient has dimension `d_N-3`. At the two proved saturation points,
 
 \[
-e^{ia_1}=e^{ia_2}=e^{ia_3}=1.
+\ker D\mathcal E_{d_N-4}(x)
+=
+T_x(\mathbb T^3\cdot x),
+\qquad N=1,2,
 \]
 
-Hence the generic stabilizer is trivial and the local quotient by `T^3` is 49-dimensional. At generic regular states,
-
-\[
-\boxed{\ker D\mathcal J_{23}(x)=T_x(\mathbb T^3\cdot x)},
-\]
-
-\[
-\boxed{\ker D\mathcal E_{48}(x)=T_x(\mathbb T^3\cdot x)}.
-\]
-
-Thus the only generic **infinitesimally unobservable** directions are spatial translations. Discrete signed coordinate permutations may still create global ambiguities; this is not a global injectivity theorem.
+generically. Thus the only generic infinitesimally unobservable directions are spatial translations. Discrete lattice symmetries may still cause global ambiguities, so this is not global injectivity.
 
 ## 5. Resolution-indexed conjecture
 
-For
-
-\[
-K_N=\{-N,\ldots,N\}^3\setminus\{0\},
-\]
-
-the real zero-mean divergence-free phase-space dimension is
-
-\[
-\boxed{d_N=2((2N+1)^3-1)}.
-\]
-
-Translation symmetry gives the ceiling `d_N-3`, while a scalar jet cannot attain it before order `d_N-4`.
-
-### Conjecture: energy-readout saturation
-
-For every finite cubic truncation `K_N` and every `nu>0`,
+The first two cubic resolutions now support the same exact pattern:
 
 \[
 \boxed{
-\operatorname{rank}_{\rm gen}D\mathcal E_{d_N-4}=d_N-3.
+N=1:\ 52\to49\text{ at }R=48,
+\qquad
+N=2:\ 248\to245\text{ at }R=244.
 }
 \]
 
-Equivalently, total retained kinetic energy attains the translation-limited generic local observability ceiling at the earliest derivative order allowed by scalar coordinate count.
-
-The present K=1 theorem gives
-
-\[
-d_1=52,\qquad R_{\min}=48,\qquad \text{rank}=49.
-\]
-
-The next decisive test is `N=2`:
-
-\[
-\boxed{d_2=248,\qquad R_{\min}=244,\qquad \text{target rank}=245.}
-\]
-
-Failure would expose an additional obstruction; success would establish a second resolution point in the proposed pattern.
-
-## Scope
-
-No claim is made here about continuum regularity, singularity formation, global reconstruction, noisy derivative estimation, or computational speed-up. The finite statement is:
+This motivates the still-open general conjecture:
 
 \[
 \boxed{
-\text{total kinetic energy reaches the exact translation-limited local rank ceiling at the earliest scalar-jet order for K=1 and every }\nu>0.
+\operatorname{rank}_{\rm gen}D\mathcal E_{d_N-4}=d_N-3
+\qquad
+\text{for every finite }K_N\text{ and every }\nu>0.
 }
 \]
+
+No claim is made here about continuum Navier--Stokes regularity, singularity formation, stable recovery from noisy high-order derivatives, global reconstruction, or computational speed-up.
