@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-10T15:12:51.554118+00:00",
+  "generated_at_utc": "2026-09-10T15:14:25.484465+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
@@ -860,7 +860,7 @@
       "name": "Direct NS ordered-triad sum reproduces the exact retained nonlinear tape",
       "tier": "finite_diagnostic",
       "status": "PASS",
-      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18"
+      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18"
     },
     {
       "volume": 6,
@@ -921,10 +921,10 @@
     {
       "volume": 7,
       "id": "V7-EPSC-18-FULL-CUBE-INVERSE",
-      "name": "full finite Fourier quotient-state certified inverse radius",
+      "name": "full finite Fourier quotient-state measurement-ready inverse radius",
       "tier": "Open",
       "status": "OPEN",
-      "evidence": "triad subcase is now quantitative, but full-cube gauge fixing, branch control and certified conditioning remain unresolved"
+      "evidence": "full N=1 gauge fixing and local inverse existence are now certified separately; useful quantitative radius, branch containment, and arbitrary-finite-N extension remain unresolved"
     },
     {
       "volume": 7,
@@ -932,7 +932,7 @@
       "name": "full noise-stable measurement-to-continuum certificate",
       "tier": "Open",
       "status": "OPEN",
-      "evidence": "window transfer avoids derivative amplification for one observable layer; stable inversion to rho_N is still required"
+      "evidence": "window transfer avoids derivative amplification for one observable layer; a measurement-ready certified rho_N is still required"
     },
     {
       "volume": 7,

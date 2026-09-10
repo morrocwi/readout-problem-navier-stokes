@@ -1,6 +1,6 @@
 # Reproduction Ledger -- Readout-Navier-Stokes Development Series
 
-Generated: 2026-09-10T15:12:51.554118+00:00
+Generated: 2026-09-10T15:14:25.484465+00:00
 
 Volumes 1-6 are the deposited series; Volume 7 is the later EPSC research lane.
 
@@ -130,7 +130,7 @@ Status counts: DERIVED=12, N/A=47, NOT_RUN=1, OPEN=24, PASS=66
 | 6 | Vol6-NSRFC-RK4-stage-exactness |  | finite_diagnostic | PASS | terminal target from stage-conditioned retained RK4 agrees with the full RK4 recurrence to the declared 1e-12 gate |
 | 6 | Vol6-NSRFC-RK4-backend-equivalence |  | finite_diagnostic | PASS | fused direct-triad RHS and pseudo-spectral FFT RHS agree on the same finite mode cube to the declared 1e-12 gate |
 | 6 | Vol6-NSRFC-RK4-break-even |  | finite_diagnostic | PASS | retained rollout is enabled only with a >=5% calibration margin; otherwise execution falls back to full RK4 |
-| 6 | Vol6-NSXiMin-triad-lineage | Direct NS ordered-triad sum reproduces the exact retained nonlinear tape | finite_diagnostic | PASS | max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18 |
+| 6 | Vol6-NSXiMin-triad-lineage | Direct NS ordered-triad sum reproduces the exact retained nonlinear tape | finite_diagnostic | PASS | max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18 |
 | 6 | Vol6-NSXiMin-translation-gauge | Spatial translation is a future-shell-readout equivalence of the finite NS system | finite_diagnostic | PASS | shell defect=3.469e-18; eta defect=1.518e-18; future 20-step shell defect=1.388e-17 |
 | 6 | Vol6-NSXiMin-exact-quotient | Canonical minimal exact dynamically sufficient state is the quotient by future shell-readout equivalence | Dr | N/A | Standard quotient/universal-property theorem stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md; not promoted to a machine-checked tier. |
 | 6 | Vol6-NSXiMin-finite-jet | For a fixed finite polynomial Galerkin truncation, a finite Lie-readout jet realizes the future-readout quotient | Dr | N/A | Uses polynomial NS Galerkin dynamics + Hilbert basis theorem + analytic-output identity theorem; proof and exact lineage are stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md. |
@@ -138,8 +138,8 @@ Status counts: DERIVED=12, N/A=47, NOT_RUN=1, OPEN=24, PASS=66
 | 7 | V7-EPSC-18-TRIAD-QUANTITATIVE-INVERSE | quantitative retained-state inverse radius in the analytic three-mode reduced subcase | Dr | DERIVED | r error=49/60000 <= bound=17/20000; this is a reduced-subcase witness, not the full N=1 cube |
 | 7 | V7-NSOBS-ALL-N-TRIAD-CONNECTIVITY-LEMMA | every new boundary mode has a constructive non-collinear triad connection to the previous cutoff | Dr | DERIVED | analytic construction in reproduction/NS_ENERGY_TRANSFER_OBSERVABILITY_BRIDGE.md; exhaustive finite check through N=8=True |
 | 7 | V7-EPSC-19-WINDOW-TRANSFER-RADIUS | integrated shell-transfer observable admits direct certified interval-radius propagation | Dr | DERIVED | sample exact radius=21/500; removes numerical differentiation from this substep only |
-| 7 | V7-EPSC-18-FULL-CUBE-INVERSE | full finite Fourier quotient-state certified inverse radius | Open | OPEN | triad subcase is now quantitative, but full-cube gauge fixing, branch control and certified conditioning remain unresolved |
-| 7 | V7-EPSC-19-FULL-NOISY-INVERSE | full noise-stable measurement-to-continuum certificate | Open | OPEN | window transfer avoids derivative amplification for one observable layer; stable inversion to rho_N is still required |
+| 7 | V7-EPSC-18-FULL-CUBE-INVERSE | full finite Fourier quotient-state measurement-ready inverse radius | Open | OPEN | full N=1 gauge fixing and local inverse existence are now certified separately; useful quantitative radius, branch containment, and arbitrary-finite-N extension remain unresolved |
+| 7 | V7-EPSC-19-FULL-NOISY-INVERSE | full noise-stable measurement-to-continuum certificate | Open | OPEN | window transfer avoids derivative amplification for one observable layer; a measurement-ready certified rho_N is still required |
 | 7 | V7-NSOBS-ALL-N-SATURATION-AFTER-CONNECTIVITY | all-N earliest-order energy observability saturation | Open | OPEN | kinematic transfer connectivity is closed; nonvanishing/algebraic independence of enough observable minors remains open |
 | 7 | V7-EPSC18-N1-FINITE-OPERATOR-MAJORANTS | finite N=1 quadratic Galerkin and shell-energy operator majorants | finite_diagnostic | PASS | C=600; CL bound=9; C*B bound<=230400; Q bound=64; max center coordinate=3 |
 | 7 | V7-EPSC18-N1-EXPLICIT-POSITIVE-RADIUS | explicit positive quantitative local inverse radius for the full N=1 symmetry slice | Dr | DERIVED | integer-scaled minor nonzero=True; choose r=1/D with D having 7934 decimal digits; 10^(-7934) < r <= 10^(-7933); q<=1/2; inverse Lipschitz factor <=2*A_bound (A_bound has 7768 digits) |
