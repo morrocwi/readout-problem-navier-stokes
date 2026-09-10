@@ -19,7 +19,11 @@
       ]
     },
     "readout_genesis": "https://github.com/morrocwi/readout_genesis",
-    "toledo": "https://github.com/morrocwi/toledo"
+    "toledo": {
+      "repo": "https://github.com/morrocwi/toledo",
+      "proposal_path": "registry/proposals/semantic_closure_accounting_p_vs_np_v0_1.json",
+      "registration_commit": "0b17d60321f0a8ffaa0ebdd9f845fce05b347f30"
+    }
   },
   "toledo_proposal": "registry/proposals/semantic_closure_accounting_p_vs_np_v0_1.json"
 }
