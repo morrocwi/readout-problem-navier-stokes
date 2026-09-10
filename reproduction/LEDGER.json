@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T16:20:21.692799+00:00",
+  "generated_at_utc": "2026-09-10T16:39:48.373509+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 169,
+  "total_claims": 175,
   "tier_counts": {
-    "finite_diagnostic": 75,
-    "Open": 28,
-    "Dr": 65,
+    "finite_diagnostic": 78,
+    "Open": 30,
+    "Dr": 66,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 74,
-    "OPEN": 28,
+    "PASS": 77,
+    "OPEN": 30,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 19
+    "DERIVED": 20
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -984,6 +984,38 @@
     },
     {
       "volume": 7,
+      "id": "V7-EPSC18-N1-EXACT-ENTRYWISE-INTERVAL",
+      "name": "exact centered componentwise Jacobian interval enclosure on the N=1 10^-17 box",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "integer common-denominator propagation D=10^17 through Taylor order 23; exact preconditioned infinity defect q=8.058674502845e-02 <= 1/2=True"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-EXACT-ENTRYWISE-RADIUS",
+      "name": "certified exact-entrywise local inverse box of radius 10^-17 for full N=1",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "A=J0^-1 is exact rational; centered state/tangent interval propagation is exact integer arithmetic; q<=1/2 on ||x-x_*||_inf<=10^-17; at least 11 decimal orders above the prior 10^-28 lower bracket"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-ENTRYWISE-PROBE-CROSSCHECK",
+      "name": "exact 10^-17 enclosure is consistent with the preceding floating scale probe",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "exact q=8.058674502845e-02; expected probe-guided interval (0.01,0.2) contains q=True"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-MEASUREMENT-READY-AFTER-EXACT-INTERVAL",
+      "name": "measurement-ready branch/noise-stable inverse after exact entrywise enclosure",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "a rigorous state-space q<1 box is now available if the exact gate passes, but conversion of measured energy-jet uncertainty into guaranteed image/branch capture and a physically meaningful sensor tolerance remains separate"
+    },
+    {
+      "volume": 7,
       "id": "V7-EPSC18-N1-EXACT-CHAR0-JACOBIAN",
       "name": "exact characteristic-zero integer-scaled 49x49 N=1 observability Jacobian",
       "tier": "finite_diagnostic",
@@ -1037,6 +1069,22 @@
       "tier": "Open",
       "status": "OPEN",
       "evidence": "the explicit positive radius uses Cramer/Hadamard plus global operator majorants and is intentionally extremely conservative; entrywise interval Jacobians and a numerically effective preconditioner are still needed"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-ENTRYWISE-INTERVAL-SCALE-PROBE",
+      "name": "floating componentwise/entrywise probe for the next exact N=1 interval box",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "long-double structured radius propagation completed at 10 declared box radii; first q<1 probe radius=1e-16"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC18-N1-ENTRYWISE-INTERVAL-CERTIFICATE",
+      "name": "directed-rounding or exact-rational entrywise q<1 interval certificate at the probed scale",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "this file intentionally uses nondirected floating arithmetic only to select the next exact target; no q value here is a proof"
     },
     {
       "volume": 7,
@@ -1441,11 +1489,19 @@
       "returncode": 0
     },
     {
+      "script": "check_volume7_eps18_n1_exact_entrywise_interval.py",
+      "returncode": 0
+    },
+    {
       "script": "check_volume7_eps18_n1_exact_preconditioner.py",
       "returncode": 0
     },
     {
       "script": "check_volume7_eps18_n1_explicit_radius.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_eps18_n1_interval_probe.py",
       "returncode": 0
     },
     {
