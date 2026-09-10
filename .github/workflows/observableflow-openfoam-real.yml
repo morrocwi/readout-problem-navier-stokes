@@ -41,7 +41,9 @@ jobs:
           test "$(git -C /tmp/OpenFOAM-13 rev-parse HEAD)" = "$UPSTREAM_SHA"
           cp -a /tmp/OpenFOAM-13/tutorials/incompressibleFluid/cavity "$CASE_DIR"
       - name: Instrument cavity with candidate and reference probes
-        run: python software/observableflow/benchmarks/openfoam13_cavity/prepare_case.py "$CASE_DIR" --end-time 2
+        run: |
+          python software/observableflow/benchmarks/openfoam13_cavity/prepare_case.py "$CASE_DIR" --end-time 2
+          chmod -R a+rwX "$CASE_DIR"
       - name: Pull pinned OpenFOAM-13 runtime
         run: |
           docker pull "$OPENFOAM_IMAGE"
