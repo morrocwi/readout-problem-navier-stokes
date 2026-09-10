@@ -1,0 +1,267 @@
+\documentclass[10pt,leqno,twoside]{article}
+
+\usepackage[letterpaper,textwidth=5.72in,textheight=8.30in,centering,headsep=16pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0pt}
+\raggedbottom
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathbb T}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Lie}{\mathcal L}
+\newcommand{\uHat}{\widehat u}
+\newcommand{\rankgen}{\operatorname{rank}_{\mathrm{gen}}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\shorttitle}{ENERGY OBSERVABILITY ACROSS NAVIER--STOKES GALERKIN RESOLUTIONS}
+\newcommand{\authorname}{YAOHAREE LAHTEE}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[CE]{\footnotesize\authorname}
+\fancyhead[CO]{\footnotesize\shorttitle}
+\fancyhead[LE,RO]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\footnotesize\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+\begin{document}
+\thispagestyle{plain}
+
+\vspace*{-0.18in}
+\begin{center}
+{\bfseries\large ENERGY OBSERVABILITY ACROSS FOURIER--GALERKIN\\[2pt]
+RESOLUTIONS OF THREE-DIMENSIONAL NAVIER--STOKES}
+
+\vspace{0.27in}
+{\small YAOHAREE LAHTEE}
+\end{center}
+
+\vspace{0.18in}
+
+Consider the unforced periodic three-dimensional incompressible Navier--Stokes equation after
+finite cubic Fourier--Galerkin truncation.  This note separates two questions that are often
+conflated: how many simultaneous energy measurements are retained, and how deeply their time
+evolution must be observed before they become locally complete modulo symmetry.  For every
+finite cubic resolution we derive sharp structural ceilings for one scalar total-energy reader
+and for the full shell-energy reader, and show that the resulting jet ranks are independent of
+every positive viscosity.  Exact modular certificates attain the ceilings at the earliest
+structurally possible orders in four tested cases: scalar energy at $N=1,2$ and shell energy at
+$N=1,3$.  The finite results motivate a resolution-indexed saturation conjecture and an
+explicit measurement--time trade-off.  No continuum regularity claim is made.
+
+\section*{1. Resolution, readers, and all-$N$ ceilings}
+
+For $N\ge1$, retain
+\begin{equation}
+K_N=\{-N,\ldots,N\}^3\setminus\{0\},
+\end{equation}
+with real phase-space dimension
+\begin{equation}
+\boxed{d_N=2\bigl((2N+1)^3-1\bigr).}
+\end{equation}
+Write
+\begin{equation}
+\dot x=F_\nu(x)=\nu Ax+B(x,x),\qquad \nu>0,
+\end{equation}
+where $B$ is the projected quadratic Navier--Stokes interaction.  Let
+\begin{equation}
+Q_N=\{|k|^2:k\in K_N\},\qquad m_N=|Q_N|,
+\end{equation}
+and let $I=(I_q)_{q\in Q_N}\in\R^{m_N}$ denote the exact shell energies.  Their sum is total
+retained kinetic energy
+\begin{equation}
+E=\mathbf1^T I.
+\end{equation}
+Define the scalar and shell Lie jets
+\begin{equation}
+\mathcal E_R=(E,\Lie_FE,\ldots,\Lie_F^R E),
+\end{equation}
+\begin{equation}
+\mathcal J_R=(I,\Lie_FI,\ldots,\Lie_F^R I).
+\end{equation}
+Translation by $a\in\T^3$ acts as $(T_a\uHat)_k=e^{ik\cdot a}\uHat_k$.  The dynamics is
+translation equivariant and both readers are invariant.  At generic states the translation
+orbit is three-dimensional, so both jet ranks are at most $d_N-3$.
+
+The scalar jet has $R+1$ coordinates.  For the shell reader, the exact shell balance is
+\begin{equation}
+J_1+L_\nu J_0=\eta^{NS},\qquad \mathbf1^T\eta^{NS}=0,
+\end{equation}
+where $L_\nu$ is the fixed shellwise viscous operator.  Repeated differentiation yields one
+scalar dependence in each new $m_N$-component shell block.  Hence:
+
+\begin{theorem}[Universal finite-resolution ceilings]
+For every $N\ge1$, every $\nu>0$, and every $R\ge0$,
+\begin{equation}
+\boxed{\operatorname{rank}D\mathcal E_R\le\min(R+1,d_N-3),}
+\end{equation}
+\begin{equation}
+\boxed{\operatorname{rank}D\mathcal J_R\le
+\min\bigl(m_N+(m_N-1)R,d_N-3\bigr).}
+\end{equation}
+Therefore the symmetry ceiling cannot be reached before
+\begin{equation}
+\boxed{R_E^{\min}=d_N-4,}
+\end{equation}
+\begin{equation}
+\boxed{R_I^{\min}=\ceil{\frac{d_N-3-m_N}{m_N-1}}.}
+\end{equation}
+\end{theorem}
+
+\section*{2. Positive-viscosity universality}
+
+The viscosity parameter does not generate a new rank problem at each positive value.
+
+\begin{theorem}[Positive-viscosity rank universality]
+Fix $N$ and either energy reader $h\in\{E,I_q:q\in Q_N\}$.  For every $r\ge0$ and $\nu>0$,
+\begin{equation}
+\Lie_{F_\nu}^r h(\nu y)=\nu^{r+2}\Lie_{F_1}^r h(y),
+\end{equation}
+\begin{equation}
+D_x\Lie_{F_\nu}^r h(\nu y)=\nu^{r+1}D_y\Lie_{F_1}^r h(y).
+\end{equation}
+Consequently every scalar- and shell-energy jet rank is independent of the value of
+$\nu>0$.
+\end{theorem}
+
+\begin{proof}
+Set $x(t)=\nu y(s)$ and $s=\nu t$.  Since $B$ is quadratic,
+$F_\nu(\nu y)=\nu^2F_1(y)$.  Each energy reader is quadratic, giving the displayed identities.
+For $\nu>0$ the induced state and row scalings are invertible, so rank is unchanged.
+\end{proof}
+
+The endpoint $\nu=0$ is different.  In particular total kinetic energy is conserved for the
+finite Euler system, so the scalar energy jet collapses to $(E,0,0,\ldots)$.
+
+\section*{3. Exact saturation certificates}
+
+The certificates propagate formal Taylor coefficients of the Galerkin flow and tangent
+system.  For polynomial $F$ and reader $h$,
+\begin{equation}
+h(\Phi_t x)=\sum_{r\ge0}\frac{t^r}{r!}\Lie_F^r h(x).
+\end{equation}
+Thus over a prime field $\F_p$ with $p>R$, Taylor-block and Lie-jet Jacobians have identical
+rank through order $R$.  A nonzero maximal minor modulo a good prime implies that the
+corresponding characteristic-zero rational minor polynomial is not identically zero; the
+universal ceilings then give equality of the generic characteristic-zero rank.
+
+The exact certificates currently give:
+\begin{equation}
+\begin{array}{c|r|c|r|r|r}
+N&d_N&\text{reader}&m& R_{\min}&\text{certified rank}\\ \hline
+1&52&\text{total energy}&1&48&49\\
+1&52&\text{shell energies}&3&23&49\\
+2&248&\text{total energy}&1&244&245\\
+3&684&\text{shell energies}&18&39&681
+\end{array}
+\end{equation}
+Every row reaches the translation ceiling $d_N-3$ at the earliest order allowed by the
+corresponding structural bound.
+
+For $N=2$, an exact projected Jacobian over $\F_{251}$ satisfies
+\begin{equation}
+\boxed{\operatorname{rank}_{\F_{251}}D\mathcal E_{244}=245.}
+\end{equation}
+For $N=3$, the shell set is
+\begin{equation}
+Q_3=\{1,2,3,4,5,6,8,9,10,11,12,13,14,17,18,19,22,27\},
+\end{equation}
+so $m_3=18$, and an exact projected calculation over $\F_{683}$ gives
+\begin{equation}
+\boxed{\operatorname{rank}_{\F_{683}}D\mathcal J_{39}=681.}
+\end{equation}
+The recorded $N=3$ milestones are
+\begin{equation}
+\begin{array}{c|rrrrrrrr}
+R&0&5&10&20&30&35&38&39\\ \hline
+\operatorname{rank}&18&103&188&358&528&613&664&681,
+\end{array}
+\end{equation}
+which follow $\min(18+17R,681)$ at every recorded order.
+
+\begin{proposition}[Certified finite saturation]
+At the four reader--resolution pairs in the table, and for every $\nu>0$, the corresponding
+energy jet has generic local rank $d_N-3$ at its earliest structurally possible order.
+\end{proposition}
+
+At generic states the translation action is free; for example, nonzero coefficients at the
+three axial modes force a fixing translation to satisfy
+$e^{ia_1}=e^{ia_2}=e^{ia_3}=1$.  Therefore rank $d_N-3$ means local completeness modulo
+continuous translation: the kernel of the saturated jet differential equals the tangent
+space of the translation orbit.  This is local, not global, injectivity.
+
+\section*{4. Resolution-indexed conjecture and measurement--time trade-off}
+
+The exact cases suggest that the structural ceilings may be generically sharp at every finite
+resolution.
+
+\begin{conjecture}[Optimal energy-readout saturation]
+For every finite cubic truncation $K_N$ and every $\nu>0$,
+\begin{equation}
+\boxed{\rankgen D\mathcal E_{d_N-4}=d_N-3,}
+\end{equation}
+and
+\begin{equation}
+\boxed{\rankgen D\mathcal J_{R_I^{\min}}=d_N-3.}
+\end{equation}
+\end{conjecture}
+
+Only the certified rows above are proved; the conjecture is not a statement about
+$N\to\infty$ or continuum Navier--Stokes.  Nevertheless, the all-$N$ ceilings already expose
+an exact design trade-off.  A scalar reader requires at least
+\begin{equation}
+R_E^{\min}=d_N-4=2(2N+1)^3-6=\Theta(N^3)
+\end{equation}
+time derivatives before symmetry-limited completeness is even possible.  By contrast, the
+$m_N$-channel shell reader has lower bound (12).  At $N=3$ this changes the minimum admissible
+temporal depth from
+\begin{equation}
+\boxed{1\ \text{channel}:\ R\ge680}
+\end{equation}
+to the exactly saturated
+\begin{equation}
+\boxed{18\ \text{channels}:\ R=39.}
+\end{equation}
+Thus the finite theory makes precise a measurement--time principle:
+\begin{equation}
+\boxed{\text{more simultaneous dynamical readout}\ \longleftrightarrow\
+\text{less temporal observability depth}.}
+\end{equation}
+This does not yet identify a physical sensor layout: shell energies are spectral observables,
+and stable recovery from noisy high-order derivatives remains open.  It does identify the
+quantity that a practical sensor-design program should minimize: temporal depth subject to
+saturating the symmetry-limited observable state.
+
+\section*{5. Scope and verification record}
+
+The results are finite-dimensional observability statements.  They do not prove continuum
+regularity or singularity formation, global reconstruction, stable noisy differentiation, or
+computational speed-up.  Their precise content is the combination of universal all-$N$
+structural ceilings, positive-viscosity rank universality, and exact ceiling saturation at the
+certified reader--resolution pairs above.
+
+The derivation record, executable checkers, and machine-readable certificates are maintained at
+\begin{center}
+{\small\url{https://github.com/morrocwi/readout-problem-navier-stokes}}.
+\end{center}
+The principal records are
+\texttt{reproduction/NS\_POSITIVE\_VISCOSITY\_OBSERVABILITY.md},\\
+\texttt{reproduction/checks/check\_k2\_energy\_observability.py}, and\\
+\texttt{reproduction/checks/check\_k3\_shell\_energy\_observability.py}.
+
+\end{document}
