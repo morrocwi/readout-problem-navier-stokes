@@ -17,9 +17,11 @@ corresponding characteristic-zero rational minor is nonzero. The ordinary finite
 dimensional inverse-function theorem therefore gives a local real inverse on that
 symmetry slice.
 
-This is a LOCAL EXISTENCE result. It does NOT provide a useful numerical radius,
-branch capture under noisy measurements, global injectivity, an all-N theorem, a
-continuum theorem, or a Clay Navier-Stokes result.
+A later finite checker now also supplies a strictly positive quantitative radius.
+That radius is mathematically non-vacuous but still extremely conservative, so this
+file distinguishes "positive quantitative radius" from a practically informative
+noise/measurement radius. It does NOT claim robust branch capture, global injectivity,
+an all-N theorem, a continuum regularity theorem, or a Clay Navier-Stokes result.
 """
 from __future__ import annotations
 
@@ -200,12 +202,23 @@ def main() -> int:
         },
         {
             "id": "V7-EPSC18-N1-QUANTITATIVE-RADIUS",
-            "name": "non-vacuous certified numerical radius for the full N=1 local inverse",
+            "name": "strictly positive certified numerical radius for the full N=1 local inverse",
+            "tier": "Dr",
+            "status": "DERIVED",
+            "evidence": (
+                "proved by check_volume7_eps18_n1_explicit_radius.py and tightened by "
+                "check_volume7_eps18_n1_rowwise_radius.py; this is a mathematical positive-radius "
+                "certificate, not yet a practically informative measurement tolerance"
+            ),
+        },
+        {
+            "id": "V7-EPSC18-N1-PRACTICAL-RADIUS",
+            "name": "practically informative certified radius for the full N=1 energy-jet inverse",
             "tier": "Open",
             "status": "OPEN",
             "evidence": (
-                "local existence is now explicit, but a directed-rounding/interval Jacobian or Krawczyk enclosure "
-                "with useful q<1 and branch containment is still required before reporting rho_1 from measurements"
+                "requires an effective entrywise interval Jacobian/preconditioner and robust branch/noise handling; "
+                "the current rigorous positive radii remain extremely conservative"
             ),
         },
     ]
