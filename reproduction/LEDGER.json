@@ -1,9 +1,10 @@
 {
-  "generated_at_utc": "2026-09-10T09:00:21.347391+00:00",
-  "series": "Readout-Navier-Stokes Development Series (Volumes 1-6, v0.1-v0.6)",
+  "generated_at_utc": "2026-09-10T09:05:57.720750+00:00",
+  "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
-    "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)"
+    "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
+    "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
   "total_claims": 117,
   "tier_counts": {
