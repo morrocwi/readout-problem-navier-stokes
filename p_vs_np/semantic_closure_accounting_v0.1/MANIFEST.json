@@ -1,0 +1,25 @@
+{
+  "title": "Semantic Closure Accounting for Boolean Circuits: A Readout-First Architecture Toward P versus NP",
+  "version": "0.1",
+  "date": "2026-09-10",
+  "author": "Yaoharee Lahtee",
+  "claim_status": "architecture and finite formal candidates; P versus NP remains open",
+  "source_sha256": "d7c8ce2ab7eb920f45d1d56239347232b6da99c5726d575a0cfba11f10619529",
+  "reference_pdf_sha256": "1448eac8d541574a58435ed492445ec6908b4b3d23ada9147903469d3222deca",
+  "upstream": {
+    "information_discrete_math": {
+      "repo": "https://github.com/morrocwi/information-discrete-math",
+      "branch": "research/p-vs-np-readout",
+      "draft_pr": 117,
+      "formal_files": [
+        "formal/IDM_CircuitGenesisBridge.v",
+        "formal/IDM_RetainRecomputeResolve.v",
+        "formal/IDM_RRRCostLowerBound.v",
+        "formal/IDM_CircuitLedgerTransfer.v"
+      ]
+    },
+    "readout_genesis": "https://github.com/morrocwi/readout_genesis",
+    "toledo": "https://github.com/morrocwi/toledo"
+  },
+  "toledo_proposal": "registry/proposals/semantic_closure_accounting_p_vs_np_v0_1.json"
+}
