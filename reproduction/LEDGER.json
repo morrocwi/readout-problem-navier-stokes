@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T09:40:57.790043+00:00",
+  "generated_at_utc": "2026-09-10T10:12:04.411520+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 122,
+  "total_claims": 126,
   "tier_counts": {
-    "finite_diagnostic": 54,
+    "finite_diagnostic": 57,
     "Open": 16,
-    "Dr": 51,
+    "Dr": 52,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 53,
+    "PASS": 56,
     "OPEN": 16,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 5
+    "DERIVED": 6
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -860,7 +860,7 @@
       "name": "Direct NS ordered-triad sum reproduces the exact retained nonlinear tape",
       "tier": "finite_diagnostic",
       "status": "PASS",
-      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18"
+      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18"
     },
     {
       "volume": 6,
@@ -925,6 +925,38 @@
       "tier": "Open",
       "status": "OPEN",
       "evidence": "remaining engineering proof obligation: rigorous interpolation and interval upper bounds for grad-Linf and H^-1 residual integrals"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-RK4-EXACT-PL-PATH",
+      "name": "binary64 RK4 node tape admits an exact rational divergence-free piecewise-linear comparison path",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "K=1, nodes=6, exact divergence=True, projection correction L1=0.000e+00"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-RK4-CONTINUOUS-ENCLOSURE",
+      "name": "validated continuous-time A_T/B_T enclosure from the floating-point RK4 tape",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "Abar=5.995502294123e-01; B=9.736386925865e-05; beta_upper=1.331648457570e-01; exact Fraction arithmetic"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-RK4-SHEAR-SANITY",
+      "name": "continuous-time enclosure dominates the known analytic shear terminal error",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "beta=1.513405e-05; analytic terminal error=0.000000e+00"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-END2END-TERMINAL-ADAPTER",
+      "name": "piecewise-linear tape enclosure combined with Leray relative energy yields a terminal L2/tail certificate",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "finite checker supplies rigorous Abar/Bbar for an exact comparison path; PROP-EPSC-13 supplies the standard analytic relative-energy implication"
     },
     {
       "volume": 7,
@@ -1058,6 +1090,10 @@
     },
     {
       "script": "check_volume7_relative_energy_adapter.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_rk4_continuous_enclosure.py",
       "returncode": 0
     },
     {
