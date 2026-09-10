@@ -1,24 +1,24 @@
 {
-  "generated_at_utc": "2026-09-10T11:37:40.150331+00:00",
+  "generated_at_utc": "2026-09-10T13:00:27.085987+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
     "GLS-2026-007 (glosa project, Volumes 1-6, 49-page combined PDF, P02 intake)",
     "Post-paper EPSC Volume 7 (this repository; not part of deposited v0.1.0 unless a future release incorporates it)"
   ],
-  "total_claims": 125,
+  "total_claims": 134,
   "tier_counts": {
-    "finite_diagnostic": 57,
-    "Open": 15,
-    "Dr": 52,
+    "finite_diagnostic": 62,
+    "Open": 18,
+    "Dr": 53,
     "N/A": 1
   },
   "status_counts": {
-    "PASS": 56,
-    "OPEN": 15,
+    "PASS": 61,
+    "OPEN": 18,
     "NOT_RUN": 1,
     "N/A": 47,
-    "DERIVED": 6
+    "DERIVED": 7
   },
   "any_check_script_reported_failure": false,
   "claims": [
@@ -888,6 +888,78 @@
     },
     {
       "volume": 7,
+      "id": "V7-NSOBS-DIMENSIONS",
+      "name": "finite NS observability dimensions and shell counts",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "computed {1: (52, 3), 2: (248, 9), 3: (684, 18)}"
+    },
+    {
+      "volume": 7,
+      "id": "V7-NSOBS-RECORDED-SATURATION-CAPS",
+      "name": "recorded exact saturation ranks equal their structural ceilings",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "rows=[(1, 'E', 48, 49, 49, True), (1, 'I', 23, 49, 49, True), (2, 'E', 244, 245, 245, True), (3, 'I', 39, 681, 681, True)]"
+    },
+    {
+      "volume": 7,
+      "id": "V7-NSOBS-MEASUREMENT-TIME-BOOKKEEPING",
+      "name": "measurement-channel versus temporal-depth structural bookkeeping",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "depths={'E_N1': 48, 'E_N2': 244, 'E_N3': 680, 'I_N1': 23, 'I_N3': 39}"
+    },
+    {
+      "volume": 7,
+      "id": "V7-NSOBS-TRANSLATION-INVARIANT-READERS",
+      "name": "total and shell energy readers are invariant under Fourier translation phases",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "max reader difference=0.000e+00"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-OBSERVABLE-CONTINUUM-COMPOSITION",
+      "name": "orthogonal retained/tail radii compose as sqrt(rho^2+beta^2)",
+      "tier": "finite_diagnostic",
+      "status": "PASS",
+      "evidence": "rho=3.0, beta=4.0, composed=5.0"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-17-OBSERVABLE-TO-CONTINUUM",
+      "name": "conditional observable-to-continuum composition theorem",
+      "tier": "Dr",
+      "status": "DERIVED",
+      "evidence": "paper/NS_OBSERVABLE_TO_CONTINUUM_CERTIFICATES.tex; requires certified rho_N and beta_N"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-18-CERTIFIED-ENERGY-JET-INVERSE",
+      "name": "quantitative certified inverse from energy jets to retained quotient state",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "rank saturation is local qualitative identifiability and does not yet provide rho_N"
+    },
+    {
+      "volume": 7,
+      "id": "V7-EPSC-19-NOISE-STABLE-MEASUREMENT-CERTIFICATE",
+      "name": "noise-stable measurement-to-continuum certificate",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "requires certified conditioning/noise propagation through the finite observability inverse"
+    },
+    {
+      "volume": 7,
+      "id": "V7-NSOBS-ALL-N-SATURATION",
+      "name": "optimal energy-readout saturation at every finite resolution",
+      "tier": "Open",
+      "status": "OPEN",
+      "evidence": "four exact reader-resolution saturation records do not prove the all-N conjecture"
+    },
+    {
+      "volume": 7,
       "id": "V7-EPSC-RE-ALGEBRA",
       "name": "relative-energy adapter finite formula and projection contraction",
       "tier": "finite_diagnostic",
@@ -1078,6 +1150,10 @@
     },
     {
       "script": "check_volume6_ns_xi_min.py",
+      "returncode": 0
+    },
+    {
+      "script": "check_volume7_observable_continuum_bridge.py",
       "returncode": 0
     },
     {
