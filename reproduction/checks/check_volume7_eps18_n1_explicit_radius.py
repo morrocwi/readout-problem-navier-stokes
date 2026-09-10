@@ -29,6 +29,12 @@ from pathlib import Path
 
 import numpy as np
 
+# Python 3.11 protects accidental decimal conversion of huge integers.  Here the
+# huge integer is intentional and finitely constructed; allowing conversion lets
+# the checker report its exact decimal digit count without weakening any bound.
+if hasattr(sys, "set_int_max_str_digits"):
+    sys.set_int_max_str_digits(0)
+
 HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
@@ -48,17 +54,12 @@ def ceil_fraction(x: Fraction) -> int:
 
 
 def finite_operator_bounds(cube: base.CubeGalerkinModP) -> dict:
-    # If every real coordinate coefficient is bounded by X, each real/imaginary
-    # physical vector component is bounded by alpha*X after reconstruction.
     alpha = 0
     extraction = Fraction(0)
     for e1, e2, n1, n2 in cube.bases:
         e1 = [int(v) for v in e1]
         e2 = [int(v) for v in e2]
-        alpha = max(
-            alpha,
-            max(abs(e1[j]) + abs(e2[j]) for j in range(3)),
-        )
+        alpha = max(alpha, max(abs(e1[j]) + abs(e2[j]) for j in range(3)))
         extraction = max(
             extraction,
             Fraction(sum(abs(v) for v in e1), int(n1)),
@@ -68,20 +69,10 @@ def finite_operator_bounds(cube: base.CubeGalerkinModP) -> dict:
     triad_max = max(len(t) for t in cube.triads)
     q_l1_max = max(sum(abs(v) for v in k) for k in cube.modes)
 
-    # Complex product bound: each output real/imag component of (U_p.q) U_q
-    # is <= 2 * (q_l1*alpha*X) * (alpha*Y).  Sum over ordered triads and
-    # extract a coordinate by dotting with e1/e2.  Leray projection does not
-    # worsen this extraction because e1,e2 are exactly perpendicular to k.
     B_bound = Fraction(2 * triad_max * q_l1_max * alpha * alpha, 1) * extraction
     Btilde_bound = ceil_fraction(C * B_bound)
-
-    # C*L is integer diagonal because C*nu=3.  max |k|^2 at N=1 is 3.
     Lc_bound = int(C * NU * max(sum(v * v for v in k) for k in cube.reps))
-
-    # Q_batch shell row sums bound the quadratic shell-energy bilinear map.
-    q_rows = []
-    for row in cube.weights:
-        q_rows.append(sum(int(v) for v in row))
+    q_rows = [sum(int(v) for v in row) for row in cube.weights]
     Q_bound = max(q_rows)
 
     return {
@@ -101,21 +92,19 @@ def finite_operator_bounds(cube: base.CubeGalerkinModP) -> dict:
 def derivative_majorants(*, M: int, op: dict) -> dict:
     """Majorize scaled Taylor state, first derivative, second derivative and output jets.
 
-    X_n = C^n n! x_n, where x(t)=sum x_n t^n.  With Btilde=C B,
+    X_n = C^n n! x_n, where x(t)=sum x_n t^n. With Btilde=C B,
 
       X_{n+1}=C L X_n + sum_i binom(n,i) Btilde(X_i,X_{n-i}).
-
-    The scalar recurrences below are induced-infinity-norm majorants.
     """
     lc = op["Lc_bound"]
     bt = op["Btilde_bound"]
     qq = op["Q_bound"]
 
-    a = [int(M)]       # ||X_n||
-    b = [1]            # ||D X_n||
-    c = [0]            # ||D^2 X_n||
-    y1 = []             # ||D Y_n||
-    y2 = []             # ||D^2 Y_n||
+    a = [int(M)]
+    b = [1]
+    c = [0]
+    y1 = []
+    y2 = []
 
     for n in range(RMAX + 1):
         d1 = 0
@@ -155,7 +144,6 @@ def derivative_majorants(*, M: int, op: dict) -> dict:
 
 def decimal_bracket_for_reciprocal(den: int) -> dict:
     digits = len(str(den))
-    # 10^(digits-1) <= den < 10^digits, so 10^-digits < 1/den <= 10^-(digits-1).
     return {
         "denominator_digits": digits,
         "lower_power10_exponent": -digits,
@@ -169,31 +157,23 @@ def main() -> int:
     center = small.evaluate_candidate(cube, CENTER_SEED)
     center_ok = bool(center["pass"] and center["max_abs_coordinate"] <= 3)
 
-    # Row scaling by C^n n! is invertible modulo p for n<=23 because p does not
-    # divide C or any factorial factor.  Hence the already nonzero selected minor
-    # remains nonzero after integer row scaling.
-    scaling_good_mod_p = math.gcd(P, C) == 1 and all(math.gcd(P, n) == 1 for n in range(1, RMAX + 1))
-    integer_scaled_minor_nonzero = center_ok and center["minor_det_mod_p"] != 0 and scaling_good_mod_p
+    scaling_good_mod_p = math.gcd(P, C) == 1 and all(
+        math.gcd(P, n) == 1 for n in range(1, RMAX + 1)
+    )
+    integer_scaled_minor_nonzero = (
+        center_ok and center["minor_det_mod_p"] != 0 and scaling_good_mod_p
+    )
 
     op = finite_operator_bounds(cube)
     at_center = derivative_majorants(M=3, op=op)
     on_box = derivative_majorants(M=4, op=op)
 
-    # For the selected 49x49 integer-scaled center Jacobian, every row 1-norm is
-    # bounded by Jrow.  A 48x48 cofactor is bounded by Jrow^48 by Hadamard.
-    # Since det is a nonzero integer, |det|>=1. Thus each inverse entry is at most
-    # Jrow^48 and ||J0^-1||_infinity <= 49 Jrow^48.
     Jrow = max(at_center["output_first"])
     Hrow = max(on_box["output_second"])
     A_bound = 49 * pow(Jrow, 48)
 
-    # On the radius-r infinity ball around a max-norm-3 center, r<=1 keeps the
-    # entire box in ||x||<=4. Mean value gives ||J(x)-J0||<=Hrow*r.
-    # Choose r=1/(2*A_bound*Hrow), so q<=1/2 exactly.
     radius_den = 2 * A_bound * Hrow
     radius_positive = radius_den > 0
-    q_num, q_den = 1, 2
-    inverse_factor_bound = 2 * A_bound
     bracket = decimal_bracket_for_reciprocal(radius_den)
 
     quantitative_ok = integer_scaled_minor_nonzero and radius_positive
@@ -247,7 +227,7 @@ def main() -> int:
         "A_bound_digits": len(str(A_bound)),
         "radius_denominator_digits": bracket["denominator_digits"],
         "radius_power10_bracket": bracket["statement"],
-        "q_bound": f"{q_num}/{q_den}",
+        "q_bound": "1/2",
         "finite_first_scope": "all bounds are on a fixed 49-dimensional finite symmetry slice; no N=infinity object appears",
     }
     print("EPSC-18 full N=1 conservative explicit-radius certificate")
