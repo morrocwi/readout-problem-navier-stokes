@@ -1,0 +1,25 @@
+name: compile-epsc-paper
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "paper/EPSC_NAVIER_STOKES_CERTIFICATES.tex"
+      - ".github/workflows/compile-epsc-paper.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile EPSC manuscript
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: EPSC_NAVIER_STOKES_CERTIFICATES.tex
+          working_directory: paper
+      - name: Upload manuscript PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: EPSC_NAVIER_STOKES_CERTIFICATES
+          path: paper/EPSC_NAVIER_STOKES_CERTIFICATES.pdf
+          if-no-files-found: error
