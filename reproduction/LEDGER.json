@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-09T17:07:57.993719+00:00",
+  "generated_at_utc": "2026-09-10T08:35:20.248392+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6, v0.1-v0.6)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
@@ -858,7 +858,7 @@
       "name": "Direct NS ordered-triad sum reproduces the exact retained nonlinear tape",
       "tier": "finite_diagnostic",
       "status": "PASS",
-      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18"
+      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18"
     },
     {
       "volume": 6,
