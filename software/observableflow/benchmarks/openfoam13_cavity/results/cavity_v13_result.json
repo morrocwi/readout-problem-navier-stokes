@@ -1,5 +1,5 @@
 {
-  "benchmark": "OpenFOAM-13 lid-driven cavity / ObservableFlow v0.3",
+  "benchmark": "OpenFOAM-13 lid-driven cavity / ObservableFlow v0.4",
   "configuration": {
     "depth_unit_cost": 0.25,
     "max_depth": 12,
@@ -11,6 +11,96 @@
     "velocity_component_channel_cost": 2.0
   },
   "data_label": "[SimulatedData]",
+  "deployment_verdict": {
+    "candidates": [
+      {
+        "design": {
+          "condition_number": 4.287229072969688,
+          "depth": 0,
+          "depth_cost": 0.0,
+          "feasible": true,
+          "rank": 4,
+          "selected": [
+            12,
+            37,
+            43,
+            50
+          ],
+          "sensor_cost": 7.0,
+          "sigma_max": 5293.300501660657,
+          "sigma_min": 1234.6670568722564,
+          "target_rank": 4,
+          "total_cost": 7.0
+        },
+        "holdout_noiseless": {
+          "median_l2_error": 0.11032356544473303,
+          "nrmse": 0.525303268500955,
+          "p95_l2_error": 0.17523571079316685,
+          "rmse": 0.058621048290393135,
+          "windows": 121
+        },
+        "holdout_noisy": {
+          "median_l2_error": 0.10979788602365946,
+          "nrmse": 0.525068784944769,
+          "p95_l2_error": 0.17384075383177466,
+          "rmse": 0.05859488117380598,
+          "windows": 121
+        },
+        "kind": "static",
+        "pass": false,
+        "reasons": [
+          "noiseless_nrmse>0.5"
+        ]
+      },
+      {
+        "design": {
+          "condition_number": 2055579.225496903,
+          "depth": 3,
+          "depth_cost": 0.75,
+          "feasible": true,
+          "rank": 4,
+          "selected": [
+            7
+          ],
+          "sensor_cost": 1.0,
+          "sigma_max": 7971.442142205746,
+          "sigma_min": 0.0038779542249356884,
+          "target_rank": 4,
+          "total_cost": 1.75
+        },
+        "holdout_noiseless": {
+          "median_l2_error": 6.9817856728171535,
+          "nrmse": 115.3048866888135,
+          "p95_l2_error": 61.00899823669866,
+          "rmse": 12.820663760706635,
+          "windows": 118
+        },
+        "holdout_noisy": {
+          "median_l2_error": 185.64640892614034,
+          "nrmse": 1242.3825189953232,
+          "p95_l2_error": 541.0952585905321,
+          "rmse": 138.1395792981952,
+          "windows": 118
+        },
+        "kind": "temporal",
+        "pass": false,
+        "reasons": [
+          "condition_number>1000",
+          "noiseless_nrmse>0.5",
+          "noisy_nrmse>1"
+        ]
+      }
+    ],
+    "criteria": {
+      "max_condition_number": 1000.0,
+      "max_noiseless_nrmse": 0.5,
+      "max_noisy_nrmse": 1.0,
+      "note": "Declared engineering benchmark gates; not a theorem or universal physical threshold."
+    },
+    "pass": false,
+    "selected_design": null,
+    "selected_kind": null
+  },
   "postprocessing_sha256": {
     "candidates": {
       "0/U": "62b37818dda87158b26b9d195d0b2cf0a62f38385d86b01d1b13fd0a909a5515",
@@ -71,6 +161,20 @@
       "target_rank": 4,
       "total_cost": 4.0
     },
+    "static_holdout_noiseless": {
+      "median_l2_error": 0.37265321425251524,
+      "nrmse": 2.647638367954879,
+      "p95_l2_error": 1.1405055602360232,
+      "rmse": 0.2954623470481956,
+      "windows": 121
+    },
+    "static_holdout_noisy": {
+      "median_l2_error": 0.37200650056089124,
+      "nrmse": 2.6474521873580783,
+      "p95_l2_error": 1.1394068655463436,
+      "rmse": 0.29544157028473295,
+      "windows": 121
+    },
     "temporal_design": {
       "condition_number": 2055579.225496903,
       "depth": 3,
@@ -85,6 +189,20 @@
       "sigma_min": 0.0038779542249356884,
       "target_rank": 4,
       "total_cost": 1.75
+    },
+    "temporal_holdout_noiseless": {
+      "median_l2_error": 6.9817856728171535,
+      "nrmse": 115.3048866888135,
+      "p95_l2_error": 61.00899823669866,
+      "rmse": 12.820663760706635,
+      "windows": 118
+    },
+    "temporal_holdout_noisy": {
+      "median_l2_error": 185.64640892614034,
+      "nrmse": 1242.3825189953232,
+      "p95_l2_error": 541.0952585905321,
+      "rmse": 138.1395792981952,
+      "windows": 118
     },
     "train_measurement_rmse": 6.597818252204266e-05,
     "train_state_one_step_rmse": 5.850957342843693e-05
@@ -140,6 +258,20 @@
       "target_rank": 4,
       "total_cost": 7.0
     },
+    "static_holdout_noiseless": {
+      "median_l2_error": 0.11032356544473303,
+      "nrmse": 0.525303268500955,
+      "p95_l2_error": 0.17523571079316685,
+      "rmse": 0.058621048290393135,
+      "windows": 121
+    },
+    "static_holdout_noisy": {
+      "median_l2_error": 0.10979788602365946,
+      "nrmse": 0.525068784944769,
+      "p95_l2_error": 0.17384075383177466,
+      "rmse": 0.05859488117380598,
+      "windows": 121
+    },
     "temporal_design": {
       "condition_number": 2055579.225496903,
       "depth": 3,
@@ -155,11 +287,25 @@
       "target_rank": 4,
       "total_cost": 1.75
     },
+    "temporal_holdout_noiseless": {
+      "median_l2_error": 6.9817856728171535,
+      "nrmse": 115.3048866888135,
+      "p95_l2_error": 61.00899823669866,
+      "rmse": 12.820663760706635,
+      "windows": 118
+    },
+    "temporal_holdout_noisy": {
+      "median_l2_error": 185.64640892614034,
+      "nrmse": 1242.3825189953232,
+      "p95_l2_error": 541.0952585905321,
+      "rmse": 138.1395792981952,
+      "windows": 118
+    },
     "train_measurement_rmse": 0.00034513996521786305,
     "train_state_one_step_rmse": 5.850957342843693e-05
   },
   "runtime": {
-    "observableflow_commit": "d2df00a4a6906a59cca520d3f39d7cc94385787c",
+    "observableflow_commit": "a970b04dc688ebe9e964456722a0bdc747dac05c",
     "openfoam_image": "dicehub/openfoam@sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524",
     "openfoam_image_digest": "dicehub/openfoam@sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524"
   },
