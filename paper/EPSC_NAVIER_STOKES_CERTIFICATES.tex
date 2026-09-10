@@ -55,9 +55,10 @@ three-torus,
 which yields a computable $O(K^{-1})$ spacetime certificate without assuming global smoothness.
 A terminal $L^2$ certificate follows either from a separately certified pointwise $H^s$ bound or
 from a richer retained energy/dissipation tape.  Finally, a residual-based relative-energy
-estimate connects a smooth finite Fourier comparison path to a Leray--Hopf solution and isolates
-the remaining numerical obligation: a validated continuous-time enclosure of the actual RK4
-tape.  The associated finite Fourier residual is itself a finite triad computation.  Executable
+estimate connects a finite Fourier comparison path to a Leray--Hopf solution and is paired with
+an exact-dyadic piecewise-linear enclosure of the recorded RK4 node tape.  For that declared
+comparison path the continuous-time residual integral is an exact finite rational computation,
+while the gradient integral is bounded by a rigorous coefficientwise Fourier majorant.  Executable
 finite diagnostics and a cross-repository provenance ledger accompany the analysis.  None of the
 results proves global regularity, finite-time blow-up, uniqueness of weak solutions, or any part of
 the Clay Millennium Navier--Stokes problem.
@@ -438,12 +439,13 @@ For fixed $K$ these are finite sums.  Likewise, a conservative Fourier-polynomia
 Thus the analytic adapter reduces the remaining end-to-end numerical work to certified time
 integration/enclosure of finite quantities.
 
-\section{Validated RK4 continuous-time enclosure: the remaining frontier}
+\section{Exact continuous-time enclosure of the recorded RK4 tape}
 
-The current finite solver uses explicit RK4 at discrete nodes.  Nodewise residual samples do not
-certify the integrals in~\eqref{eq:AB}.  The remaining numerical obligation is therefore precise:
-construct from the floating-point RK4 tape a validated continuous-time finite Fourier path
-$v_h(t)$ and computable enclosures
+The finite solver uses explicit RK4 at discrete nodes.  Nodewise residual samples alone do not
+certify the integrals in~\eqref{eq:AB}.  We instead interpret each stored binary64 component as
+its exact IEEE-754 dyadic rational, apply the Leray projector in exact rational arithmetic, and
+join consecutive projected nodes by a continuous piecewise-linear finite Fourier path $v_h(t)$.
+This produces rigorous enclosures
 \begin{equation}\label{eq:enclosure}
 A_T\le\overline A_T,
 \qquad
@@ -458,12 +460,14 @@ e^{\overline A_T/2}
 \left(e_0^2+\frac{\overline B_T}{\nu}\right)^{1/2}.
 \end{equation}
 
-A practical validated implementation can use a piecewise-polynomial continuous extension of each
-RK4 step, outward-rounded interval bounds for its coefficients, interval evaluation of the finite
-triad residual on each time cell, and certified quadrature/enclosure of the resulting nonnegative
-polynomial or interval majorant.  This paper does not claim that this final interval-enclosure layer
-has already been completed.  In the accompanying Toledo registry it remains the explicit open
-target \texttt{PROP-EPSC-15}.
+On each time cell the Fourier coefficients of $v_h$ are affine in normalized time.  Hence the
+quadratic Navier--Stokes residual is degree at most two, its homogeneous $H^{-1}$ norm squared is
+degree at most four, and its cell integral is evaluated exactly in rational arithmetic.  A
+coefficientwise Fourier $\ell^1$ majorant gives a rigorous upper bound for the gradient integral.
+The executable checker also bounds $e^{\overline A_T}$ from above by a rational Taylor sum plus a
+geometric remainder and rounds the reported square root upward with integer arithmetic.  Thus
+\texttt{PROP-EPSC-15} is supplied for the declared finite tape/path construction.  Tightness and
+cost at larger cutoffs and longer horizons are separated as the open \texttt{PROP-EPSC-16}.
 
 \section{Executable finite evidence}
 
@@ -514,7 +518,7 @@ another:
 \item \texttt{readout\_genesis}: interpretation/application map only; NS results are not promoted to
       root ontology.
 \end{itemize}
-The EPSC lineage is registered as \texttt{PROP-EPSC-01} through \texttt{PROP-EPSC-15}.  Classical
+The EPSC lineage is registered as \texttt{PROP-EPSC-01} through \texttt{PROP-EPSC-16}.  Classical
 Fourier, energy, Sobolev, Leray--Hopf and relative-energy inequalities are registered for lineage
 and role, not claimed as original mathematics.
 
