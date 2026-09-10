@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\title{\textbf{ObservableFlow v0.5: Trading Spatial Sensors for Temporal Readout in Reduced-Order Flow Reconstruction}}
+\author{Yaoharee Lahtee\\Open Civil Science Initiative, Bangkok, Thailand}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\texttt{[SimulatedData] Simulation=Yes}
+\end{center}
+
+\begin{abstract}
+Sensor placement is usually posed as a spatial selection problem: given a reduced representation of a physical system, choose a small set of measurements that preserves enough information for reconstruction or estimation. ObservableFlow v0.5 studies a different but related degree of freedom: a system may trade \emph{spatial measurement channels} for \emph{temporal readout depth}. Instead of asking only which sensors should be installed, the design variable is a pair $(S,R)$, where $S$ is a selected set of measurement channels and $R$ is the finite temporal depth used by the observer.
+
+The frozen v0.5 implementation combines finite-horizon observability, rank and singular-value diagnostics, a stability-aware greedy search, an OpenFOAM adapter, reduced-order modelling, held-out reconstruction, and an external PySensors baseline. The final experiment uses one pinned OpenFOAM Foundation v13 cavity trajectory, 196 standardized scalar channels derived from a $7\times7$ pressure/velocity probe grid, and a common rank-8 POD basis learned on training data. Data are split chronologically into 60\% training, 20\% validation, and 20\% untouched test. ObservableFlow selects three spatial channels at temporal depth four, while the validation-selected PySensors SSPOR/QR baseline uses eight static channels. Under the declared cost model, ObservableFlow has cost 4.0 versus 8.0 and lower final full-reference NRMSE in both the noiseless and 1\%-noise tests. ObservableFlow therefore Pareto-dominates the pinned static baseline on the three declared final-test axes. However, its noiseless NRMSE is approximately 0.607, above the predeclared deployment gate of 0.50. The correct result is therefore benchmark-specific superiority on declared comparison axes, without deployment readiness or general market superiority.
+\end{abstract}
+
+\section{Problem formulation}
+Let a reduced state evolve according to the affine discrete model
+\begin{equation}
+ x_{t+1}=Ax_t+a,
+\end{equation}
+and let candidate measurement channels satisfy
+\begin{equation}
+ y_t=Cx_t+c.
+\end{equation}
+A conventional sparse-sensor formulation chooses a subset of rows of $C$. ObservableFlow additionally permits the observer to retain a finite measurement history. For sensor set $S$ and temporal depth $R$, the finite-horizon observation matrix is
+\begin{equation}
+\mathcal O_{S,R}=
+\begin{bmatrix}
+C_S\\
+C_SA\\
+C_SA^2\\
+\vdots\\
+C_SA^R
+\end{bmatrix}.
+\end{equation}
+The basic structural requirement is
+\begin{equation}
+\operatorname{rank}(\mathcal O_{S,R})\ge r_{\rm target}.
+\end{equation}
+Rank is necessary but not sufficient. The preceding v0.4 benchmark exposed this directly: a one-channel temporal design reached the requested rank yet was catastrophically ill-conditioned and reconstructed poorly. v0.5 therefore continues searching after first rank saturation and introduces explicit conditioning and held-out reconstruction checks.
+
+The structural score used during v0.5 search is
+\begin{equation}
+C_{\rm sensor}(S)+C_{\rm depth}(R)+0.25\log_{10}\kappa(\mathcal O_{S,R}),
+\end{equation}
+with a declared condition-number ceiling. Full-rank candidates surviving structural search are evaluated on validation reconstruction. Final validation selection uses
+\begin{equation}
+C+0.25\log_{10}\kappa+4E_{\rm val}+2E_{\rm val,noise}.
+\end{equation}
+These coefficients are benchmark choices, not universal physical constants.
+
+\section{Implementation architecture}
+ObservableFlow v0.5 is implemented as a Python package inside the Navier--Stokes readout repository. The relevant layers are:
+\begin{enumerate}
+\item \textbf{Core observability analysis.} Construction of finite-horizon measurement systems, numerical rank, singular values, condition number, and declared sensor/depth cost.
+\item \textbf{Stability-aware search.} A deterministic greedy path is grown at every temporal depth. Before full rank, rank gain dominates the local choice; after full rank, the search continues so additional channels may improve conditioning. Every full-rank point is retained for application-level validation.
+\item \textbf{OpenFOAM adapter.} Standard \texttt{postProcessing} outputs for scalar and vector probes are parsed, including restarted time segments.
+\item \textbf{Reduced-order bridge.} Training snapshots are standardized using training statistics, projected to a POD basis, and fitted with affine reduced dynamics and measurement maps.
+\item \textbf{Engineering validation.} Candidate designs are evaluated on held-out data in noiseless and noisy settings.
+\item \textbf{External baseline.} The comparison uses the real \texttt{dynamicslab/pysensors} project pinned to a fixed commit, with SSPOR, native QR, and the exact same training POD basis supplied through the PySensors Custom basis interface.
+\end{enumerate}
+The implementation deliberately separates structural selection from held-out validation. Test error is not part of the structural optimizer.
+
+\section{Frozen benchmark protocol}
+The final v0.5 evidence lane uses the following pinned setup:
+\begin{itemize}
+\item OpenFOAM Foundation v13 cavity tutorial at commit \texttt{18870c24d21c6b982e2cdec27b2f59738cca5f90};
+\item runtime image digest \texttt{sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524};
+\item PySensors at commit \texttt{65400cd12e2f2b79e8a24d16852dd1371c14aa4e};
+\item 401 transient samples and 196 scalar channels from pressure and velocity;
+\item rank-8 POD carrying approximately 0.9998809 of the training energy under the standardized benchmark representation;
+\item chronological split of 240 training, 80 validation, and 81 test samples;
+\item Gaussian measurement noise with standard deviation 0.01 in training-standardized units;
+\item at most eight spatial channels and temporal depth at most twelve.
+\end{itemize}
+Training alone determines standardization, POD, reduced dynamics, measurement fits, and sensor rankings. Validation chooses the final ObservableFlow design and the final PySensors reconstruction method. The test segment is untouched until final evaluation.
+
+The declared deployment gates are
+\begin{equation}
+\kappa\le1000,\qquad E_{\rm clean}\le0.50,\qquad E_{\rm noise}\le1.00.
+\end{equation}
+No gate is relaxed after observing test performance.
+
+\section{Final test result}
+Table~\ref{tab:result} reports the frozen untouched-test comparison.
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Quantity & ObservableFlow v0.5 & PySensors SSPOR/QR \\
+\midrule
+Spatial channels & \textbf{3} & 8 \\
+Temporal depth & 4 & 0 \\
+Effective time samples/estimate & 5 & 1 \\
+Reduced target rank & 8 & 8 \\
+Achieved rank & 8 & 8 \\
+Condition number & 106.304 & \textbf{8.849} \\
+Declared total cost & \textbf{4.0} & 8.0 \\
+Noiseless full-reference NRMSE & \textbf{0.6073} & 0.7676 \\
+1\%-noise full-reference NRMSE & \textbf{0.6076} & 0.7676 \\
+Deployment pass & No & No \\
+\bottomrule
+\end{tabular}
+\caption{Frozen v0.5 final-test comparison. ``Full-reference'' denotes the dense sampled $7\times7$ pressure/velocity surrogate used by the benchmark, not the native CFD mesh.}
+\label{tab:result}
+\end{table}
+
+ObservableFlow selected two pressure channels and one $y$-velocity component: \texttt{p[p7]}, \texttt{p[p27]}, and \texttt{U[p42].y}. Under the declared cost model, the benchmark cost falls from 8.0 to 4.0, a 50\% reduction. Spatial channel count falls by 62.5\%. Relative to the selected PySensors baseline, noiseless NRMSE falls by approximately 20.89\% and noisy NRMSE by approximately 20.84\%.
+
+The frozen winner rule compares only
+\begin{equation}
+(C,E_{\rm clean},E_{\rm noise}).
+\end{equation}
+ObservableFlow Pareto-dominates if it is no worse in all three and strictly better in at least one. On this benchmark it is strictly better in all three, so it is the benchmark-specific Pareto winner.
+
+This does not mean it is better on every engineering property. PySensors has substantially better conditioning in the selected comparison. ObservableFlow's condition number remains below the declared ceiling but does not support a universal robustness claim.
+
+\section{Why the negative deployment result matters}
+The development sequence separates four claims that are often conflated:
+\begin{equation}
+\text{full rank}\not\Rightarrow\text{stable inversion}\not\Rightarrow\text{held-out reconstruction quality}\not\Rightarrow\text{deployment readiness}.
+\end{equation}
+v0.4 exposed the first failure mode. v0.5 changed the search logic so the optimizer does not stop at first rank saturation, then used validation data to choose among full-rank candidates. The final design is much more stable than the v0.4 one-channel solution and performs better than the matched static baseline on the frozen comparison axes.
+
+Nevertheless, the final clean NRMSE remains above 0.50. The benchmark is therefore frozen with this failure intact rather than tuned retrospectively until it crosses the gate. This preserves a clean distinction between method development and benchmark fitting.
+
+\section{Scope of the evidence}
+The frozen experiment establishes the following narrow points:
+\begin{itemize}
+\item a real OpenFOAM solver lane can feed ObservableFlow end to end;
+\item spatial sensor count and temporal depth can be optimized jointly in a reduced-order flow reconstruction workflow;
+\item stability-aware continuation beyond first full rank avoids the catastrophic rank-only design found in v0.4;
+\item under the declared cost model, matched representation, frozen split, and pinned PySensors SSPOR/QR baseline, ObservableFlow v0.5 Pareto-dominates on final cost, clean NRMSE, and noisy NRMSE;
+\item both methods fail the predeclared clean-error deployment gate.
+\end{itemize}
+
+The experiment does \emph{not} establish general superiority to PySensors, commercial digital-twin products, or sparse-sensing methods more broadly. It does not establish industrial CAPEX/OPEX savings, robustness across Reynolds numbers or geometries, turbulent-flow performance, physical-hardware performance, closed-loop control performance, or reconstruction of the complete native CFD mesh. It also makes no claim about continuum Navier--Stokes existence or smoothness.
+
+\section{Reproducibility and closure}
+The frozen execution is GitHub Actions run \texttt{34487277000}. The uploaded benchmark artifact is named \texttt{observableflow-v05-head2head} and has digest
+\begin{center}
+\texttt{sha256:70eb6dceb36c55b2fb65ac6c1c8edc1e705a1c2a9476c627dab50c73483d9022}.
+\end{center}
+The committed final result is
+\begin{center}
+\texttt{software/observableflow/benchmarks/openfoam13\_cavity/results/head\_to\_head\_v05.json}
+\end{center}
+with Git blob SHA \texttt{11cb7e7e01fe5436832c436a7311a268fb1623bb}. The canonical closure package also contains a machine-readable manifest and a separate adversarial closure audit.
+
+ObservableFlow v0.5 is therefore closed as a \textbf{benchmark-specific research prototype}. The appropriate next evidentiary step is not continued tuning of the frozen cavity lane. A future v0.6 should preregister independent cases and regimes, retain external baselines, use physically motivated sensor/latency costs, and include genuinely unsteady or turbulent flow together with measured physical data when available.
+
+\paragraph{Frozen concise claim.}
+On one frozen OpenFOAM-13 cavity benchmark, ObservableFlow v0.5 used three spatial channels plus temporal depth four and Pareto-dominated a pinned PySensors SSPOR/QR static baseline on the benchmark's declared acquisition-cost, noiseless-NRMSE, and 1\%-noise-NRMSE axes of an untouched final test segment. Both methods failed the predeclared clean-NRMSE deployment gate. The result therefore supports the sensor--time design principle in this benchmark, not general market superiority or production readiness.
+
+\end{document}
