@@ -1,6 +1,6 @@
 # Reproduction Ledger -- Readout-Navier-Stokes Development Series
 
-Generated: 2026-09-10T10:24:36.803045+00:00
+Generated: 2026-09-10T11:00:47.413652+00:00
 
 Volumes 1-6 are the deposited series; Volume 7 is the later EPSC research lane.
 
@@ -130,7 +130,7 @@ Status counts: DERIVED=6, N/A=47, NOT_RUN=1, OPEN=15, PASS=56
 | 6 | Vol6-NSRFC-RK4-stage-exactness |  | finite_diagnostic | PASS | terminal target from stage-conditioned retained RK4 agrees with the full RK4 recurrence to the declared 1e-12 gate |
 | 6 | Vol6-NSRFC-RK4-backend-equivalence |  | finite_diagnostic | PASS | fused direct-triad RHS and pseudo-spectral FFT RHS agree on the same finite mode cube to the declared 1e-12 gate |
 | 6 | Vol6-NSRFC-RK4-break-even |  | finite_diagnostic | PASS | retained rollout is enabled only with a >=5% calibration margin; otherwise execution falls back to full RK4 |
-| 6 | Vol6-NSXiMin-triad-lineage | Direct NS ordered-triad sum reproduces the exact retained nonlinear tape | finite_diagnostic | PASS | max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18 |
+| 6 | Vol6-NSXiMin-triad-lineage | Direct NS ordered-triad sum reproduces the exact retained nonlinear tape | finite_diagnostic | PASS | max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18 |
 | 6 | Vol6-NSXiMin-translation-gauge | Spatial translation is a future-shell-readout equivalence of the finite NS system | finite_diagnostic | PASS | shell defect=3.469e-18; eta defect=1.518e-18; future 20-step shell defect=1.388e-17 |
 | 6 | Vol6-NSXiMin-exact-quotient | Canonical minimal exact dynamically sufficient state is the quotient by future shell-readout equivalence | Dr | N/A | Standard quotient/universal-property theorem stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md; not promoted to a machine-checked tier. |
 | 6 | Vol6-NSXiMin-finite-jet | For a fixed finite polynomial Galerkin truncation, a finite Lie-readout jet realizes the future-readout quotient | Dr | N/A | Uses polynomial NS Galerkin dynamics + Hilbert basis theorem + analytic-output identity theorem; proof and exact lineage are stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md. |
