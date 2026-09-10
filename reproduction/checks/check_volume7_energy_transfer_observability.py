@@ -2,8 +2,10 @@
 """Energy-transfer observability bridge checks.
 
 This checker validates finite algebra and explicit finite witnesses supporting the
-bridge between shell-energy observability and EPSC. It deliberately keeps the
-full EPSC-18/19 and all-N saturation claims OPEN.
+bridge between shell-energy observability and EPSC. Full noisy recovery and all-N
+saturation remain open. For EPSC-18, the separate N=1 checker now supplies a full
+symmetry-sliced local inverse existence witness, so the remaining N=1 issue is a
+useful quantitative radius/branch certificate rather than gauge fixing itself.
 
 Simulation=No for the modular/rational checks below; the boundary sweep is a
 finite combinatorial diagnostic, not a continuum or all-N proof.
@@ -111,8 +113,6 @@ def boundary_connectivity_sweep(max_N=8):
 
 
 def window_radius_check():
-    # Exact interval-radius propagation example:
-    # rad(int T)=r1+r0+2 nu s rI+rF.
     r0 = Fraction(1, 100)
     r1 = Fraction(1, 50)
     rI = Fraction(3, 100)
@@ -164,17 +164,17 @@ def main():
 
     claims.append(claim(
         "V7-EPSC-18-FULL-CUBE-INVERSE",
-        "full finite Fourier quotient-state certified inverse radius",
+        "full finite Fourier quotient-state measurement-ready inverse radius",
         "Open",
         "OPEN",
-        "triad subcase is now quantitative, but full-cube gauge fixing, branch control and certified conditioning remain unresolved",
+        "full N=1 gauge fixing and local inverse existence are now certified separately; useful quantitative radius, branch containment, and arbitrary-finite-N extension remain unresolved",
     ))
     claims.append(claim(
         "V7-EPSC-19-FULL-NOISY-INVERSE",
         "full noise-stable measurement-to-continuum certificate",
         "Open",
         "OPEN",
-        "window transfer avoids derivative amplification for one observable layer; stable inversion to rho_N is still required",
+        "window transfer avoids derivative amplification for one observable layer; a measurement-ready certified rho_N is still required",
     ))
     claims.append(claim(
         "V7-NSOBS-ALL-N-SATURATION-AFTER-CONNECTIVITY",
