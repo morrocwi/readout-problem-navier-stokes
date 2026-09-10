@@ -1,0 +1,384 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Torus}{\mathbb T^3}
+\newcommand{\PN}{P_N}
+\newcommand{\QN}{Q_N}
+\newcommand{\eps}{\varepsilon}
+
+\hypersetup{
+  pdftitle={From Energy Observations to Continuum Error Certificates for Navier--Stokes},
+  pdfauthor={Yaoharee Lahtee},
+  pdfsubject={energy observability; discrete epsilon-completion; certified finite-to-continuum composition},
+  pdfkeywords={Navier--Stokes, observability, Fourier-Galerkin, epsilon-completion, certification, relative energy}
+}
+
+\title{From Energy Observations to Continuum Error Certificates\\
+for Finite Fourier--Galerkin Navier--Stokes}
+\author{Yaoharee Lahtee\\
+\small Open Civil Science Initiative, Bangkok, Thailand}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Two different completeness questions arise in finite numerical fluid dynamics.  The first is
+\emph{inner}: whether a declared observation process contains enough information to determine the
+retained finite state, up to unavoidable symmetry.  The second is \emph{outer}: whether the
+unrepresented continuum tail is provably small.  A companion finite observability analysis of
+periodic three-dimensional Fourier--Galerkin Navier--Stokes gives all-resolution structural rank
+ceilings for total-energy and shell-energy Lie jets, positive-viscosity rank universality, and exact
+ceiling saturation in four certified reader--resolution cases.  Separately, the Discrete
+Epsilon-Completion (EPSC) programme supplies target-indexed omitted-tail certificates, including
+Leray--Hopf spacetime bounds and an a posteriori residual-based terminal adapter with an exact-dyadic
+continuous-time reconstruction of recorded RK4 nodes.  This paper composes the two layers.  If an
+observation/inversion layer supplies a certified retained-state reconstruction radius $\rho_N$
+modulo an isometric symmetry preserving the Fourier cutoff, and EPSC supplies a certified omitted
+tail radius $\beta_N$, orthogonality gives
+\[
+\inf_{g\in G}\|u(T)-g\widehat x_N\|_2
+\le \sqrt{\rho_N^2+\beta_N^2}.
+\]
+The result makes precise the distinction between local observability rank and a quantitative
+measurement-to-continuum certificate.  The missing inner-side ingredient is a certified inversion
+radius from energy jets; stable recovery under noisy high-order time information is a further open
+problem.  These frontiers are distinct from the EPSC high-cutoff tightness/scalability problem.
+No claim about global regularity, finite-time singularity, global injectivity, or the Clay
+Millennium problem is made.
+\end{abstract}
+
+\section{Introduction}
+
+A numerical state may be incomplete for two logically independent reasons.  First, the sensors or
+readouts may not determine the finite state that the solver actually retains.  Second, even a fully
+known finite state may omit continuum information above the cutoff.  Treating these as one problem
+obscures both the mathematics and the engineering design space.
+
+We therefore write the certification chain as
+\[
+\boxed{
+\text{measurements}
+\longrightarrow
+\text{retained-state certificate}
+\longrightarrow
+\text{continuum-tail certificate}
+\longrightarrow
+\text{final tolerance verdict}.
+}
+\]
+The first arrow is an observability/inversion problem.  The second is an EPSC problem.  The present
+paper states their exact composition rule and identifies which parts are already established and
+which remain open.
+
+The companion manuscript \emph{Energy Observability Across Fourier--Galerkin Resolutions of
+Three-Dimensional Navier--Stokes} develops the finite observability side.  The EPSC manuscript
+\emph{Finite Readout Certificates for Navier--Stokes} develops the finite-to-continuum side.  The
+purpose here is synthesis, not duplication.
+
+\section{Finite Fourier--Galerkin state and energy readers}
+
+For a cubic cutoff
+\[
+K_N=\{-N,\ldots,N\}^3\setminus\{0\},
+\]
+the declared real phase-space dimension is
+\begin{equation}\label{eq:dN}
+\boxed{d_N=2\big((2N+1)^3-1\big).}
+\end{equation}
+Let $Q_N^{\rm shell}=\{|k|^2:k\in K_N\}$ and $m_N=|Q_N^{\rm shell}|$.  Let $I$ be the vector of
+shell energies and $E=\mathbf 1^T I$ the total retained kinetic energy.  For the finite vector field
+$F_\nu$, define the scalar and shell Lie jets
+\[
+\mathcal E_R=(E,\mathcal L_FE,\ldots,\mathcal L_F^R E),
+\qquad
+\mathcal J_R=(I,\mathcal L_FI,\ldots,\mathcal L_F^R I).
+\]
+Spatial translation acts on Fourier coefficients by
+\[
+(T_a\widehat u)_k=e^{ik\cdot a}\widehat u_k.
+\]
+The dynamics is translation-equivariant while both energy readers are invariant.  At generic states
+where the translation action is locally free, no invariant observation map can exceed rank $d_N-3$.
+
+The finite observability analysis gives the structural ceilings
+\begin{equation}\label{eq:scalarceiling}
+\boxed{\operatorname{rank}D\mathcal E_R\le\min(R+1,d_N-3),}
+\end{equation}
+\begin{equation}\label{eq:shellceiling}
+\boxed{\operatorname{rank}D\mathcal J_R\le
+\min\big(m_N+(m_N-1)R,d_N-3\big).}
+\end{equation}
+Hence the symmetry ceiling cannot be attained before
+\begin{equation}\label{eq:depths}
+R_E^{\min}=d_N-4,
+\qquad
+R_I^{\min}=\left\lceil\frac{d_N-3-m_N}{m_N-1}\right\rceil.
+\end{equation}
+
+For every positive viscosity, the scaling $x=\nu y$, $s=\nu t$ gives
+\[
+\mathcal L_{F_\nu}^r h(\nu y)=\nu^{r+2}\mathcal L_{F_1}^r h(y),
+\qquad
+D_x\mathcal L_{F_\nu}^r h(\nu y)=\nu^{r+1}D_y\mathcal L_{F_1}^r h(y),
+\]
+for the quadratic energy readers.  The resulting jet ranks are therefore independent of the value
+of $\nu>0$.  The Euler endpoint $\nu=0$ is separate.
+
+\section{What is actually certified on the observability side}
+
+Exact modular certificates currently attain the translation ceiling at the earliest structurally
+admissible order in the following four cases:
+\begin{center}
+\begin{tabular}{ccrrr}
+\toprule
+$N$ & reader & $m_N$ & $R$ & certified rank \\
+\midrule
+1 & total energy & 1 & 48 & 49 \\
+1 & shell energies & 3 & 23 & 49 \\
+2 & total energy & 1 & 244 & 245 \\
+3 & shell energies & 18 & 39 & 681 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Every row reaches $d_N-3$.  At a generic free-action state, this means that the kernel of the
+saturated jet differential is exactly the tangent space of the translation orbit.  It is therefore
+appropriate to call the result \emph{local finite-state completeness modulo translations}.
+
+However, three stronger statements do not follow from rank saturation: global injectivity of the
+energy jet; a constructive inverse with branch control; or a numerical reconstruction radius under
+measurement error.  The all-resolution assertion that the ceilings are generically attained at the
+earliest admissible order remains a conjecture.
+
+The structural formulas also expose a measurement--time tradeoff.  One scalar channel requires at
+least $d_N-4=\Theta(N^3)$ time derivatives before saturation is even possible.  A multi-shell reader
+can reduce this depth.  At $N=3$, the scalar lower bound is $R\ge680$, whereas the 18-channel shell
+reader is exactly saturated at $R=39$.  This is a structural observability statement, not yet a
+noise-robust sensor theorem.
+
+\section{The EPSC outer-completeness layer}
+
+Let $P_N$ be the retained Fourier projection and $Q_N=I-P_N$.  EPSC distinguishes nested finite
+agreement from a proved omitted-tail bound.  A target-indexed certificate has the form
+\[
+\|Q_Nu\|_Y\le\beta_{N,Y}.
+\]
+For an unforced Leray--Hopf solution on the $2\pi$-periodic three-torus,
+\begin{equation}\label{eq:stbeta}
+\boxed{
+\|Q_Nu\|_{L^2(0,T;L^2_x)}
+\le
+\frac{\|u_0\|_2}{\sqrt{2\nu}(N+1)}.
+}
+\end{equation}
+This is a genuine $O(N^{-1})$ spacetime tail certificate and does not assume global smoothness.
+
+For a prescribed terminal time, richer retained information can yield a terminal bound.  One route
+is the energy/dissipation budget; another uses a comparison path $v$ and the residual
+\[
+r=\partial_tv+\mathbb P[(v\cdot\nabla)v]-\nu\Delta v-\mathbb Pf.
+\]
+With
+\[
+A_T=2\int_0^T\|\nabla v\|_\infty dt,
+\qquad
+B_T=\int_0^T\|r\|_{H^{-1}}^2dt,
+\]
+the standard relative-energy estimate gives
+\begin{equation}\label{eq:RE}
+\sup_{t\le T}\|u(t)-v(t)\|_2^2
+\le e^{A_T}\left(e_0^2+\frac{B_T}{\nu}\right).
+\end{equation}
+If $v(T)$ is $P_N$-supported, the same bound controls the terminal omitted tail.
+
+The current EPSC implementation supplies a concrete continuous comparison path from recorded RK4
+nodes: every binary64 component is interpreted as its exact dyadic rational, the nodes are projected
+exactly onto divergence-free Fourier space, and consecutive nodes are joined by a rational
+piecewise-linear path.  The resulting Navier--Stokes residual is polynomial on each time cell, so
+its $H^{-1}$ squared integral can be evaluated exactly in rational arithmetic.  This closes the
+finite-tape enclosure construction registered as \texttt{PROP-EPSC-15}.  Tightness and
+computational scaling at large cutoff/horizon remain the distinct open \texttt{PROP-EPSC-16}.
+
+\section{Observable-to-continuum composition}
+
+The two layers can now be connected without identifying local rank with continuum accuracy.
+
+\begin{theorem}[Observable-to-continuum orthogonal composition]\label{thm:compose}
+Let $G$ be an isometric symmetry group on $L^2$ that preserves $P_N$.  Suppose a certified finite
+observation/inversion procedure returns a $P_N$-supported state $\widehat x_N$ and radius $\rho_N$
+such that
+\begin{equation}\label{eq:rho}
+\inf_{g\in G}\|P_Nu(T)-g\widehat x_N\|_2\le\rho_N.
+\end{equation}
+Suppose independently that an EPSC argument supplies
+\begin{equation}\label{eq:betaN}
+\|Q_Nu(T)\|_2\le\beta_N.
+\end{equation}
+Then
+\begin{equation}\label{eq:compose}
+\boxed{
+\inf_{g\in G}\|u(T)-g\widehat x_N\|_2
+\le
+\sqrt{\rho_N^2+\beta_N^2}.
+}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For any $g\in G$ admissible in~\eqref{eq:rho}, the difference
+$P_Nu(T)-g\widehat x_N$ lies in the retained subspace, while $Q_Nu(T)$ lies in its orthogonal
+complement.  Because $u=P_Nu+Q_Nu$,
+\[
+\|u(T)-g\widehat x_N\|_2^2
+=
+\|P_Nu(T)-g\widehat x_N\|_2^2+\|Q_Nu(T)\|_2^2.
+\]
+Apply the two certified bounds and take the infimum over $g$.
+\end{proof}
+
+For the energy-observability application, $G=\Torus$ acts by spatial translations.  Thus a final
+fail-closed tolerance rule is
+\begin{equation}\label{eq:finalgate}
+\boxed{
+\sqrt{\rho_N^2+\beta_N^2}\le\eps
+\quad\Longrightarrow\quad
+\text{continuum state certified modulo translation at tolerance }\eps.
+}
+\end{equation}
+If either $\rho_N$ or $\beta_N$ is absent, the verdict is \texttt{HOLD}.
+
+\begin{remark}[Why this is sharper than addition]
+A generic triangle inequality would give $\rho_N+\beta_N$.  The Fourier split is orthogonal, so the
+retained and omitted errors combine Pythagoreanly.  This is useful because the observation-side and
+tail-side budgets can be allocated independently under a single final tolerance.
+\end{remark}
+
+\section{Symmetry compatibility}
+
+Total and shell energies are invariant under spatial translations, so finite observability can at
+best recover a translation orbit.  This ambiguity is not a defect of the reader; it is the symmetry
+of the model.  The continuum $L^2$ tail norm is also translation invariant, and $P_N$ commutes with
+translations.  Therefore Theorem~\ref{thm:compose} naturally lives on the quotient by translations.
+
+For residual-based EPSC certificates, the exact mathematical quantities $A_T$ and $B_T$ are
+translation invariant when the comparison path and solution are translated together.  A specific
+computer majorant may nevertheless depend on the chosen Fourier phase representation and can be
+looser for one representative than another.  Certificate validity is preserved; tightness and
+representative optimisation belong to the engineering/scalability frontier rather than to the
+observability theorem.
+
+\section{The three frontiers after composition}
+
+The combined architecture separates three open tasks that should not be collapsed into one.
+
+\paragraph{F1: all-resolution observability saturation.}
+The structural ceilings~\eqref{eq:scalarceiling}--\eqref{eq:shellceiling} hold at every finite
+resolution, but exact generic saturation at the earliest admissible depth is certified only in the
+four recorded cases.  The all-$N$ statement remains \texttt{PROP-NSOBS-07}.
+
+\paragraph{F2: certified finite inversion and noise stability.}
+Rank saturation yields local differential identifiability modulo translations, but the composition
+theorem needs a certified radius $\rho_N$.  Constructing such an inverse is
+\texttt{PROP-EPSC-18}; propagating measurement and differentiation uncertainty through it is
+\texttt{PROP-EPSC-19}.
+
+\paragraph{F3: scalable outer certification.}
+The exact-dyadic EPSC-15 path construction is a correctness route, but its conservative gradient
+majorants and residual computation may become expensive or loose as $N$ and $T$ grow.  Improving
+that cost/tightness is \texttt{PROP-EPSC-16}.
+
+These tasks interact in an eventual practical system, but they are mathematically different.
+
+\section{Executable evidence and provenance}
+
+The repository reproduction ledger contains finite checks for the observability bookkeeping,
+recorded saturation ceilings, translation invariance of the energy readers, the orthogonal
+$\sqrt{\rho^2+\beta^2}$ composition, EPSC finite algebra, and the exact-dyadic continuous-time RK4
+path enclosure.  Standard analytic implications remain labelled at the analytic/derived tier rather
+than being presented as machine proofs.
+
+Proposal provenance is split deliberately.  The NS observability family is registered as
+\texttt{PROP-NSOBS-01} through \texttt{PROP-NSOBS-08}.  The EPSC composition extension is registered
+as \texttt{PROP-EPSC-17} through \texttt{PROP-EPSC-19}; \texttt{PROP-EPSC-16} remains the separate
+high-cutoff tightness/scalability frontier.  Proposal identifiers are not automatically canonical
+Toledo theorem codes.
+
+\section{Claim boundary}
+
+The strongest new statement here is a conditional composition theorem: a certified finite
+reconstruction radius and a certified omitted-tail radius combine orthogonally into a continuum
+quotient-state radius.  This does not turn qualitative local rank into a numerical inverse, and it
+does not prove that total or shell energy observations are globally injective.  The exact finite
+saturation results remain finite-resolution observability results.  The EPSC certificates remain
+target- and assumption-specific.
+
+Nothing in this paper proves global smoothness, finite-time blow-up, uniqueness of all Leray--Hopf
+weak solutions, continuum observability from finitely many noisy sensors, turbulent DNS adequacy at
+coarse cutoff, or the Clay Millennium existence-and-smoothness problem.
+
+\section{Conclusion}
+
+Energy observability and EPSC close opposite sides of the same measurement-to-continuum pipeline.
+The former asks whether the represented state is visible; the latter asks how much unrepresented
+state can remain.  Their rigorous interface is not ``rank plus convergence looks good'', but two
+certified radii.  Once a finite inversion radius $\rho_N$ and an omitted-tail radius $\beta_N$ are
+available, the final $L^2$ quotient-state certificate is
+\[
+\sqrt{\rho_N^2+\beta_N^2}.
+\]
+This cleanly separates what has been established from what remains: all-resolution saturation,
+quantitative/noise-stable energy-jet inversion, and scalable tight outer certification.
+
+\begin{thebibliography}{9}
+\bibitem{Leray1934}
+J. Leray,
+\newblock Sur le mouvement d'un liquide visqueux emplissant l'espace,
+\newblock \emph{Acta Mathematica} 63 (1934), 193--248.
+
+\bibitem{Hopf1951}
+E. Hopf,
+\newblock \"Uber die Anfangswertaufgabe f\"ur die hydrodynamischen Grundgleichungen,
+\newblock \emph{Mathematische Nachrichten} 4 (1951), 213--231.
+
+\bibitem{Temam}
+R. Temam,
+\newblock \emph{Navier--Stokes Equations: Theory and Numerical Analysis},
+\newblock AMS Chelsea Publishing.
+
+\bibitem{Fefferman}
+C. L. Fefferman,
+\newblock Existence and smoothness of the Navier--Stokes equation,
+\newblock Clay Mathematics Institute Millennium Problem description, 2000.
+
+\bibitem{LahteeReadout}
+Y. Lahtee,
+\newblock A Readout Problem for Fefferman's Existence and Smoothness of the Navier--Stokes Equation,
+\newblock Zenodo, DOI: 10.5281/zenodo.22673246, 2026.
+
+\bibitem{LahteeObs}
+Y. Lahtee,
+\newblock Energy Observability Across Fourier--Galerkin Resolutions of Three-Dimensional Navier--Stokes,
+\newblock companion manuscript and executable record, 2026.
+
+\bibitem{LahteeEPSC}
+Y. Lahtee,
+\newblock Finite Readout Certificates for Navier--Stokes: Discrete Epsilon-Completion, Spectral Tails,
+\newblock and A Posteriori Adapters, companion manuscript and executable record, 2026.
+\end{thebibliography}
+
+\end{document}
