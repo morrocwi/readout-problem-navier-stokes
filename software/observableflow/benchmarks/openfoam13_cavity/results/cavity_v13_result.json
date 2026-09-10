@@ -1,0 +1,173 @@
+{
+  "benchmark": "OpenFOAM-13 lid-driven cavity / ObservableFlow v0.3",
+  "configuration": {
+    "depth_unit_cost": 0.25,
+    "max_depth": 12,
+    "max_sensors": 8,
+    "noise_fraction_of_train_channel_std": 0.01,
+    "pod_rank": 4,
+    "pressure_channel_cost": 1.0,
+    "train_fraction": 0.7,
+    "velocity_component_channel_cost": 2.0
+  },
+  "data_label": "[SimulatedData]",
+  "postprocessing_sha256": {
+    "candidates": {
+      "0/U": "62b37818dda87158b26b9d195d0b2cf0a62f38385d86b01d1b13fd0a909a5515",
+      "0/p": "aea7f5a00ac1fda06fe050b4033f17c0eae40d676e622cab74bfb0c6a4c92f39"
+    },
+    "reference": {
+      "0/U": "c15bc93b73374e3162c3070ddec71583ac979763af61e5cb2ec7b22612a83133",
+      "0/p": "29eb86d03c664a5a937d17a1a8d2ecea23902045a990bfba93b6298c45ec2e95"
+    }
+  },
+  "pressure_only": {
+    "candidate_channels": 16,
+    "candidate_fields": [
+      "p"
+    ],
+    "candidate_object": "observableFlowCandidates",
+    "holdout_noiseless": {
+      "median_l2_error": 6.9817856728171535,
+      "nrmse": 115.3048866888135,
+      "p95_l2_error": 61.00899823669866,
+      "rmse": 12.820663760706635,
+      "windows": 118
+    },
+    "holdout_noisy": {
+      "median_l2_error": 185.64640892614034,
+      "nrmse": 1242.3825189953232,
+      "p95_l2_error": 541.0952585905321,
+      "rmse": 138.1395792981952,
+      "windows": 118
+    },
+    "n_test": 121,
+    "n_times": 401,
+    "n_train": 280,
+    "noise_fraction_of_train_std": 0.01,
+    "pod_rank": 4,
+    "pod_train_energy_fraction": 0.9979702096294515,
+    "reference_channels": 196,
+    "reference_fields": [
+      "p",
+      "U"
+    ],
+    "reference_object": "observableFlowReference",
+    "static_design": {
+      "condition_number": 5.846106836864177,
+      "depth": 0,
+      "depth_cost": 0.0,
+      "feasible": true,
+      "rank": 4,
+      "selected": [
+        2,
+        7,
+        12,
+        13
+      ],
+      "sensor_cost": 4.0,
+      "sigma_max": 6383.006534692041,
+      "sigma_min": 1091.8388446893068,
+      "target_rank": 4,
+      "total_cost": 4.0
+    },
+    "temporal_design": {
+      "condition_number": 2055579.225496903,
+      "depth": 3,
+      "depth_cost": 0.75,
+      "feasible": true,
+      "rank": 4,
+      "selected": [
+        7
+      ],
+      "sensor_cost": 1.0,
+      "sigma_max": 7971.442142205746,
+      "sigma_min": 0.0038779542249356884,
+      "target_rank": 4,
+      "total_cost": 1.75
+    },
+    "train_measurement_rmse": 6.597818252204266e-05,
+    "train_state_one_step_rmse": 5.850957342843693e-05
+  },
+  "pressure_velocity": {
+    "candidate_channels": 64,
+    "candidate_fields": [
+      "p",
+      "U"
+    ],
+    "candidate_object": "observableFlowCandidates",
+    "holdout_noiseless": {
+      "median_l2_error": 6.9817856728171535,
+      "nrmse": 115.3048866888135,
+      "p95_l2_error": 61.00899823669866,
+      "rmse": 12.820663760706635,
+      "windows": 118
+    },
+    "holdout_noisy": {
+      "median_l2_error": 185.64640892614034,
+      "nrmse": 1242.3825189953232,
+      "p95_l2_error": 541.0952585905321,
+      "rmse": 138.1395792981952,
+      "windows": 118
+    },
+    "n_test": 121,
+    "n_times": 401,
+    "n_train": 280,
+    "noise_fraction_of_train_std": 0.01,
+    "pod_rank": 4,
+    "pod_train_energy_fraction": 0.9979702096294515,
+    "reference_channels": 196,
+    "reference_fields": [
+      "p",
+      "U"
+    ],
+    "reference_object": "observableFlowReference",
+    "static_design": {
+      "condition_number": 4.287229072969688,
+      "depth": 0,
+      "depth_cost": 0.0,
+      "feasible": true,
+      "rank": 4,
+      "selected": [
+        12,
+        37,
+        43,
+        50
+      ],
+      "sensor_cost": 7.0,
+      "sigma_max": 5293.300501660657,
+      "sigma_min": 1234.6670568722564,
+      "target_rank": 4,
+      "total_cost": 7.0
+    },
+    "temporal_design": {
+      "condition_number": 2055579.225496903,
+      "depth": 3,
+      "depth_cost": 0.75,
+      "feasible": true,
+      "rank": 4,
+      "selected": [
+        7
+      ],
+      "sensor_cost": 1.0,
+      "sigma_max": 7971.442142205746,
+      "sigma_min": 0.0038779542249356884,
+      "target_rank": 4,
+      "total_cost": 1.75
+    },
+    "train_measurement_rmse": 0.00034513996521786305,
+    "train_state_one_step_rmse": 5.850957342843693e-05
+  },
+  "runtime": {
+    "observableflow_commit": "d2df00a4a6906a59cca520d3f39d7cc94385787c",
+    "openfoam_image": "dicehub/openfoam@sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524",
+    "openfoam_image_digest": "dicehub/openfoam@sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524"
+  },
+  "scope": "Real OpenFOAM solver output; dense probe grid is a sampled reference surrogate, not the native full CFD mesh.",
+  "simulation": true,
+  "upstream": {
+    "case": "tutorials/incompressibleFluid/cavity",
+    "commit": "18870c24d21c6b982e2cdec27b2f59738cca5f90",
+    "repository": "https://github.com/OpenFOAM/OpenFOAM-13"
+  }
+}
