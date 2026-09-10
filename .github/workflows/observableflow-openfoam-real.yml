@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       UPSTREAM_SHA: 18870c24d21c6b982e2cdec27b2f59738cca5f90
-      OPENFOAM_IMAGE: dicehub/openfoam:13
+      OPENFOAM_IMAGE: dicehub/openfoam@sha256:a891bb2da102378efc956fb00ff05fc1c686edf38e8343fb87f3603e081ca524
       CASE_DIR: /tmp/observableflow-cavity
       RESULT_PATH: software/observableflow/benchmarks/openfoam13_cavity/results/cavity_v13_result.json
     steps:
@@ -42,15 +42,15 @@ jobs:
           cp -a /tmp/OpenFOAM-13/tutorials/incompressibleFluid/cavity "$CASE_DIR"
       - name: Instrument cavity with candidate and reference probes
         run: python software/observableflow/benchmarks/openfoam13_cavity/prepare_case.py "$CASE_DIR" --end-time 2
-      - name: Pull OpenFOAM-13 runtime and record digest
+      - name: Pull pinned OpenFOAM-13 runtime
         run: |
           docker pull "$OPENFOAM_IMAGE"
-          DIGEST=$(docker image inspect "$OPENFOAM_IMAGE" --format '{{index .RepoDigests 0}}')
-          echo "OPENFOAM_IMAGE_DIGEST=$DIGEST" >> "$GITHUB_ENV"
-          echo "resolved image: $DIGEST"
+          echo "OPENFOAM_IMAGE_DIGEST=$OPENFOAM_IMAGE" >> "$GITHUB_ENV"
+          echo "pinned image: $OPENFOAM_IMAGE"
       - name: Run real OpenFOAM solver
         run: |
-          docker run --rm -v "$CASE_DIR:/home/openfoam/data" "$OPENFOAM_IMAGE" "blockMesh && foamRun"
+          docker run --rm -v "$CASE_DIR:/home/openfoam/data" "$OPENFOAM_IMAGE" \
+            "cd /home/openfoam/data && blockMesh > log.blockMesh 2>&1 && foamRun > log.foamRun 2>&1"
           find "$CASE_DIR/postProcessing/observableFlowCandidates" -type f -name p -print -quit | grep -q .
           find "$CASE_DIR/postProcessing/observableFlowReference" -type f -name U -print -quit | grep -q .
       - name: Analyze train/hold-out sensor-time design
