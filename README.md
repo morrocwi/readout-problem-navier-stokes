@@ -12,6 +12,7 @@ This repository contains two clearly separated research layers:
 ## Papers and analytic notes
 
 - `paper/main.tex`, `paper/main.pdf` — original deposited paper.
+- `paper/NS_ENERGY_OBSERVABILITY_ALL_K_FINAL.tex` — concise finite-resolution energy-observability note: universal all-`K` structural ceilings, positive-viscosity rank universality, and exact saturation certificates at the declared `K=1,2,3` reader/resolution pairs.
 - `paper/EPSC_NAVIER_STOKES_CERTIFICATES.tex` — standalone EPSC manuscript.
 - `paper/NS_SPACETIME_TAIL_CERTIFICATE.md` — Leray-Hopf spacetime Fourier-tail certificate.
 - `paper/NS_TERMINAL_ENERGY_BUDGET_CERTIFICATE.md` — terminal a-posteriori energy-budget certificate.
@@ -26,13 +27,25 @@ This repository contains two clearly separated research layers:
 
 ## Reproduction
 
-Run:
+Run the original development-series ledger:
 
 ```bash
 bash reproduction/reproduce_all.sh
 ```
 
-The generated ledger separates finite/script checks, standard analytic derivations (`Dr`), and explicitly open obligations. The EPSC work is tracked as the later Volume-7 research lane rather than being retroactively inserted into the deposited Volumes 1-6 series.
+For the final finite energy-observability paper, use the dedicated lane:
+
+```bash
+# quick integrity check of committed certificates
+bash reproduction/reproduce_energy_observability.sh --quick
+
+# full exact finite-field rerun of positive-viscosity, K=1, K=2 and K=3 checks
+bash reproduction/reproduce_energy_observability.sh
+```
+
+See `reproduction/ENERGY_OBSERVABILITY_REPRODUCE.md` and `reproduction/results/energy_observability_manifest_v1.json` for the pinned environment, expected ranks, provenance hashes and claim boundary. A dedicated GitHub Actions workflow runs the quick integrity check on relevant pushes and exposes the full exact suite through manual workflow dispatch.
+
+The generated development-series ledger separates finite/script checks, standard analytic derivations (`Dr`), and explicitly open obligations. The EPSC work is tracked as the later Volume-7 research lane rather than being retroactively inserted into the deposited Volumes 1-6 series.
 
 ## Discrete Epsilon-Completion
 
