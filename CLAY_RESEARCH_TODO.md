@@ -28,15 +28,18 @@ P0 audit phase status: **CLOSED as an audit**, with the blockers above explicitl
 
 Primary home: `morrocwi/information-discrete-math`.
 
-- [ ] Formalize strict-margin soundness and fail-closed HOLD semantics.
-- [ ] Formalize finite error-budget composition.
-- [ ] Formalize finite cross-resolution compatibility-budget composition.
-- [ ] Formalize quotient/symmetry-respecting certificate transport.
-- [ ] Formalize local finite-defect checker soundness under declared laws.
-- [ ] Add negative controls showing why tested finite cases do not imply all-finite or global claims.
-- [ ] Stress-test each generic statement against both NS and P vs NP adapters.
+- [x] Formalize strict-margin soundness and fail-closed HOLD semantics.
+- [x] Formalize finite error-budget composition.
+- [x] Formalize finite cross-resolution compatibility-budget composition.
+- [x] Formalize quotient/symmetry-respecting certificate transport under declared invariance.
+- [x] Formalize local finite-defect checker soundness under declared laws.
+- [x] Add negative controls showing why tested/local finite conditions do not imply global claims.
+- [ ] Continue stress-testing strengthened generic statements against both NS and P vs NP adapters.
 
-Tracked by: `morrocwi/information-discrete-math#124`.
+Evidence:
+
+- IDM PR #125 merged as `1ddf295ea6fd9c504a10e6296fdea5bb97cf78fd`: 11 Coq 8.20 safe-core theorems axiom-free.
+- IDM PR #127 / issue #126: P2 negative controls refute naive FUB-03/04/05 forms while strengthened forms remain OPEN.
 
 ## P2 — Navier--Stokes load-bearing bridge
 
@@ -44,35 +47,47 @@ Primary home: this repository.
 
 ### NS-FUB-A1
 
-- [ ] State a precise theorem candidate:
+- [x] State a precise regularity-sensitive theorem decomposition in `paper/NS_FUB_A1_H3_FINITE_WITNESS.md`:
 
 ```text
-FiniteTimeSingularity
-  -> exists finite certified PDE-relevant failure.
+A1E: finite-time singularity
+     -> for every finite B, some finite Galerkin cutoff N and rational q<T* satisfy ||u_N(q)||_H3 > B
+     [DERIVED under explicitly declared continuation + compact-interval Galerkin adapters]
+
+A1V: certified rational interval enclosure of a finite Galerkin state
+     -> exact finite PASS/HOLD verification of ||u_N(q)||_H3 > B
+     [finite exact checker; CI required]
+
+A1C: finite-time singularity
+     -> constructible validated A1V certificate
+     [OPEN]
 ```
 
 - [ ] Audit candidate witness classes:
-  - [ ] cross-resolution incompatibility
-  - [ ] failure of a uniform regularity-sensitive bound
-  - [ ] failure of extension/tail suppression
+  - [x] cross-resolution compatibility: **adjacent/local or L2 compatibility alone rejected as insufficient**; any useful form needs all-refinement Cauchy/tail control and regularity relevance
+  - [x] failure of a uniform regularity-sensitive bound: `H^3` finite Galerkin exceedance isolated as A1E witness class
+  - [ ] failure of finite scale-extension/tail suppression
   - [ ] regularity-relevant energy-transfer concentration/growth
   - [ ] certificate recursion/extensibility failure
-  - [ ] conditioning loss only if PDE relevance is proved
-- [ ] Try to construct counterexamples to each candidate witness class.
-- [ ] Reject any premise that already assumes smoothness or an equivalent Clay criterion without new finite leverage.
+  - [x] conditioning loss alone: rejected as a singularity witness unless a separate PDE-regularity implication is proved
+- [ ] Try to construct counterexamples to the remaining candidate witness classes.
+- [x] Reject any premise that already assumes smoothness or an equivalent Clay criterion without new finite leverage; `paper/NS_FUB_A1_H3_FINITE_WITNESS.md` records the non-vacuity boundary.
+- [ ] Build a validated finite-dynamics/data adapter that constructs rigorous rational enclosures for `u_N(q)` from the declared initial-data representation; this is the current A1C bottleneck.
+- [ ] Find a non-vacuous finite mechanism that forces a uniform regularity-sensitive bound or summable all-scale envelope without assuming global regularity.
 
 Tracked by: `morrocwi/readout-problem-navier-stokes#25`.
 
 ### NS-FUB-A2
 
-- [ ] After A1 stabilizes, formulate the converse exclusion theorem:
+- [ ] After A1C or an alternative witness stabilizes, formulate the converse exclusion theorem:
 
 ```text
 uniform exclusion of every admissible finite failure mode
   -> no finite-time singularity.
 ```
 
-- [ ] Separate finite uniformity from the continuum/global semantic bridge.
+- [x] Separate finite uniformity from the continuum/global semantic bridge.
+- [ ] Audit the template `uniform all-N H3 bound -> strong solution` for non-vacuity: the implication may be classical while proving the antecedent remains the Clay-strength difficulty.
 
 ## P3 — P vs NP load-bearing bridge
 
@@ -88,6 +103,7 @@ Primary home: `morrocwi/information-discrete-math`, branch `research/p-vs-np-rea
 - [ ] Audit for hidden equivalence oracle.
 - [ ] Audit for MCSP-like hardness.
 - [ ] Audit for exponential enumeration disguised as support generation.
+- [x] Record the generic P2 negative control: defect existence alone does not imply efficient capture in an unstructured black-box family.
 - [ ] Keep tiny-circuit enumeration as calibration/negative control only, not the main frontier.
 - [ ] Preserve the explicit transfer:
 
@@ -101,19 +117,19 @@ verified unrestricted defect capture
 
 For every Clay-bearing implication `A -> Target`:
 
-- [ ] Ask whether proving `A` is genuinely more structured than proving `Target` directly.
-- [ ] Identify any imported theorem equivalent in strength to the desired conclusion.
-- [ ] Mark HOLD if the premise merely renames the Clay bottleneck.
-- [ ] Register counterexamples or vacuity findings in Toledo.
+- [x] Require the question whether proving `A` is genuinely more structured than proving `Target` directly.
+- [ ] Identify any imported theorem equivalent in strength to the desired conclusion for each domain candidate.
+- [x] Mark HOLD when a premise merely renames the Clay bottleneck.
+- [ ] Continue registering counterexamples or vacuity findings in Toledo.
 
 ## P5 — Formal verification / adversarial testing
 
-- [ ] No `Admitted` in promoted finite kernels.
-- [ ] Run `Print Assumptions` for audited formal theorems.
-- [ ] Add counterexample tests for every proposed generic bridge.
-- [ ] Add symmetry aliases and representation-redundancy tests.
-- [ ] Keep finite diagnostic claims separate from formal theorem status.
-- [ ] Keep CI status attached to exact commit SHA.
+- [x] No `Admitted` in the promoted P1 safe finite kernels and P2 formal negative controls.
+- [x] Run `Print Assumptions` for the P1/P2 audited Coq theorems.
+- [x] Add counterexample tests for naive generic bridge forms.
+- [ ] Add further symmetry aliases and representation-redundancy tests as domain adapters mature.
+- [x] Keep finite diagnostic claims separate from formal theorem status.
+- [x] Keep CI status attached to exact commit SHA.
 
 ## P6 — Yang--Mills adapter
 
@@ -149,11 +165,11 @@ Use these as stress tests of the shared core, not equal-priority direct attacks 
 
 ## P8 — Toledo integration
 
-- [ ] Keep `PROP-FUB-01..06`, `NS-FUB-A1/A2`, `PNP-FUB-A1` as non-canonical proposal IDs until source statements stabilize.
-- [ ] Pin repo/commit/path for each proposal before canonicalization.
-- [ ] Attach exact tier/status evidence.
+- [x] Keep `PROP-FUB-01..06`, `NS-FUB-A1/A2`, `PNP-FUB-A1` as non-canonical proposal IDs until source statements stabilize.
+- [ ] Pin final repo/commit/path for each stabilized proposal before canonicalization.
+- [x] Attach P1/P2 exact tier/status evidence through Toledo provenance notes/issues.
 - [ ] Add valid parent/relation structure.
-- [ ] Map Coq/Rocq identifiers only from actual formal evidence.
+- [ ] Map new Coq/Rocq identifiers only from actual formal evidence after canonical audit.
 - [ ] Run normal Toledo build/checkers; do not hand-edit generated registry outputs.
 
 Tracked by: `morrocwi/toledo#11`.
