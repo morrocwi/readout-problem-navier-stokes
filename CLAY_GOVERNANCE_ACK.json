@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P2B alternate attack derived from IDM finite window-transfer accounting and EPSC, translated through Readout Genesis/Universe architecture, and connected to a published finite-observation regularity adapter. Add NS-P2B-EPSC-OBS-LIFT, NS-P2B-SUBCRITICAL-OBS, and an exact energy-budget criticality negative control. The route is CLOSED AS A REDUCTION / OPEN at NS-P2B-ANTI-INTERMITTENCY; Clay Navier-Stokes remains OPEN.",
+  "scope": "P2B alternate attack derived from IDM finite window-transfer accounting and EPSC, translated through Readout Genesis/Universe architecture, and connected to a published finite-observation regularity adapter. Add NS-P2B-EPSC-OBS-LIFT and NS-P2B-SUBCRITICAL-OBS; refute energy+dissipation-only derivation of exponent slack with an exact critical-spike budget control; and derive NS-P2B-SCALE-CONTRACTION, which converts a strict certified cross-scale recurrence for the dimensionless finite-observation ratio into eventual finite-gate PASS. Actual all-scale NSE contraction / anti-intermittency remains OPEN/HOLD. Clay Navier-Stokes remains OPEN.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "The existing P2 handoff explicitly permits reopening only for new mathematics directly advancing the uniform regularity frontier. Issue #44 and paper/NS_P2B_FINITE_OBSERVATION_WINDOW_ATTACK.md record this new alternate route; fixed-N and energy-only routes remain ruled out."
+    "evidence": "The existing P2 handoff permits reopening only for new mathematics directly advancing the uniform regularity frontier. Issue #44 plus the P2B attack and scale-contraction notes record this alternate route; fixed-N and energy-only routes remain ruled out."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. After merge, pin the finite-observation lift and subcritical reduction as DERIVED, the energy-only criticality inference as REFUTED, and NS-P2B-ANTI-INTERMITTENCY as OPEN/HOLD."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. After merge, pin the finite-observation lift, subcritical-observation reduction, and scale-contraction theorem as DERIVED; the energy-only criticality inference as REFUTED; and NS-P2B-SCALE-CONTRACTION-UNIFORM / ANTI-INTERMITTENCY as OPEN/HOLD."
   },
   "claim_effect": "statement-change"
 }
