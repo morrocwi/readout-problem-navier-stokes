@@ -7,12 +7,18 @@ on:
       - 'CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md'
       - 'FUTURE_WORK_P2_TRIAD_ATTACK.md'
       - 'paper/NS_P2_TRIAD_PHASE_READOUT_ATTACK.md'
+      - 'paper/NS_P2_COMPLEX_PHASE_HOLONOMY.md'
+      - 'paper/NS_P2_DYADIC_COMPLEX_PHASE_HOLONOMY.md'
+      - 'paper/NS_P2_GEOMETRIC_FRUSTRATION_CUT_FAMILY.md'
       - 'reproduction/checks/check_ns_p2_triad_phase_stress.py'
       - 'reproduction/checks/check_ns_p2_triad_coherence_defect.py'
       - 'reproduction/checks/check_ns_p2_n1_h3_sign_frustration.py'
       - 'reproduction/checks/check_ns_p2_n1_frustration_tax.py'
       - 'reproduction/checks/check_ns_p2_ladder_frustration_alln.py'
       - 'reproduction/checks/check_ns_p2_dyadic_hh_motif_alln.py'
+      - 'reproduction/checks/check_ns_p2_phase_holonomy.py'
+      - 'reproduction/checks/check_ns_p2_dyadic_phase_holonomy_alln.py'
+      - 'reproduction/checks/check_ns_p2_geometric_frustration_cut_family.py'
       - '.github/workflows/ns-p2-triad-attack.yml'
       - 'CLAY_RESEARCH_TODO.md'
       - 'CLAY_GOVERNANCE_ACK.json'
@@ -40,6 +46,12 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2_ladder_frustration_alln.py
       - name: Symbolic all-n dyadic high-high motif
         run: python3 reproduction/checks/check_ns_p2_dyadic_hh_motif_alln.py
+      - name: Symbolic all-n complex phase holonomy
+        run: python3 reproduction/checks/check_ns_p2_phase_holonomy.py
+      - name: Symbolic all-n dyadic complex phase holonomy
+        run: python3 reproduction/checks/check_ns_p2_dyadic_phase_holonomy_alln.py
+      - name: Symbolic geometric frustration-cut family
+        run: python3 reproduction/checks/check_ns_p2_geometric_frustration_cut_family.py
       - name: Claim-boundary and handoff guards
         run: |
           python3 - <<'PY'
@@ -60,6 +72,40 @@ jobs:
           missing = [name for name, marker in paper_required.items() if marker not in paper]
           if missing:
               raise SystemExit('missing triad-attack claim markers: ' + ', '.join(missing))
+
+          holonomy = Path('paper/NS_P2_COMPLEX_PHASE_HOLONOMY.md').read_text()
+          holonomy_required = {
+              'complex holonomy status': 'NS-P2-COMPLEX-HOLONOMY-ALLN` — **DERIVED**',
+              'local dichotomy status': 'NS-P2-LOCAL-FRUSTRATION-OR-CUT` — **DERIVED**',
+              'parent remains open': 'NS-P2-FRUSTRATION-OR-CUT — OPEN',
+          }
+          missing = [name for name, marker in holonomy_required.items() if marker not in holonomy]
+          if missing:
+              raise SystemExit('missing complex-holonomy claim markers: ' + ', '.join(missing))
+
+          dyadic = Path('paper/NS_P2_DYADIC_COMPLEX_PHASE_HOLONOMY.md').read_text()
+          dyadic_required = {
+              'dyadic holonomy status': 'NS-P2-DYADIC-COMPLEX-HOLONOMY-ALLN` — **DERIVED**',
+              'dyadic local dichotomy': 'NS-P2-DYADIC-LOCAL-FRUSTRATION-OR-CUT` — **DERIVED**',
+              'coverage remains open': 'It does **not** prove a boundary coverage theorem',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT — OPEN',
+          }
+          missing = [name for name, marker in dyadic_required.items() if marker not in dyadic]
+          if missing:
+              raise SystemExit('missing dyadic-holonomy claim markers: ' + ', '.join(missing))
+
+          geometry = Path('paper/NS_P2_GEOMETRIC_FRUSTRATION_CUT_FAMILY.md').read_text()
+          geometry_required = {
+              'factor PASS': 'NS-P2-GEOMETRIC-CHANNEL-FACTOR` — **PASS**',
+              'trichotomy': 'NS-P2-GEOMETRIC-PHASE-TRICHOTOMY` — **DERIVED**',
+              'near-dyadic cut': 'NS-P2-GEOMETRIC-NEAR-DYADIC-CUT` — **DERIVED**',
+              'family theorem': 'NS-P2-GEOMETRIC-FRUSTRATION-OR-CUT-FAMILY` — **DERIVED**',
+              'coverage disclaimer': 'This is still a family theorem, not a boundary coverage theorem',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT — OPEN',
+          }
+          missing = [name for name, marker in geometry_required.items() if marker not in geometry]
+          if missing:
+              raise SystemExit('missing geometric-family claim markers: ' + ', '.join(missing))
 
           handoff = Path('CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md').read_text()
           handoff_required = {
