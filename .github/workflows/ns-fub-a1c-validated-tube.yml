@@ -1,0 +1,30 @@
+name: ns-fub-a1c-validated-tube
+
+on:
+  pull_request:
+    paths:
+      - "paper/NS_FUB_A1C_VALIDATED_TUBE.md"
+      - "reproduction/checks/check_ns_fub_a1c_n1_validated_tube.py"
+      - ".github/workflows/ns-fub-a1c-validated-tube.yml"
+      - "CLAY_RESEARCH_TODO.md"
+      - "CLAY_GOVERNANCE_ACK.json"
+  push:
+    branches:
+      - "research/ns-fub-a1c-validated-tube-2026-09-11"
+    paths:
+      - "paper/NS_FUB_A1C_VALIDATED_TUBE.md"
+      - "reproduction/checks/check_ns_fub_a1c_n1_validated_tube.py"
+      - ".github/workflows/ns-fub-a1c-validated-tube.yml"
+
+jobs:
+  exact-validated-tube:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: install numerical dependency used by existing exact tensor builder
+        run: python3 -m pip install numpy
+      - name: exact N1 Galerkin tube and H3 endpoint certificate
+        run: python3 reproduction/checks/check_ns_fub_a1c_n1_validated_tube.py
