@@ -39,10 +39,10 @@ jobs:
               'continuum-adapter boundary': 'CONTINUUM SEMANTIC ADAPTER',
               'preprint status': 'not peer-reviewed',
               'all-shell OPEN marker': 'all-time / all-shell extension and weighted tail summability: **OPEN and Clay-bearing**',
-              'Clay OPEN marker': 'Clay Navier--Stokes global regularity: **OPEN**',
+              'Clay OPEN marker': 'global regularity: **OPEN**',
           }
           required_split = {
-              'recent-transfer OPEN marker': 'recent nonlinear transfer modulus',
+              'recent-transfer OPEN marker': 'Recent nonlinear transfer modulus',
           }
           required_closure = {
               'geometric lift theorem': 'NS-P2-HH-GEOM-LIFT',
