@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - 'paper/NS_P2_FRESH_DONOR_WINDOW_CHARGE.md'
+      - 'paper/NS_P2_FRESH_DONOR_RECENT_ANCESTRY.md'
       - 'reproduction/checks/check_ns_p2_fresh_donor_window_charge.py'
+      - 'reproduction/checks/check_ns_p2_fresh_donor_recent_ancestry.py'
       - '.github/workflows/ns-p2-donor-window-charge.yml'
       - 'CLAY_GOVERNANCE_ACK.json'
   workflow_dispatch:
@@ -22,6 +24,8 @@ jobs:
         run: python -m pip install sympy
       - name: Exact donor window charge checker
         run: python3 reproduction/checks/check_ns_p2_fresh_donor_window_charge.py
+      - name: Exact donor recent-ancestry checker
+        run: python3 reproduction/checks/check_ns_p2_fresh_donor_recent_ancestry.py
       - name: Claim-boundary guard
         run: |
           python3 - <<'PY'
@@ -42,5 +46,20 @@ jobs:
           missing = [name for name, marker in required.items() if marker not in text]
           if missing:
               raise SystemExit('missing donor-window claim markers: ' + ', '.join(missing))
-          print('NS P2 FRESH-DONOR WINDOW CHARGE CLAIM-BOUNDARY PASS')
+
+          ancestry = Path('paper/NS_P2_FRESH_DONOR_RECENT_ANCESTRY.md').read_text()
+          ancestry_required = {
+              'memory tail': 'NS-P2-FRESH-DONOR-STOKES-MEMORY-H1-TAIL` — **DERIVED**',
+              'recent ancestry': 'NS-P2-FRESH-DONOR-RECENT-ANCESTRY` — **DERIVED**',
+              'large donor recent': 'NS-P2-FRESH-DONOR-LARGE-IMPLIES-RECENT` — **DERIVED**',
+              'pair recent': 'NS-P2-FRESH-DONOR-PAIR-RECENT-ANCESTRY` — **DERIVED**',
+              'recursive closure open': 'recursive recent-nonlinear ancestry/cancellation closure   OPEN',
+              'KN contraction open': 'recent nonlinear window -> K_N contraction                OPEN',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT                                  OPEN',
+          }
+          missing = [name for name, marker in ancestry_required.items() if marker not in ancestry]
+          if missing:
+              raise SystemExit('missing donor-ancestry claim markers: ' + ', '.join(missing))
+
+          print('NS P2 FRESH-DONOR WINDOW + RECENT-ANCESTRY CLAIM-BOUNDARY PASS')
           PY
