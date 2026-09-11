@@ -8,10 +8,14 @@ on:
       - 'paper/NS_P2_FRESH_DONOR_RECENT_ANCESTRY.md'
       - 'paper/NS_P2_FRESH_DONOR_MIRROR_CANCELLATION.md'
       - 'paper/NS_P2_PLANAR_ESCAPE_REGULAR_BRANCH.md'
+      - 'paper/NS_P2_SHARED_MODE_TURN_TRICHOTOMY.md'
+      - 'paper/NS_P2_ORTHOGONAL_TURN_ALLSCALE_ESCAPE.md'
       - 'reproduction/checks/check_ns_p2_fresh_donor_window_charge.py'
       - 'reproduction/checks/check_ns_p2_fresh_donor_recent_ancestry.py'
       - 'reproduction/checks/check_ns_p2_fresh_donor_mirror_cancellation.py'
       - 'reproduction/checks/check_ns_p2_planar_escape_regular_branch.py'
+      - 'reproduction/checks/check_ns_p2_shared_mode_turn_trichotomy.py'
+      - 'reproduction/checks/check_ns_p2_orthogonal_turn_allscale_escape.py'
       - '.github/workflows/ns-p2-donor-window-charge.yml'
       - 'CLAY_GOVERNANCE_ACK.json'
   workflow_dispatch:
@@ -34,10 +38,15 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2_fresh_donor_mirror_cancellation.py
       - name: Exact planar Fourier-support geometry checker
         run: python3 reproduction/checks/check_ns_p2_planar_escape_regular_branch.py
+      - name: Exact shared-mode turn-trichotomy checker
+        run: python3 reproduction/checks/check_ns_p2_shared_mode_turn_trichotomy.py
+      - name: Exact all-scale orthogonal-turn escape checker
+        run: python3 reproduction/checks/check_ns_p2_orthogonal_turn_allscale_escape.py
       - name: Claim-boundary guard
         run: |
           python3 - <<'PY'
           from pathlib import Path
+
           text = Path('paper/NS_P2_FRESH_DONOR_WINDOW_CHARGE.md').read_text()
           required = {
               'H1 amplitude floor': 'NS-P2-FRESH-DONOR-H1-AMPLITUDE-FLOOR` — **DERIVED**',
@@ -93,5 +102,36 @@ jobs:
           if missing:
               raise SystemExit('missing planar-branch claim markers: ' + ', '.join(missing))
 
-          print('NS P2 DONOR WINDOW + ANCESTRY + MIRROR + PLANAR BRANCH CLAIM-BOUNDARY PASS')
+          turn = Path('paper/NS_P2_SHARED_MODE_TURN_TRICHOTOMY.md').read_text()
+          turn_required = {
+              'turn invariant': 'NS-P2-SHARED-MODE-TURN-INVARIANT` — **DERIVED**',
+              'zero classification': 'NS-P2-ZERO-DISPERSION-SAME-OR-ORTHOGONAL` — **DERIVED**',
+              'trichotomy': 'NS-P2-SHARED-MODE-PLANE-TURN-TRICHOTOMY` — **DERIVED**',
+              'nonplanar reduction': 'NS-P2-NONPLANAR-ZERO-DISPERSION-REDUCES-TO-ORTHOGONAL-TURNS` — **DERIVED**',
+              'fixture': 'NS-P2-SHARED-MODE-TURN-FIXTURES` — **PASS**',
+              'allscale open': 'all-scale orthogonal-turn escape classification              OPEN',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT                                     OPEN',
+          }
+          missing = [name for name, marker in turn_required.items() if marker not in turn]
+          if missing:
+              raise SystemExit('missing turn-trichotomy claim markers: ' + ', '.join(missing))
+
+          ortho = Path('paper/NS_P2_ORTHOGONAL_TURN_ALLSCALE_ESCAPE.md').read_text()
+          ortho_required = {
+              'similitude': 'NS-P2-ORTHOGONAL-TURN-SIMILITUDE` — **PASS**',
+              'allscale triads': 'NS-P2-ORTHOGONAL-TURN-ALLSCALE-TRIADS` — **DERIVED**',
+              'geometry': 'NS-P2-ORTHOGONAL-TURN-ALLSCALE-GEOMETRY` — **DERIVED**',
+              'axis exchange': 'NS-P2-ORTHOGONAL-TURN-AXIS-EXCHANGE` — **DERIVED**',
+              'H1 coeff': 'NS-P2-ORTHOGONAL-TURN-H1-HOM-COEFF` — **DERIVED**',
+              'phase SAT': 'NS-P2-ORTHOGONAL-TURN-SELECTED-TREE-SAT` — **DERIVED**',
+              'holonomy shortcut refuted': 'NS-P2-ORTHOGONAL-TURN-ALONE-FORCES-SELECTED-HOLONOMY` — **REFUTED**',
+              'dyadic progress': 'NS-P2-ORTHOGONAL-TURN-DYADIC-PROGRESS` — **DERIVED**',
+              'full convolution open': 'full-convolution orthogonal-turn interaction closure          OPEN',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT                                     OPEN',
+          }
+          missing = [name for name, marker in ortho_required.items() if marker not in ortho]
+          if missing:
+              raise SystemExit('missing orthogonal-turn claim markers: ' + ', '.join(missing))
+
+          print('NS P2 DONOR/ANCESTRY/TURN/ORTHOGONAL CLAIM-BOUNDARY PASS')
           PY
