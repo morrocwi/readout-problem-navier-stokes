@@ -4,15 +4,23 @@
 This checker verifies only finite rational inequalities of the form
     T_plus <= eta * V_minus + rho_plus
 and an optional finite-prefix weighted remainder budget.
-It does NOT prove that the supplied bounds enclose the true PDE quantities and does NOT
-extend a finite shell prefix to all shells. Those are explicit adapter obligations.
+
+The generic interface accepts a declared strict eta_cap<=1. The independently
+audited mapping to the current Inage preprint uses eta_cap=3/4 because the proof
+text requires eta < 3 c0/4 and the displayed dyadic normalization permits c0=1.
+
+It does NOT prove that the supplied bounds enclose true PDE quantities, extend a
+finite shell prefix to all shells, or validate the external continuum theorem.
 """
 from fractions import Fraction
 import json
 
 
-def verify_cell(eta: Fraction, T_plus: Fraction, V_minus: Fraction, rho_plus: Fraction) -> bool:
-    if not (Fraction(0) <= eta < Fraction(1)):
+def verify_cell(eta: Fraction, T_plus: Fraction, V_minus: Fraction,
+                rho_plus: Fraction, eta_cap: Fraction = Fraction(1)) -> bool:
+    if not (Fraction(0) < eta_cap <= Fraction(1)):
+        return False
+    if not (Fraction(0) <= eta < eta_cap):
         return False
     if V_minus < 0 or rho_plus < 0:
         return False
@@ -29,34 +37,30 @@ def weighted_remainder(prefix):
 
 
 def main() -> int:
-    eta = Fraction(3, 4)
+    audited_eta_cap = Fraction(3, 4)
+    eta = Fraction(2, 3)
 
     pass_cell = {
         "eta": eta,
-        "T_plus": Fraction(7, 2),
+        "T_plus": Fraction(19, 6),
         "V_minus": Fraction(4, 1),
         "rho_plus": Fraction(1, 2),
+        "eta_cap": audited_eta_cap,
     }
-    # 7/2 <= (3/4)*4 + 1/2 = 7/2, exact boundary acceptance.
-    hold_cell = {
-        "eta": eta,
-        "T_plus": Fraction(18, 5),
-        "V_minus": Fraction(4, 1),
-        "rho_plus": Fraction(1, 2),
-    }
-    bad_eta = {
-        "eta": Fraction(1, 1),
-        "T_plus": Fraction(0),
-        "V_minus": Fraction(1),
-        "rho_plus": Fraction(0),
-    }
+    # 19/6 <= (2/3)*4 + 1/2 = 19/6, exact boundary acceptance.
+    hold_cell = dict(pass_cell)
+    hold_cell["T_plus"] = Fraction(16, 5)
 
     if not verify_cell(**pass_cell):
-        raise AssertionError("valid absorption cell should PASS")
+        raise AssertionError("valid audited absorption cell should PASS")
     if verify_cell(**hold_cell):
         raise AssertionError("insufficient absorption margin should HOLD")
-    if verify_cell(**bad_eta):
-        raise AssertionError("eta>=1 must HOLD")
+
+    # Mapping-specific negative controls.
+    if verify_cell(Fraction(3, 4), Fraction(0), Fraction(1), Fraction(0), audited_eta_cap):
+        raise AssertionError("eta at audited cap must HOLD")
+    if verify_cell(Fraction(9, 10), Fraction(0), Fraction(1), Fraction(0), audited_eta_cap):
+        raise AssertionError("eta above audited cap must HOLD")
 
     prefix = [
         (Fraction(1), Fraction(1, 100)),
@@ -68,18 +72,18 @@ def main() -> int:
     if remainder > declared_budget:
         raise AssertionError("finite weighted remainder budget exceeded")
 
-    # Negative control: a finite prefix says nothing about an omitted tail by itself.
-    # We encode this as metadata rather than pretending the checker can infer an infinite sum.
     result = {
         "cell_pass": True,
         "cell_hold": True,
+        "audited_eta_cap": str(audited_eta_cap),
         "eta_guard": True,
         "finite_prefix_weighted_remainder": str(remainder),
         "declared_prefix_budget": str(declared_budget),
         "finite_prefix_within_budget": remainder <= declared_budget,
         "all_shell_extension": "NOT_PROVED_BY_THIS_CHECKER",
+        "external_preprint_adapter": "HOLD_PENDING_CORRECTED_CONTINUUM_CLOSURE",
         "continuum_adapter_hypothesis": "NOT_PROVED_BY_THIS_CHECKER",
-        "scope": "exact finite arithmetic interface only; enclosure soundness, shell/time coverage, and all-shell summability remain separate obligations",
+        "scope": "exact finite arithmetic interface only; external continuum theorem is not validated here",
     }
     print("NS High-High absorption adapter exact finite checker")
     print(json.dumps(result, indent=2, sort_keys=True))
