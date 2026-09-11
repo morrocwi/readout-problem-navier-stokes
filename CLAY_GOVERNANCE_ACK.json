@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P2 NS finite-to-continuum reduction closure: retain exact positive-lag Stokes/old-Duhamel H3 tail estimates, exact finite High-High and H3-margin interfaces, and NS-P2-HH-GEOM-LIFT; independently audit the external High-High preprint and mark it HOLD due load-bearing closure/summability defects; replace it as the main route with the adapter-neutral NS-P2-H3-MARGIN reduction and dedicated exact-interface CI. The single main residual Clay-bearing target is NS-P2-H3-MARGIN-UNIFORM. P2 is CLOSED AS A REDUCTION but the Millennium problem remains OPEN.",
+  "scope": "Post-merge P2 handoff: update the live Clay research queue to record P2 as CLOSED AS A REDUCTION, preserve Clay regularity as OPEN, identify NS-P2-H3-MARGIN-UNIFORM as the single main OPEN/HOLD frontier, and redirect the next active phase to P3 after its existing branch/formal blockers are cleared.",
   "todo": {
-    "status": "reviewed-no-change",
-    "evidence": "The live TODO already leaves the non-vacuous PDE-derived uniform all-scale regularity mechanism OPEN and rejects fixed-N/energy-only substitutes. paper/NS_P2_FINITE_TO_CONTINUUM_CLOSURE.md is the sharper canonical P2 handoff target for future sessions."
+    "status": "updated",
+    "evidence": "CLAY_RESEARCH_TODO.md now records the P2 merge 83e966df..., closed/ruled-out P2 subroutes, the exact residual margin theorem, non-vacuity requirements, the held external High-High adapter, and the P3 entry blockers."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. After merge, pin the Stokes/old-history bounds, NS-P2-HH-GEOM-LIFT, exact H3 margin interface, external High-High adapter HOLD finding, and NS-P2-H3-MARGIN-UNIFORM as OPEN."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization gate; a Toledo provenance PR separately pins the P2 reduction status and residual lemma."
   },
-  "claim_effect": "statement-change"
+  "claim_effect": "status-only"
 }
