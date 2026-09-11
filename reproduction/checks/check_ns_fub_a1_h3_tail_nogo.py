@@ -9,17 +9,32 @@ from fractions import Fraction
 import json
 
 
+def h3_sq_for(K: int, a: Fraction) -> Fraction:
+    return 2 * Fraction((1 + K * K) ** 3) * a * a
+
+
 def witness(N: int, eps: Fraction, B: Fraction):
     if N < 0 or eps <= 0 or B <= 0:
         raise ValueError("need N>=0, eps>0, B>0")
     a = eps / 2
-    K = N + 1
-    while True:
-        l2_sq = 2 * a * a
-        h3_sq = 2 * Fraction((1 + K * K) ** 3) * a * a
-        if h3_sq > B * B:
-            break
-        K += 1
+    l2_sq = 2 * a * a
+    target = B * B
+
+    # Exponential search followed by exact integer binary search.  This keeps even
+    # extremely separated scales fast without introducing floating-point roots.
+    lo = N + 1
+    hi = lo
+    while h3_sq_for(hi, a) <= target:
+        hi *= 2
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if h3_sq_for(mid, a) > target:
+            hi = mid
+        else:
+            lo = mid + 1
+    K = lo
+    h3_sq = h3_sq_for(K, a)
+
     return {
         "N": N,
         "eps": str(eps),
@@ -30,10 +45,11 @@ def witness(N: int, eps: Fraction, B: Fraction):
         "l2_sq": str(l2_sq),
         "eps_sq": str(eps * eps),
         "h3_sq": str(h3_sq),
-        "B_sq": str(B * B),
+        "B_sq": str(target),
         "support_above_cutoff": K > N,
         "l2_ok": l2_sq <= eps * eps,
-        "h3_exceeds": h3_sq > B * B,
+        "h3_exceeds": h3_sq > target,
+        "minimal_K_above_cutoff": K == N + 1 or h3_sq_for(K - 1, a) <= target,
     }
 
 
@@ -57,7 +73,14 @@ def main() -> int:
         (100, Fraction(3, 10**7), Fraction(10**15)),
     ]
     records = [witness(*c) for c in cases]
-    if not all(r["support_above_cutoff"] and r["l2_ok"] and r["h3_exceeds"] and r["divergence_dot"] == 0 for r in records):
+    if not all(
+        r["support_above_cutoff"]
+        and r["l2_ok"]
+        and r["h3_exceeds"]
+        and r["minimal_K_above_cutoff"]
+        and r["divergence_dot"] == 0
+        for r in records
+    ):
         raise AssertionError("single-mode tail witness failed")
 
     # Finite-band estimate is valid but the coefficient grows rapidly with M.
