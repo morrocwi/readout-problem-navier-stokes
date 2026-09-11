@@ -11,6 +11,7 @@ on:
       - 'paper/NS_P2_DYADIC_COMPLEX_PHASE_HOLONOMY.md'
       - 'paper/NS_P2_GEOMETRIC_FRUSTRATION_CUT_FAMILY.md'
       - 'paper/NS_P2_POLARIZATION_GAUGE_FRAME_COVER.md'
+      - 'paper/NS_P2_FRAME_COMPATIBLE_DYADIC_HOLONOMY.md'
       - 'reproduction/checks/check_ns_p2_triad_phase_stress.py'
       - 'reproduction/checks/check_ns_p2_triad_coherence_defect.py'
       - 'reproduction/checks/check_ns_p2_n1_h3_sign_frustration.py'
@@ -21,6 +22,7 @@ on:
       - 'reproduction/checks/check_ns_p2_dyadic_phase_holonomy_alln.py'
       - 'reproduction/checks/check_ns_p2_geometric_frustration_cut_family.py'
       - 'reproduction/checks/check_ns_p2_polarization_gauge_frame.py'
+      - 'reproduction/checks/check_ns_p2_frame_compatible_dyadic_holonomy.py'
       - '.github/workflows/ns-p2-triad-attack.yml'
       - 'CLAY_RESEARCH_TODO.md'
       - 'CLAY_GOVERNANCE_ACK.json'
@@ -56,6 +58,8 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2_geometric_frustration_cut_family.py
       - name: Polarization gauge and shared-frame mismatch
         run: python3 reproduction/checks/check_ns_p2_polarization_gauge_frame.py
+      - name: Frame-compatible 3D dyadic holonomy
+        run: python3 reproduction/checks/check_ns_p2_frame_compatible_dyadic_holonomy.py
       - name: Claim-boundary and handoff guards
         run: |
           python3 - <<'PY'
@@ -127,6 +131,22 @@ jobs:
           if missing:
               raise SystemExit('missing polarization-gauge claim markers: ' + ', '.join(missing))
 
+          compatible = Path('paper/NS_P2_FRAME_COMPATIBLE_DYADIC_HOLONOMY.md').read_text()
+          compatible_required = {
+              'network PASS': 'NS-P2-FRAME-COMPATIBLE-3D-DYADIC-NETWORK` — **PASS**',
+              'coeff PASS': 'NS-P2-FRAME-COMPATIBLE-CHANNEL-COEFF-ALLN` — **PASS**',
+              'holonomy': 'NS-P2-FRAME-COMPATIBLE-DYADIC-HOLONOMY-ALLN` — **DERIVED**',
+              'tax': 'NS-P2-FRAME-COMPATIBLE-DYADIC-TAX` — **DERIVED**',
+              'H3 floor': 'NS-P2-FRAME-COMPATIBLE-DYADIC-H3-FLOOR` — **DERIVED**',
+              'zero-D phase-SAT refuted': 'NS-P2-ZERO-FRAME-DISPERSION-IMPLIES-PHASE-SAT` — **REFUTED**',
+              'zero-D lower-dimensional refuted': 'NS-P2-ZERO-FRAME-DISPERSION-IS-LOWER-DIMENSIONAL` — **REFUTED**',
+              'coverage open': 'full actual-flux boundary coverage/decomposition              OPEN',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT                                      OPEN',
+          }
+          missing = [name for name, marker in compatible_required.items() if marker not in compatible]
+          if missing:
+              raise SystemExit('missing frame-compatible holonomy claim markers: ' + ', '.join(missing))
+
           handoff = Path('CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md').read_text()
           handoff_required = {
               'P0 section': '# P0',
@@ -153,5 +173,5 @@ jobs:
           if missing:
               raise SystemExit('missing P2 future-work markers: ' + ', '.join(missing))
 
-          print('NS P2 TRIAD ATTACK + POLARIZATION-GAUGE CLAIM-BOUNDARY PASS')
+          print('NS P2 TRIAD ATTACK + POLARIZATION-GAUGE + COMPATIBLE-HOLONOMY CLAIM-BOUNDARY PASS')
           PY
