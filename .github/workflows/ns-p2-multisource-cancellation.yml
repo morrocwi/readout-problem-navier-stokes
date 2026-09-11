@@ -1,0 +1,63 @@
+name: ns-p2-multisource-cancellation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/NS_P2_STANDALONE_VNEXT.md'
+      - 'paper/NS_P2_NEXT_AI_MANIFESTO_2026-09-11.md'
+      - 'paper/NS_P2_MULTISOURCE_CANCELLATION_OCSR_GEN1.md'
+      - 'reproduction/checks/check_ns_p2_multisource_cancellation.py'
+      - '.github/workflows/ns-p2-multisource-cancellation.yml'
+      - 'CLAY_RESEARCH_TODO.md'
+      - 'CLAIMS.md'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  exact-multisource-cancellation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install checker dependencies
+        run: python -m pip install sympy
+      - name: Exact multi-source cancellation, direction lock, W3 generation-1 fixtures
+        run: python3 reproduction/checks/check_ns_p2_multisource_cancellation.py
+      - name: Claim-boundary guards
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          note = Path('paper/NS_P2_MULTISOURCE_CANCELLATION_OCSR_GEN1.md').read_text()
+          required = {
+              'direction lock PASS': 'NS-P2-EQUAL-SHELL-DIRECTION-LOCK` — **PASS**',
+              'witnesses PASS': 'NS-P2-MULTISOURCE-CANCELLATION-WITNESSES` — **PASS**',
+              'gen1 PASS': 'NS-P2-W3-OUTWARD-SUPPRESSION-GEN1` — **PASS**',
+              'depth1 PASS': 'NS-P2-W3-FULLCONV-DEPTH1-NOT-LOSSLESS` — **PASS**',
+              'no general claim': 'It proves nothing general',
+              'no frustration overclaim': 'gives **no** phase frustration at a single shared target',
+              'OCSR open': 'OCSR (Section 117.5)                                      OPEN',
+              'witness soundness open': 'Witness Soundness for D_cancel                            OPEN',
+              'clay open': 'Clay Navier-Stokes regularity                             OPEN',
+          }
+          missing = [k for k, m in required.items() if m not in note]
+          if missing:
+              raise SystemExit('missing multisource-cancellation claim markers: ' + ', '.join(missing))
+
+          standalone = Path('paper/NS_P2_STANDALONE_VNEXT.md').read_text()
+          for m in ['**Status:** OPEN', 'Clay Navier–Stokes regularity:** OPEN', '# 118.']:
+              if m not in standalone:
+                  raise SystemExit('standalone missing marker: ' + m)
+
+          manifesto = Path('paper/NS_P2_NEXT_AI_MANIFESTO_2026-09-11.md').read_text()
+          if 'OPEN' not in manifesto or 'counterexample' not in manifesto:
+              raise SystemExit('manifesto missing OPEN / counterexample-first markers')
+
+          claims = Path('CLAIMS.md').read_text()
+          if 'P2 Standalone vNext' not in claims:
+              raise SystemExit('CLAIMS.md lacks the P2 Standalone vNext boundary section')
+          print('NS P2 MULTISOURCE CANCELLATION CLAIM-BOUNDARY PASS')
+          PY

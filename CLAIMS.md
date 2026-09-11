@@ -132,6 +132,27 @@ The synthesis separates **inner completeness** (what observations determine insi
 
 The EPSC proposal family is registered in Toledo through `PROP-EPSC-28`; energy observability is registered through `PROP-NSOBS-11`. Proposal identifiers are not automatically canonical Toledo theorem codes.
 
+## P2 Standalone vNext and multi-source cancellation lane
+
+Primary sources: `paper/NS_P2_STANDALONE_VNEXT.md` (canonical P2 architecture, Sections 1–118),
+`paper/NS_P2_NEXT_AI_MANIFESTO_2026-09-11.md`, `paper/NS_P2_MULTISOURCE_CANCELLATION_OCSR_GEN1.md`,
+checker `reproduction/checks/check_ns_p2_multisource_cancellation.py`.
+
+| Claim | Status |
+|---|---|
+| The standalone proves or partially proves global 3D Navier–Stokes regularity or the Clay problem | **Explicitly not claimed.** Every architectural section ends `P2 OPEN`, `Clay Navier–Stokes OPEN`. |
+| `CR_0(Q-bar^sc_P2) subset P u D` (chain-recurrent zero-defect core is planar or degenerate) | **OPEN** — canonical target (109.3 / 118.3). |
+| OWR, FNW, OCSR, IRR, Witness Soundness | **OPEN** (112.3, 114.3, 117.5, 111.2, 111.5). |
+| Equal-shell projective null structure (113.1)–(113.3) | **PASS** — exact CAS certification, discrepancy factor 1; promoted from the source's SCRATCH-DERIVED. |
+| Equal source shells lock `B_{p,q}` to the `p x q` direction; unequal shells give the full `k`-perp image | **PASS on exact instances; corollary of Section 14** (`B_T ∝ Q²−P²`). Not a new lemma. |
+| Exact zero-sum multi-source cancellation at a target is impossible for genuinely 3D productive triads | **No.** Witnesses W1 (two-shell N=2), W2 (rank-2, real and complex), W3 (equal-shell N=3) cancel exactly; it is impossible only for two equal-source-shell triads with non-parallel normals. Reality constraint vacuous on all three; antipodal-source cases OPEN. |
+| These witnesses refute OWR/SBX/OCSR | **No.** The standalone already carries the "exactly cancelled" branch (112, 116). The witnesses show that branch is nonempty and generic; whether its deficit `C_k > 0` is a payable loss is Witness Soundness, OPEN. |
+| Direction lock forces phase frustration at a shared target | **No.** Transfer signs are free via `sign(C_i)`. |
+| W3 with free `c` at `k` can suppress every outward descendant and stay productive | **No (PASS, one seed, one generation).** Both descendants null ⇒ parent determinant 0; only `c=0` survives. Instance of Sections 13–14 at `K=P=Q`. |
+| W3 with `û(k)=0` is a depth-1 zero-defect web | **No (PASS, one seed).** 44 targets, `±k` cancelled, 36 nonzero, 30 single-source forced novelty. |
+| Any of the above is an all-seed or all-generation theorem | **No.** Finite exact instances only. |
+| "zero-cancellation source-ray alignment" is DERIVED | **HOLD** — cited five times in the standalone, stated nowhere. |
+
 ## Current measurement-to-continuum chain
 
 ```text
