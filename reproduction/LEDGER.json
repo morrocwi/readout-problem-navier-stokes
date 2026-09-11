@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-11T06:01:36.044005+00:00",
+  "generated_at_utc": "2026-09-11T07:48:25.044287+00:00",
   "series": "Readout-Navier-Stokes Development Series (Volumes 1-6) + post-paper EPSC research lane (Volume 7)",
   "source_repos": [
     "GLS-2026-006 (github.com/morrocwi/readout-problem-navier-stokes, Zenodo DOI 10.5281/zenodo.22673246)",
@@ -860,7 +860,7 @@
       "name": "Direct NS ordered-triad sum reproduces the exact retained nonlinear tape",
       "tier": "finite_diagnostic",
       "status": "PASS",
-      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18"
+      "evidence": "max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18"
     },
     {
       "volume": 6,
@@ -1132,7 +1132,7 @@
       "name": "deterministic conditioning search over structurally admissible N=1 shell-row pairs",
       "tier": "finite_diagnostic",
       "status": "PASS",
-      "evidence": "six deterministic starts; best floating objective=6.389166e+26; final hill-climb swaps=16; final chart exact modular rank=49"
+      "evidence": "six deterministic starts; best floating objective=6.389166e+26; final hill-climb swaps=15; final chart exact modular rank=49"
     },
     {
       "volume": 7,
