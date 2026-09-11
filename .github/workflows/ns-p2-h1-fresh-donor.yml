@@ -6,8 +6,10 @@ on:
     paths:
       - 'paper/NS_P2_FRAME_COMPATIBLE_DYADIC_H1_BRIDGE.md'
       - 'paper/NS_P2_DYADIC_FRESH_DONOR_TREE_ESCAPE.md'
+      - 'paper/NS_P2_FRESH_DONOR_INDUCED_INTERACTION.md'
       - 'reproduction/checks/check_ns_p2_frame_compatible_dyadic_h1_floor.py'
       - 'reproduction/checks/check_ns_p2_dyadic_fresh_donor_tree.py'
+      - 'reproduction/checks/check_ns_p2_fresh_donor_induced_interaction.py'
       - '.github/workflows/ns-p2-h1-fresh-donor.yml'
       - 'CLAY_GOVERNANCE_ACK.json'
   workflow_dispatch:
@@ -26,6 +28,8 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2_frame_compatible_dyadic_h1_floor.py
       - name: Exact dyadic fresh-donor tree escape
         run: python3 reproduction/checks/check_ns_p2_dyadic_fresh_donor_tree.py
+      - name: Exact induced donor off-tree interaction
+        run: python3 reproduction/checks/check_ns_p2_fresh_donor_induced_interaction.py
       - name: Claim-boundary guard
         run: |
           python3 - <<'PY'
@@ -57,5 +61,18 @@ jobs:
           if missing:
               raise SystemExit('missing fresh-donor claim markers: ' + ', '.join(missing))
 
-          print('NS P2 H1 BRIDGE + FRESH-DONOR RED-TEAM CLAIM-BOUNDARY PASS')
+          induced = Path('paper/NS_P2_FRESH_DONOR_INDUCED_INTERACTION.md').read_text()
+          induced_required = {
+              'coeff pass': 'NS-P2-FRESH-DONOR-INDUCED-COEFF-ALLN` — **PASS**',
+              'H1 floor': 'NS-P2-FRESH-DONOR-INDUCED-H1-FLOOR` — **DERIVED**',
+              'not invariant': 'NS-P2-FRESH-DONOR-TREE-NOT-INVARIANT` — **DERIVED**',
+              'dynamic dichotomy': 'NS-P2-FRESH-DONOR-OVERLAP-OR-DYNAMIC-COST` — **DERIVED**',
+              'window open': 'window aggregation of induced interactions                       OPEN',
+              'recurrence open': 'constructive R_j recurrence                                      OPEN',
+          }
+          missing = [name for name, marker in induced_required.items() if marker not in induced]
+          if missing:
+              raise SystemExit('missing induced-donor claim markers: ' + ', '.join(missing))
+
+          print('NS P2 H1 + FRESH-DONOR + INDUCED-INTERACTION CLAIM-BOUNDARY PASS')
           PY
