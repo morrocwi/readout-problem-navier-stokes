@@ -1,0 +1,78 @@
+name: ns-p2-h1-fresh-donor
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/NS_P2_FRAME_COMPATIBLE_DYADIC_H1_BRIDGE.md'
+      - 'paper/NS_P2_DYADIC_FRESH_DONOR_TREE_ESCAPE.md'
+      - 'paper/NS_P2_FRESH_DONOR_INDUCED_INTERACTION.md'
+      - 'reproduction/checks/check_ns_p2_frame_compatible_dyadic_h1_floor.py'
+      - 'reproduction/checks/check_ns_p2_dyadic_fresh_donor_tree.py'
+      - 'reproduction/checks/check_ns_p2_fresh_donor_induced_interaction.py'
+      - '.github/workflows/ns-p2-h1-fresh-donor.yml'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  h1-bridge-red-team:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install symbolic dependency
+        run: python -m pip install sympy
+      - name: Exact gauge-compatible H1 floor
+        run: python3 reproduction/checks/check_ns_p2_frame_compatible_dyadic_h1_floor.py
+      - name: Exact dyadic fresh-donor tree escape
+        run: python3 reproduction/checks/check_ns_p2_dyadic_fresh_donor_tree.py
+      - name: Exact induced donor off-tree interaction
+        run: python3 reproduction/checks/check_ns_p2_fresh_donor_induced_interaction.py
+      - name: Claim-boundary guard
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          h1 = Path('paper/NS_P2_FRAME_COMPATIBLE_DYADIC_H1_BRIDGE.md').read_text()
+          h1_required = {
+              'hom floor': 'NS-P2-FRAME-COMPATIBLE-DYADIC-H1-HOM-FLOOR` — **DERIVED**',
+              'inh floor': 'NS-P2-FRAME-COMPATIBLE-DYADIC-H1-INH-FLOOR` — **DERIVED**',
+              'weight adapter': 'NS-P2-H1-CYCLE-WEIGHT-ADAPTER` — **DERIVED',
+              'coverage open': 'actual H1 critical-flux/shell-production coverage          OPEN',
+              'recurrence open': 'constructive R_j recurrence                                OPEN',
+          }
+          missing = [name for name, marker in h1_required.items() if marker not in h1]
+          if missing:
+              raise SystemExit('missing H1 bridge claim markers: ' + ', '.join(missing))
+
+          tree = Path('paper/NS_P2_DYADIC_FRESH_DONOR_TREE_ESCAPE.md').read_text()
+          tree_required = {
+              'coeff pass': 'NS-P2-DYADIC-FRESH-DONOR-COEFF-ALLN` — **PASS**',
+              'SAT': 'NS-P2-FRESH-DONOR-TREE-SAT` — **DERIVED**',
+              'H1 floor': 'NS-P2-DYADIC-FRESH-DONOR-H1-FLOOR` — **DERIVED**',
+              'weak remainder refuted': 'NS-P2-CONFLICT-FREE-REMAINDER-GEOMETRICALLY-WEAK` — **REFUTED**',
+              'spatial-only refuted': 'NS-P2-SPATIAL-HOLONOMY-ALONE-FORCES-CONTRACTION` — **REFUTED**',
+              'dynamic remainder open': 'window/dynamical control of fresh-donor remainder                 OPEN',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT                                         OPEN',
+          }
+          missing = [name for name, marker in tree_required.items() if marker not in tree]
+          if missing:
+              raise SystemExit('missing fresh-donor claim markers: ' + ', '.join(missing))
+
+          induced = Path('paper/NS_P2_FRESH_DONOR_INDUCED_INTERACTION.md').read_text()
+          induced_required = {
+              'coeff pass': 'NS-P2-FRESH-DONOR-INDUCED-COEFF-ALLN` — **PASS**',
+              'H1 floor': 'NS-P2-FRESH-DONOR-INDUCED-H1-FLOOR` — **DERIVED**',
+              'not invariant': 'NS-P2-FRESH-DONOR-TREE-NOT-INVARIANT` — **DERIVED**',
+              'dynamic dichotomy': 'NS-P2-FRESH-DONOR-OVERLAP-OR-DYNAMIC-COST` — **DERIVED**',
+              'window open': 'window aggregation of induced interactions                       OPEN',
+              'recurrence open': 'constructive R_j recurrence                                      OPEN',
+          }
+          missing = [name for name, marker in induced_required.items() if marker not in induced]
+          if missing:
+              raise SystemExit('missing induced-donor claim markers: ' + ', '.join(missing))
+
+          print('NS P2 H1 + FRESH-DONOR + INDUCED-INTERACTION CLAIM-BOUNDARY PASS')
+          PY
