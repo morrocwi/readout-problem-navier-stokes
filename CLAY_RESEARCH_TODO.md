@@ -149,6 +149,46 @@ Immediate work order is specified in `FUTURE_WORK_P2_TRIAD_ATTACK.md`:
 - [ ] aggregate to all-scale recurrence and explicit recent-nonlinear remainder decay;
 - [ ] formalize stable finite lemmas and rerun fail-closed CI.
 
+### Canonical P2 architecture upgrade — Standalone vNext (2026-09-11, later than PR #52)
+
+`paper/NS_P2_STANDALONE_VNEXT.md` supersedes the framing (not the statements) of the holonomy-era
+notes. Its Sections 109–118 replace fixed-point/viable-set rigidity by the chain-recurrent core target
+and organise the interior around constraint accumulation:
+
+```text
+CR_0(Q-bar^sc_P2) subset P u D                         CANONICAL TARGET / OPEN      (109.3, 118.3)
+IRR  interior recurrent rigidity                        OPEN                          (111.2)
+OWR / FNW  orthogonal-web / flat null-web rigidity      OPEN                          (112.3, 114.3)
+OCSR outward-channel suppression rigidity               OPEN; shortest IRR route      (117.5)
+Witness Soundness                                       OPEN / conceptually essential (111.5)
+current preferred move: OCSR + global multi-source cancellation compatibility + Witness Soundness (118.4)
+```
+
+`NS-P2-FRUSTRATION-OR-CUT` is retained as an OPEN statement; phase holonomy is now one component
+(`d_hol`) of the defect vector of the constraint web rather than the organising principle.
+
+Exact results recorded against this architecture (`paper/NS_P2_MULTISOURCE_CANCELLATION_OCSR_GEN1.md`):
+
+- [x] (113.1)–(113.3) certified exactly; equal source shells lock the interaction direction (Section 14 corollary); rank 1 iff `|p|=|q|` (exact instances PASS, generic statement DERIVED via Section 14).
+
+Which order governs: the holonomy work list above (FW-1…FW-12) remains valid as checker material; the
+standalone's (118.4) move — OCSR + global multi-source cancellation compatibility + Witness Soundness —
+is the current canonical priority for the interior.
+- [x] Exact multi-source cancellation witnesses W1/W2/W3 (two-shell N=2, rank-2 genericity, equal-shell N=3); reality constraint vacuous on all three.
+- [x] W3 generation 1: suppressing both outward descendants forces a non-productive parent; W3 depth-1 full convolution is not lossless (36 nonzero targets, 30 single-source).
+- [ ] Witness Soundness for `D_cancel` on the three witnesses (is `C_k > 0` a payable loss or a constraint?).
+- [ ] OCSR at generation 2 on any seed; antipodal-source configurations; symmetry-free two-shell N=2.
+- [ ] Supply or downgrade the unstated "zero-cancellation source-ray alignment — DERIVED" lemma.
+
+Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j ≤ (1−δ)νD_j + Cρ^j`),
+`paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`:
+
+- [x] Recurrence identity `R_{j+1} ≤ κR_j + C_η R^sh_{j+1}` DERIVED; content = shell-own critical ratio geometric.
+- [x] Universal-constant form REFUTED (exact triad witness `T/D = 20` at the datum; `n⁶` excess and 2.5-D fillers are analytic `Dr` scalings; windowed numbers are on the 3-mode Galerkin truncation only).
+- [x] Solution-dependent form REGULARITY-EQUIVALENT / HOLD per FINAL-EQUIV §8.
+- [x] Budget ratio `∫T_j/∫D_j = 1 + 1/(2ν)` DERIVED: accounting in the P2C-3 critical budget cannot give `δ > 0`.
+- [ ] Only residue: constructive generator of `R^sh_j ≤ Bρ^j` from finite records (= `NS-P2B-SCALE-CONTRACTION-UNIFORM`).
+
 ### P2 anti-shortcut rules
 
 Do not substitute any of the following for the open theorem:
