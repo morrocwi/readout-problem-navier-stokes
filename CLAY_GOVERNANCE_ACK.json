@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "Promote only the fixed-N=1 four-step A1C tube-chain calibration after exact CI success. The general arbitrary-target/adaptive generator A1C-G and singularity-capture A1C-X remain OPEN.",
+  "scope": "NS-FUB-A1C localization refinement: add a residual-centered fixed-N=1 validated tube candidate and an exact negative control showing absolute symmetric tube propagation is not localization-complete. A1C-G and A1C-X remain OPEN.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already marks the general validated finite-dynamics/data adapter as OPEN. Finite chain composition and a four-step N=1 constructor do not complete arbitrary-target termination or arbitrary-N coverage."
+    "evidence": "CLAY_RESEARCH_TODO.md already keeps the general validated finite-dynamics/data adapter OPEN. The residual verifier targets localization quality but does not prove arbitrary-target termination or arbitrary-N coverage."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization gate; Toledo merge b8572414... pins A1C-V evidence. A1C-CV/G1 evidence will be pinned after this PR merges."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization gate; Toledo merge b16ec2d2... pins the prior finite-chain layer. Residual-centered sub-identifiers remain non-canonical pending CI evidence and merge."
   },
-  "claim_effect": "status-only"
+  "claim_effect": "statement-change"
 }
