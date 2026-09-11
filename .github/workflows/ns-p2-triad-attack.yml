@@ -10,6 +10,7 @@ on:
       - 'paper/NS_P2_COMPLEX_PHASE_HOLONOMY.md'
       - 'paper/NS_P2_DYADIC_COMPLEX_PHASE_HOLONOMY.md'
       - 'paper/NS_P2_GEOMETRIC_FRUSTRATION_CUT_FAMILY.md'
+      - 'paper/NS_P2_POLARIZATION_GAUGE_FRAME_COVER.md'
       - 'reproduction/checks/check_ns_p2_triad_phase_stress.py'
       - 'reproduction/checks/check_ns_p2_triad_coherence_defect.py'
       - 'reproduction/checks/check_ns_p2_n1_h3_sign_frustration.py'
@@ -19,6 +20,7 @@ on:
       - 'reproduction/checks/check_ns_p2_phase_holonomy.py'
       - 'reproduction/checks/check_ns_p2_dyadic_phase_holonomy_alln.py'
       - 'reproduction/checks/check_ns_p2_geometric_frustration_cut_family.py'
+      - 'reproduction/checks/check_ns_p2_polarization_gauge_frame.py'
       - '.github/workflows/ns-p2-triad-attack.yml'
       - 'CLAY_RESEARCH_TODO.md'
       - 'CLAY_GOVERNANCE_ACK.json'
@@ -52,6 +54,8 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2_dyadic_phase_holonomy_alln.py
       - name: Symbolic geometric frustration-cut family
         run: python3 reproduction/checks/check_ns_p2_geometric_frustration_cut_family.py
+      - name: Polarization gauge and shared-frame mismatch
+        run: python3 reproduction/checks/check_ns_p2_polarization_gauge_frame.py
       - name: Claim-boundary and handoff guards
         run: |
           python3 - <<'PY'
@@ -107,6 +111,22 @@ jobs:
           if missing:
               raise SystemExit('missing geometric-family claim markers: ' + ', '.join(missing))
 
+          gauge = Path('paper/NS_P2_POLARIZATION_GAUGE_FRAME_COVER.md').read_text()
+          gauge_required = {
+              'adapted sparse tensor': 'NS-P2-TRIAD-ADAPTED-SPARSE-TENSOR` — **DERIVED**',
+              'basis-invariant single triad refuted': 'NS-P2-SINGLE-TRIAD-HOLONOMY-BASIS-INVARIANT` — **REFUTED**',
+              'shared frame mismatch': 'NS-P2-SHARED-MODE-FRAME-MISMATCH` — **DERIVED**',
+              'coefficient floor': 'NS-P2-FRAME-MISMATCH-COEFFICIENT-FLOOR` — **DERIVED**',
+              'dispersion identity': 'NS-P2-FRAME-DISPERSION-IDENTITY` — **DERIVED**',
+              'pair mass': 'NS-P2-FRAME-DISPERSION-PAIR-MASS` — **DERIVED**',
+              'standard basis only': 'retained in declared basis only',
+              'flux weighting open': 'actual dyadic flux weighting / non-overcounted packing         OPEN',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT                                       OPEN',
+          }
+          missing = [name for name, marker in gauge_required.items() if marker not in gauge]
+          if missing:
+              raise SystemExit('missing polarization-gauge claim markers: ' + ', '.join(missing))
+
           handoff = Path('CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md').read_text()
           handoff_required = {
               'P0 section': '# P0',
@@ -133,5 +153,5 @@ jobs:
           if missing:
               raise SystemExit('missing P2 future-work markers: ' + ', '.join(missing))
 
-          print('NS P2 TRIAD ATTACK + HANDOFF CLAIM-BOUNDARY PASS')
+          print('NS P2 TRIAD ATTACK + POLARIZATION-GAUGE CLAIM-BOUNDARY PASS')
           PY
