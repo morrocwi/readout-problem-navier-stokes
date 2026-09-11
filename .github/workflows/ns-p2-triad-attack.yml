@@ -7,6 +7,8 @@ on:
       - 'paper/NS_P2_TRIAD_PHASE_READOUT_ATTACK.md'
       - 'reproduction/checks/check_ns_p2_triad_phase_stress.py'
       - 'reproduction/checks/check_ns_p2_n1_h3_sign_frustration.py'
+      - 'reproduction/checks/check_ns_p2_n1_frustration_tax.py'
+      - 'reproduction/checks/check_ns_p2_ladder_frustration_alln.py'
       - '.github/workflows/ns-p2-triad-attack.yml'
       - 'CLAY_RESEARCH_TODO.md'
       - 'CLAY_GOVERNANCE_ACK.json'
@@ -20,12 +22,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install finite checker dependency
-        run: python -m pip install numpy
+      - name: Install checker dependencies
+        run: python -m pip install numpy sympy
       - name: Exact isolated-triad phase stress
         run: python3 reproduction/checks/check_ns_p2_triad_phase_stress.py
       - name: Exact N=1 H3 sign-frustration classification
         run: python3 reproduction/checks/check_ns_p2_n1_h3_sign_frustration.py
+      - name: Exact N=1 four-term frustration tax
+        run: python3 reproduction/checks/check_ns_p2_n1_frustration_tax.py
+      - name: Symbolic all-n ladder frustration family
+        run: python3 reproduction/checks/check_ns_p2_ladder_frustration_alln.py
       - name: Claim-boundary guards
         run: |
           python3 - <<'PY'
@@ -36,7 +42,10 @@ jobs:
               'phase coordinate': 'signed coordinate `r`',
               'shell-only refuted': 'NS-P2-TRIAD-PHASE-01',
               'viscosity-only refuted': 'NS-P2-TRIAD-PHASE-02',
+              'N1 sign frustration': 'NS-P2-N1-H3-SIGN-FRUSTRATION',
+              'frustration tax': 'frustration tax',
               'open phase-complete target': 'NS-P2-PHASE-COMPLETE-CONTRACTION` — OPEN',
+              'open frustration-or-cut': 'NS-P2-FRUSTRATION-OR-CUT` — OPEN',
               'no all-scale claim': 'No all-scale strict deficit has yet been proved',
           }
           missing = [name for name, marker in required.items() if marker not in text]
