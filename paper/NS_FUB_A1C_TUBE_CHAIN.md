@@ -1,7 +1,7 @@
 # NS-FUB-A1C — Finite Validated Tube Chain
 
 **Date:** 2026-09-11  
-**Status:** fixed-`N=1` finite-chain candidate until dedicated CI is green.  
+**Status:** fixed-`N=1`, four-step finite chain **PASS**; chain composition `DERIVED` by finite induction plus the per-link contraction theorem.  
 **Parent target:** `NS-FUB-A1C-G` remains OPEN as a general/adaptive arbitrary-target generator.
 
 ## Purpose
@@ -54,17 +54,32 @@ Finite induction composes the links.
 
 The final interval box is converted into full Fourier coefficient rectangles and passed to `NS-FUB-A1V`.
 
+Dedicated CI `exact-tube-chain` passed. The exact four-link record was:
+
+```text
+step 1: h=100/52651213, tube radius=1/1000, outgoing halfwidth=1/2000
+step 2: h=1/351343,      tube radius=1/500,  outgoing halfwidth=1/800
+step 3: h=50/11728189,   tube radius=7/2000, outgoing halfwidth=19/8000
+step 4: h=15/2350669,    tube radius=23/4000,outgoing halfwidth=13/3200
+```
+
+Every link had strict contraction `q<1` and strict self-map containment. The final enclosure retained an exact positive `H^3 > 1` calibration margin under A1V.
+
 This is a **finite calibration generator** for a fixed number of steps. It does not establish termination to an arbitrary requested target time.
 
 ## Status boundaries
 
 ### `NS-FUB-A1C-CV` — finite chain verifier
 
-Given a finite sequence of links satisfying the declared exact inequalities, composition of the trajectory enclosures is `DERIVED` by finite induction plus the per-link contraction theorem.
+Given a finite sequence of links satisfying the declared exact inequalities, composition of the trajectory enclosures is **DERIVED** by finite induction plus the per-link contraction theorem.
+
+The pinned four-step `N=1` chain is executable **PASS**.
 
 ### `NS-FUB-A1C-G1` — fixed-N finite-step chain constructor
 
-The present executable automatically constructs four links at the pinned `N=1` calibration. Executable PASS status is assigned only after CI succeeds.
+The present executable automatically constructs four links at the pinned `N=1` calibration and returns **PASS** under exact rational verification.
+
+This status does not imply arbitrary step count or target-time reachability.
 
 ### `NS-FUB-A1C-G`
 
@@ -77,3 +92,5 @@ Finite-time singularity forces a constructible validated A1V exceedance certific
 ## Non-vacuity
 
 Producing more fixed-N links is not by itself progress on the Clay bridge. The value of this chain layer is to remove a logical gap in finite trajectory certification. Clay-level leverage still requires a uniform theorem relating continuation/failure of such finite chains and regularity-sensitive/tail control to the global PDE statement.
+
+The next load-bearing question is no longer whether finitely many validated tubes can compose. It is whether an adaptive finite procedure has a non-vacuous all-finite continuation/obstruction theorem strong enough to connect to `A1E` without assuming regularity in advance.
