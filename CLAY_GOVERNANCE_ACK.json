@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "Promote only the fixed-N=1 NS-FUB-A1C-V validated Galerkin tube calibration after exact CI success. The arbitrary-N/general generator A1C-G and singularity-capture bridge A1C-X remain OPEN.",
+  "scope": "Promote only the fixed-N=1 four-step A1C tube-chain calibration after exact CI success. The general arbitrary-target/adaptive generator A1C-G and singularity-capture A1C-X remain OPEN.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already marks the general validated finite-dynamics/data adapter as OPEN. The fixed-N=1 verifier/calibration PASS does not complete that general TODO."
+    "evidence": "CLAY_RESEARCH_TODO.md already marks the general validated finite-dynamics/data adapter as OPEN. Finite chain composition and a four-step N=1 constructor do not complete arbitrary-target termination or arbitrary-N coverage."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Toledo merge 3a2b3ea8... records P2 and A1E/A1V/A1C; this PR adds non-canonical A1C-V evidence only and will be pinned in Toledo after merge."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization gate; Toledo merge b8572414... pins A1C-V evidence. A1C-CV/G1 evidence will be pinned after this PR merges."
   },
   "claim_effect": "status-only"
 }
