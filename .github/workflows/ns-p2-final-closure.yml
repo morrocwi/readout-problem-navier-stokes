@@ -1,0 +1,46 @@
+name: ns-p2-final-closure
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/NS_P2_FINAL_CLOSURE_EQUIVALENCE.md'
+      - 'reproduction/checks/check_ns_p2_final_equiv.py'
+      - '.github/workflows/ns-p2-final-closure.yml'
+      - 'CLAY_RESEARCH_TODO.md'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  p2-final-closure:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: exact equivalence algebra controls
+        run: python3 reproduction/checks/check_ns_p2_final_equiv.py
+      - name: final claim-boundary guards
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('paper/NS_P2_FINAL_CLOSURE_EQUIVALENCE.md').read_text()
+          required = {
+              'equivalence theorem': 'NS-P2-FINAL-EQUIV',
+              'regularity to contraction': 'Direction A — regularity implies strict scale contraction',
+              'contraction to regularity': 'Direction B — strict scale contraction implies regularity',
+              'phase closure': 'P2 = CLOSED AS A RESEARCH / REDUCTION PHASE',
+              'P2B closure': 'P2B finite-observation route = CLOSED AS REGULARITY-EQUIVALENT',
+              'Clay open': 'Clay Navier-Stokes global regularity = OPEN',
+              'anti reopening': 'Anti-reopening rule',
+          }
+          missing = [k for k, marker in required.items() if marker not in text]
+          if missing:
+              raise SystemExit('missing P2 final closure markers: ' + ', '.join(missing))
+          forbidden = ['Clay Navier-Stokes global regularity = PROVED', 'Millennium problem solved']
+          hit = [x for x in forbidden if x in text]
+          if hit:
+              raise SystemExit('forbidden claim promotion: ' + ', '.join(hit))
+          print('NS P2 FINAL CLAIM-BOUNDARY GUARDS PASS')
+          PY
