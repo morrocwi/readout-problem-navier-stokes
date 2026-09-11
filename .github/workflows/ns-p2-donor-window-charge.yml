@@ -109,7 +109,8 @@ jobs:
               'trichotomy': 'NS-P2-SHARED-MODE-PLANE-TURN-TRICHOTOMY` — **DERIVED**',
               'nonplanar reduction': 'NS-P2-NONPLANAR-ZERO-DISPERSION-REDUCES-TO-ORTHOGONAL-TURNS` — **DERIVED**',
               'fixture': 'NS-P2-SHARED-MODE-TURN-FIXTURES` — **PASS**',
-              'allscale open': 'all-scale orthogonal-turn escape classification              OPEN',
+              'selected escape derived': 'all-scale selected orthogonal-turn escape exists             DERIVED separately',
+              'full closure open': 'full-convolution orthogonal-turn interaction closure          OPEN',
               'parent open': 'NS-P2-FRUSTRATION-OR-CUT                                     OPEN',
           }
           missing = [name for name, marker in turn_required.items() if marker not in turn]
