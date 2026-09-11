@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "NS-FUB-A1C localization refinement: add a residual-centered fixed-N=1 validated tube candidate and an exact negative control showing absolute symmetric tube propagation is not localization-complete. A1C-G and A1C-X remain OPEN.",
+  "scope": "NS-FUB-A1C localization refinement: fixed-N=1 residual-centered validated tube and exact negative control for localization failure of absolute symmetric propagation. Final-head CI at 926acb40c67a09e64d238709efa5d8e7c1b9e097 passed residual-tube, absolute-tube, finite-chain, H3-witness, and Clay-governance workflows. A1C-G and A1C-X remain OPEN.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already keeps the general validated finite-dynamics/data adapter OPEN. The residual verifier targets localization quality but does not prove arbitrary-target termination or arbitrary-N coverage."
+    "evidence": "CLAY_RESEARCH_TODO.md keeps the general validated finite-dynamics/data adapter OPEN. The residual verifier materially improves localization and closes only the fixed-N checker/search sublayer; it does not prove arbitrary-target termination or arbitrary-N coverage."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization gate; Toledo merge b16ec2d2... pins the prior finite-chain layer. Residual-centered sub-identifiers remain non-canonical pending CI evidence and merge."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Toledo merge b16ec2d2... pins the prior finite-chain layer; residual-centered A1C-RV/RG1 evidence is ready to pin after this PR merges."
   },
-  "claim_effect": "statement-change"
+  "claim_effect": "status-only"
 }
