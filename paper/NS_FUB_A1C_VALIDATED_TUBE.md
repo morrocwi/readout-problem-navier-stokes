@@ -1,7 +1,7 @@
 # NS-FUB-A1C — Validated Finite Galerkin Tube Adapter
 
 **Date:** 2026-09-11  
-**Status:** finite certificate construction/verification layer; fixed `N=1` calibration only until CI is green.  
+**Status:** fixed-`N=1` finite exact calibration **PASS**; tube implication `DERIVED` from standard finite-dimensional contraction theory.  
 **Parent target:** `NS-FUB-A1C` remains OPEN as an arbitrary-instance constructive bridge.
 
 ## 1. Goal
@@ -20,7 +20,7 @@ where:
 
 - `D` is diagonal with scaled entries `-3 |k|^2` because `nu=1/200` and `C nu=3`;
 - `T` is the exact integer tensor for `C` times the quadratic Galerkin map;
-- the existing tensor audit records `2096` nonzero integer coefficients and exact induced infinity row-sum bound `36000`.
+- the tensor audit reproduces `2096` nonzero integer coefficients and exact induced infinity row-sum bound `36000`.
 
 No continuum trajectory is used inside the certificate calculation.
 
@@ -103,7 +103,50 @@ x_i(h)\in[x_{0,i}-hM_i,\ x_{0,i}+hM_i].
 
 The analytic theorem used here is ordinary finite-dimensional ODE/Banach fixed-point mathematics; all certificate inequalities and coefficients are finite exact rational/integer data.
 
-## 4. Composition with A1V
+## 4. Green fixed-N calibration
+
+Dedicated GitHub Actions job `exact-validated-tube` passed on PR #29. The exact output was:
+
+\[
+\max_i M_i=\frac{52651213}{200000},
+\qquad
+L_X=\frac{2009}{8},
+\]
+
+with chosen step
+
+\[
+h=\frac{100}{52651213}>0.
+\]
+
+The certified margins are
+
+\[
+\frac{h\max_iM_i}{r}=\frac12,
+\]
+
+and
+
+\[
+hL_X=\frac{50225}{105302426}<\frac12.
+\]
+
+The same run independently reproduced the exact finite tensor statistics
+
+```text
+nonzero coefficients = 2096
+infinity row-sum bound = 36000
+```
+
+and returned
+
+```text
+NS-FUB-A1C N1 VALIDATED TUBE PASS
+```
+
+These values are finite exact evidence for this fixed calibration only.
+
+## 5. Composition with A1V
 
 The checker `reproduction/checks/check_ns_fub_a1c_n1_validated_tube.py` converts the endpoint coordinate box through the exact divergence-free Fourier basis into rectangular intervals for all retained complex Fourier velocity coefficients.
 
@@ -122,15 +165,15 @@ exact finite N=1 quadratic dynamics
     -> PASS/HOLD
 ```
 
-The current calibration uses the fixed threshold `B=1` only as an end-to-end sanity witness. It is not a singularity threshold and has no Clay significance.
+The fixed threshold `B=1` is used only as an end-to-end sanity witness. The green run gave an exact positive `H^3` margin and `endpoint_H3_certificate = PASS`. This threshold is not a singularity threshold and has no Clay significance.
 
-## 5. Status split
+## 6. Status split
 
 ### `NS-FUB-A1C-V` — validated finite tube verifier
 
-Given an explicitly represented finite quadratic vector field, initial state, box and positive margins satisfying the declared inequalities, the tube/endpoint implication is `DERIVED` from standard finite-dimensional contraction theory, while the inequalities themselves are exact finite checks.
+Given an explicitly represented finite quadratic vector field, initial state, box and positive margins satisfying the declared inequalities, the tube/endpoint implication is **DERIVED** from standard finite-dimensional contraction theory, while the inequalities themselves are exact finite checks.
 
-For the repository's fixed `N=1` calibration, executable PASS status is assigned only after dedicated CI succeeds.
+For the repository's fixed `N=1` calibration, executable status is **PASS**.
 
 ### `NS-FUB-A1C-G` — general certificate generator
 
@@ -144,7 +187,7 @@ Required target: combine the generator with `A1E` strongly enough that a finite-
 
 **Status:** OPEN.
 
-## 6. What this does not prove
+## 7. What this does not prove
 
 The fixed-N calibration does not prove:
 
@@ -156,7 +199,7 @@ The fixed-N calibration does not prove:
 
 The value of this layer is narrower: the gap between “finite state interval supplied” and “finite trajectory interval validated” can be handled by finite rational certificate arithmetic.
 
-## 7. Next load-bearing target
+## 8. Next load-bearing target
 
 After this verifier layer, the non-vacuous research question becomes:
 
