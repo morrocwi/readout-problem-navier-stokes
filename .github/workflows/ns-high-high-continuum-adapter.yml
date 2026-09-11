@@ -1,0 +1,31 @@
+name: ns-high-high-continuum-adapter
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md'
+      - 'paper/NS_FUB_A1_STOKES_NONLINEAR_TAIL_SPLIT.md'
+      - 'reproduction/checks/check_ns_high_high_absorption_adapter.py'
+      - '.github/workflows/ns-high-high-continuum-adapter.yml'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  exact-adapter-interface:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: exact finite adapter checker
+        run: python3 reproduction/checks/check_ns_high_high_absorption_adapter.py
+      - name: architecture and claim-boundary guards
+        run: |
+          grep -q 'FINITE-NATIVE CORE' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
+          grep -q 'CONTINUUM SEMANTIC ADAPTER' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
+          grep -q 'not peer-reviewed' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
+          grep -q 'all-shell extension and weighted tail summability: \*\*OPEN and Clay-bearing\*\*' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
+          grep -q 'recent nonlinear transfer modulus' paper/NS_FUB_A1_STOKES_NONLINEAR_TAIL_SPLIT.md
+          grep -q 'Clay Navier--Stokes global regularity: \*\*OPEN\*\*' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
