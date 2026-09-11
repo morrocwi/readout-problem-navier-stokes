@@ -2,199 +2,250 @@
 
 **Date:** 2026-09-11  
 **Status:** P2 reduction theorem / frontier isolation.  
-**Claim boundary:** this closes the finite-to-adapter *translation architecture*, not the Clay Navier--Stokes problem. The one remaining load-bearing uniform defect-envelope theorem is OPEN.
+**Claim boundary:** this closes the finite-to-adapter translation architecture, not the Clay Navier--Stokes problem. One uniform finite-native dissipative-margin theorem remains OPEN.
 
 ## 1. Clay endpoint
 
-For the periodic unforced branch, the target is the standard three-dimensional periodic Navier--Stokes global smoothness statement: every smooth divergence-free periodic initial datum should generate a smooth solution for all finite times. This programme works in that periodic setting unless a file says otherwise.
+The current attack targets the unforced periodic three-dimensional branch: for every smooth divergence-free periodic initial datum and every `nu>0`, obtain a smooth periodic Navier--Stokes solution for all finite times.
 
-The purpose of P2 is not to re-prove all continuum analysis internally. It is to reduce that endpoint to an explicit finite-native uniform statement whose truth can be attacked independently.
+P2 does not require continuum mathematics to disappear. It requires the continuum layer to be isolated after a finite-native uniform theorem rather than being silently assumed inside the finite core.
 
-## 2. What P2 has already closed
+## 2. Layers already removed from the bottleneck
 
-The following layers are no longer the bottleneck.
+The following are no longer the main obstruction.
 
-1. A finite-time singularity would force arbitrarily large finite-Galerkin `H^3` exceedances, conditional on the declared classical continuation and compact-time Galerkin adapters (`NS-FUB-A1E`).
-2. A finite Galerkin `H^3` exceedance has an exact rational PASS/HOLD verifier (`A1V`).
-3. Fixed finite rational polynomial/Galerkin trajectories admit residual-centered rational certificate chains whenever a strict finite witness exists (`A1C-COMP-Q`), with exhaustive semidecision but no useful runtime claim (`A1C-ENUM-Q`).
+1. `NS-FUB-A1E`: under the declared classical continuation and compact-time Galerkin adapters, a finite-time singularity forces arbitrarily large finite-Galerkin `H^3` exceedances.
+2. `A1V`: a finite Galerkin `H^3` exceedance has an exact rational PASS/HOLD verifier.
+3. `A1C-COMP-Q` / `A1C-ENUM-Q`: fixed finite rational polynomial/Galerkin strict witnesses admit finite rational residual certificates and exhaustive semidecision, with no useful runtime claim.
 4. Adjacent/local compatibility alone is insufficient.
 5. Instantaneous omitted `L2`/energy tail smallness does not control omitted `H^3` tail.
-6. Failure of one fixed-`N` Galerkin trajectory/certificate construction is not a singularity witness; fixed finite Galerkin dynamics extend globally.
-7. Linear Stokes memory and nonlinear history separated from the endpoint by a positive time gap admit explicit all-scale `H^3` tail envelopes.
-8. A finite exact shell/time checker exists for the local High--High absorption inequality.
+6. Failure of one fixed-`N` Galerkin trajectory/certificate construction is not a singularity witness; each unforced fixed finite Galerkin system extends globally.
+7. Linear Stokes memory and nonlinear history separated from the endpoint by a positive time gap have explicit all-scale `H^3` tail envelopes.
+8. A finite exact interface exists for shellwise absorption inequalities.
+9. `NS-P2-HH-GEOM-LIFT` below converts one useful all-shell geometric defect envelope into a weighted `H^3` remainder bound.
 
-What remains is therefore a **uniform recent nonlinear-transfer theorem**.
+The remaining issue is the **uniform recent nonlinear production**.
 
-## 3. High--High defect
+## 3. Adapter-neutral `H^3` energy margin
 
-Fix the `H^3` dyadic shell weight
-
-\[
-w_j=2^{6j}=64^j.
-\]
-
-For an absorption parameter `0 <= eta < 1`, define the positive High--High excess
+For the finite Fourier-Galerkin solution `u_N`, define
 
 \[
-d_j(t):=\bigl[T_j^{HH}(t)-\eta V_j(t)\bigr]_+.
+X_N(t):=\|u_N(t)\|_{H^3}^2,
 \]
 
-If `rho_j(t) >= d_j(t)`, then automatically
+and let
 
 \[
-T_j^{HH}(t)\le \eta V_j(t)+\rho_j(t).
+\mathcal D_N(t):=\nu\|\nabla\Lambda^3u_N(t)\|_2^2
 \]
 
-Thus the continuum-adapter remainder problem is reduced to constructing a weighted-summable majorant of `d_j`.
-
-## 4. Finite prefix plus geometric tail theorem
-
-### `NS-P2-HH-GEOM-LIFT`
-
-Fix a finite shell cutoff `J`. Suppose that on the target time interval:
-
-1. for the finite prefix `j0 <= j <= J`, certified nonnegative coefficients `c_j` satisfy
+be the `H^3` viscous dissipation. Define the signed nonlinear production so that the exact finite Galerkin identity is
 
 \[
-d_j(t)\le c_j\,(1+X_3(t)),
+\boxed{
+\frac12\frac{d}{dt}X_N(t)+\mathcal D_N(t)=\mathcal P_N(t).
+}
 \]
 
-where `X_3(t)` denotes the weighted `H^3` shell energy used by the chosen continuum adapter;
+The precise Fourier normalization can be fixed once in the finite implementation; the reduction only needs the same normalization in `X_N`, `D_N`, and `P_N`.
 
-2. for every shell `j>J`, there are constants `A>=0` and `q>=0` such that
+### `NS-P2-H3-MARGIN`
+
+Suppose there are constants
 
 \[
-d_j(t)\le A q^j\,(1+X_3(t));
+0\le\theta<1,
+\qquad C_T<\infty,
 \]
 
-3. the strict geometric condition
+independent of the cutoff `N`, such that for every retained cutoff and every `t in [0,T]`,
 
 \[
-64q<1
+\boxed{
+\mathcal P_N(t)
+\le
+\theta\mathcal D_N(t)+C_T\bigl(1+X_N(t)\bigr).
+}
 \]
-
-holds.
 
 Then
 
 \[
-\sum_{j\ge j_0}64^j d_j(t)
-\le C_R\,(1+X_3(t)),
+\frac12X_N'(t)+(1-\theta)\mathcal D_N(t)
+\le C_T(1+X_N(t)),
 \]
 
-with the explicit coefficient
+and hence
+
+\[
+X_N'(t)\le2C_T(1+X_N(t)).
+\]
+
+Gronwall gives the explicit uniform bound
 
 \[
 \boxed{
-C_R=
-\sum_{j=j_0}^{J}64^j c_j
-+
-A\frac{(64q)^{J+1}}{1-64q}.
+1+X_N(t)
+\le
+(1+X_N(0))e^{2C_Tt}
+\le
+(1+\|u_0\|_{H^3}^2)e^{2C_TT}.
 }
 \]
 
-### Proof
+Thus a cutoff-independent dissipative margin yields a cutoff-independent finite-time `H^3` bound.
 
-The prefix is finite. For the tail,
+**Status:** DERIVED algebraic/Gronwall reduction. The difficult part is constructing `theta,C_T` by a non-vacuous finite mechanism.
 
-\[
-\sum_{j>J}64^j d_j(t)
-\le A(1+X_3(t))\sum_{j>J}(64q)^j.
-\]
+## 4. Standard semantic adapter after the uniform margin
 
-Because `64q<1`, the geometric series is exactly
+Once the cutoff-independent `H^3` bound is established on every finite interval, the remaining continuum step is the standard Galerkin compactness/strong-solution continuation adapter: extract/identify the periodic strong solution on `[0,T]`, use uniqueness in the strong class, and continue. Since `T` is arbitrary, this gives the periodic global-smoothness branch.
 
-\[
-\frac{(64q)^{J+1}}{1-64q}.
-\]
+This semantic adapter is intentionally weaker and more standard than any special shellwise regularity preprint. The finite programme's Clay-bearing obligation is therefore concentrated before this adapter.
 
-Adding the finite prefix gives the formula above.
+## 5. Exact finite certificate interface for the margin
 
-This theorem is elementary, but it closes a previously ambiguous translation step: once the finite-native programme proves a geometric all-shell defect envelope, weighted remainder summability no longer requires a new continuum argument.
-
-## 5. Sharpness of the geometric threshold for this certificate form
-
-For a pure geometric majorant `A q^j`, the weighted `H^3` series is
+For one finite cutoff/time cell, a fail-closed certificate may contain rational enclosures
 
 \[
-A\sum_j(64q)^j.
+P^+\ge\mathcal P_N,
+\quad
+D^-\le\mathcal D_N,
+\quad
+X^+\ge X_N,
 \]
 
-Therefore the certificate form itself guarantees summability exactly when
+and rational `theta,C` with
 
 \[
-64q<1.
+0\le\theta<1,
+\qquad C\ge0.
 \]
 
-At `64q>=1`, this geometric majorant alone cannot certify weighted summability. This is a statement about the certificate template, not a claim that every physically admissible remainder must be geometric.
-
-## 6. Continuum adapter composition
-
-If an independently audited continuum theorem has the implication
-
-```text
-shellwise High--High absorption
-+ H^3-weighted remainder bound C_R (1 + X_3)
-    -> finite-time H^3 boundedness
-    -> strong continuation,
-```
-
-then `NS-P2-HH-GEOM-LIFT` composes with it as follows:
-
-```text
-finite prefix defect certificates
-+ uniform geometric tail defect theorem (64 q < 1)
-        |
-        v
-all-shell weighted remainder bound
-        |
-        v
-[continuum semantic adapter]
-        |
-        v
-H^3 bounded on each finite interval
-        |
-        v
-periodic strong continuation.
-```
-
-The external High--High absorption preprint currently tracked by issue #41 is only a candidate adapter until its theorem is independently audited; this reduction does not promote that preprint to canonical status.
-
-## 7. The single remaining P2 load-bearing lemma
-
-After all preceding reductions, the finite-first attack can be stated as one residual theorem target.
-
-### `NS-P2-HH-UNIFORM` — OPEN
-
-For every admissible smooth periodic unforced datum and every finite target time `T`, construct from finite/checkable information:
-
-- `eta` with `0 <= eta < 1`;
-- a finite shell threshold `J`;
-- finite prefix coefficients/certificates `c_j` covering all required time cells for `j<=J`;
-- rational or exactly certified `A>=0` and `q>=0` with `64q<1`;
-
-such that the true High--High defects obey
+The exact local checker may return PASS only if
 
 \[
-d_j(t)\le c_j(1+X_3(t))\quad(j\le J)
+\boxed{
+P^+\le\theta D^-+C(1+X^+).
+}
 \]
 
-and
+Enclosure soundness, complete time coverage, and cutoff-independent reuse of the same `theta,C` are separate obligations. A finite list of PASS cells is not silently upgraded to all times or all cutoffs.
+
+## 6. High--High route retained only as a candidate subroute
+
+For an `H^3` dyadic decomposition let the weight be
+
+\[
+w_j=2^{6j}=64^j
+\]
+
+and define a positive High--High excess
+
+\[
+d_j(t):=[T_j^{HH}(t)-\eta V_j(t)]_+.
+\]
+
+### `NS-P2-HH-GEOM-LIFT`
+
+If a finite prefix satisfies
+
+\[
+d_j(t)\le c_j(1+X_3(t))\quad(j_0\le j\le J),
+\]
+
+and the true infinite tail satisfies
 
 \[
 d_j(t)\le Aq^j(1+X_3(t))\quad(j>J)
 \]
 
-for every `t in [0,T]`.
+with
 
-The construction may use exact finite triad algebra, certified interval enclosures, symmetry, viscosity, time-cell coverage, and proved scale-recursion laws. It may **not** assume an a-priori global `H^3` bound or an equivalent regularity statement merely to manufacture the envelope.
+\[
+64q<1,
+\]
 
-If this theorem is proved and the continuum adapter is independently validated, the periodic global-regularity branch follows by the composition above.
+then
 
-## 8. P2 status
+\[
+\sum_{j\ge j_0}64^jd_j(t)
+\le C_R(1+X_3(t)),
+\]
 
-P2 is therefore **CLOSED AS A REDUCTION / OPEN AT ONE LOAD-BEARING LEMMA**.
+where
 
-The research phase should not return to larger fixed cutoffs, more fixed-`N` integration steps, energy-only tails, or reader-conditioning failures. All mathematical leverage is now concentrated in `NS-P2-HH-UNIFORM` (or a genuinely stronger alternative recent-transfer theorem).
+\[
+\boxed{
+C_R=
+\sum_{j=j_0}^{J}64^jc_j
++A\frac{(64q)^{J+1}}{1-64q}.
+}
+\]
 
-No Clay solution is claimed. Proving `NS-P2-HH-UNIFORM` non-vacuously would be new Clay-strength progress; until then global regularity remains OPEN.
+This closes the *weighted-tail lifting arithmetic*. It does not prove the nonlinear shell envelope itself, nor does it prove the missing Low--Low/Low--High continuum energy closure.
+
+The externally tracked High--High preprint is now `HOLD` after independent audit. Therefore `NS-P2-HH-GEOM-LIFT` is retained only as one possible way to help prove the adapter-neutral `H^3` margin above.
+
+## 7. The single main P2 load-bearing lemma
+
+### `NS-P2-H3-MARGIN-UNIFORM` — OPEN
+
+For every admissible smooth periodic divergence-free unforced datum, every `nu>0`, and every finite target time `T`, construct from finite/checkable information constants
+
+\[
+0\le\theta<1,
+\qquad C_T<\infty,
+\]
+
+**independent of the Galerkin cutoff**, together with a finite/uniform certificate mechanism proving
+
+\[
+\boxed{
+\mathcal P_N(t)
+\le
+\theta\mathcal D_N(t)
++C_T(1+X_N(t))
+}
+\]
+
+for every finite cutoff `N` and every `t in [0,T]`.
+
+The construction may use exact finite triad algebra, interval enclosures, symmetry, scale recursion, Stokes damping, shell-transfer decomposition, residual certificates, or another finite-native invariant. It may **not** obtain `C_T` by assuming the desired uniform `H^3` bound, nor hide an equivalent regularity theorem in an oracle/premise.
+
+A stronger theorem such as `NS-P2-HH-UNIFORM` with a separately proved shell-energy closure may imply this margin, but High--High absorption is no longer assumed to be the unique route.
+
+## 8. Why this is exactly the remaining Clay-strength point
+
+If `NS-P2-H3-MARGIN-UNIFORM` is proved, then the chain is
+
+```text
+finite/checkable uniform dissipative-margin theorem
+        |
+        v
+uniform all-N H^3 Gronwall bound
+        |
+        v
+standard Galerkin/strong-solution semantic adapter
+        |
+        v
+smooth periodic solution on every finite interval
+        |
+        v
+periodic global smoothness.
+```
+
+Conversely, merely checking larger fixed cutoffs, increasing integration length at fixed `N`, controlling only `L^2` tails, or observing numerical transfer decay does not prove the uniform margin.
+
+## 9. P2 status
+
+P2 is **CLOSED AS A REDUCTION / OPEN AT ONE LOAD-BEARING LEMMA**:
+
+```text
+NS-P2-H3-MARGIN-UNIFORM = OPEN
+```
+
+The High--High preprint is `HOLD`, not a validated final adapter. The High--High geometric-tail theorem remains a valid supporting finite lemma.
+
+No Clay solution is claimed. Proving `NS-P2-H3-MARGIN-UNIFORM` non-vacuously would close this P2 bridge and, with the standard semantic adapter, settle the periodic regularity branch; until then the Millennium problem remains OPEN.
