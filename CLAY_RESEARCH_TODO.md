@@ -45,74 +45,69 @@ Evidence:
 
 Primary home: this repository.
 
-### Phase ruling
+### FINAL phase ruling
 
 ```text
-P2 = CLOSED AS A REDUCTION
-NS-P2-H3-MARGIN-UNIFORM = OPEN / HOLD frontier
+P2 = CLOSED AS A RESEARCH / REDUCTION PHASE
+P2B finite-observation route = CLOSED AS REGULARITY-EQUIVALENT
+NS-P2-H3-MARGIN-UNIFORM = RETIRED as an active separate bridge target
+NS-P2B-SCALE-CONTRACTION-UNIFORM = REGULARITY-EQUIVALENT existentially
 Clay Navier--Stokes global regularity = OPEN
 ```
 
-Canonical P2 handoff: `paper/NS_P2_FINITE_TO_CONTINUUM_CLOSURE.md`.  
-Latest reduction merge: NS PR #42, commit `83e966df251e548fd9574d9553d7f4bf5551877b`.
+Final closure theorem: `paper/NS_P2_FINAL_CLOSURE_EQUIVALENCE.md` (`NS-P2-FINAL-EQUIV`).  
+P2B source merge: `9d6f516734d1a151bae987a8df33c05273bcd32b`.
 
-The phase is closed because the useful finite/continuum architecture has been reduced to one explicit uniform theorem target. It is **not** closed as a Millennium solution.
+### What P2 established before closure
 
-### P2 layers already closed or ruled out
-
-- [x] `A1E`: finite-time singularity forces arbitrarily large finite-Galerkin `H^3` exceedances under explicitly declared classical continuation + compact-time Galerkin adapters.
+- [x] `A1E`: finite-time singularity forces arbitrarily large finite-Galerkin `H^3` exceedances under explicitly declared continuation/Galerkin adapters.
 - [x] `A1V`: exact finite rational PASS/HOLD verification of a certified finite Galerkin `H^3` exceedance.
-- [x] `A1C-V/RV`: exact fixed-`N=1` validated absolute/residual tubes.
-- [x] `A1C-CV/G1`: exact finite tube-chain verification.
-- [x] `A1C-COMP-Q`: fixed finite rational polynomial/Galerkin strict witness -> finite rational residual certificate.
-- [x] `A1C-ENUM-Q`: exhaustive rational certificate semidecision; no useful runtime claimed.
-- [x] Adjacent/local or `L2` cross-resolution compatibility rejected as a global bridge.
-- [x] Energy/`L2`-only omitted-tail control REFUTED as an `H^3` tail mechanism (issue #34 / PR #37, merge `af97fc84542dc042b3b6c386458fc0afbd797bef`).
-- [x] Fixed-`N` certificate/trajectory breakdown REFUTED as a standalone singularity witness (issue #38 / PR #39, merge `72d7672ea1753794e452fd0bb5206dea7be21764`).
+- [x] Fixed-`N` validated trajectory/tube and rational certificate machinery.
+- [x] Energy/`L2`-only omitted-tail control REFUTED as an `H^3` tail mechanism.
+- [x] Fixed-`N` certificate breakdown REFUTED as a standalone singularity witness.
 - [x] Positive-lag Stokes and old-Duhamel histories receive explicit all-scale `H^3` tail envelopes.
-- [x] `NS-P2-HH-GEOM-LIFT`: finite prefix + true geometric High--High defect tail with `64q<1` gives an exact `H^3`-weighted remainder bound.
-- [x] Exact finite shellwise absorption and full `H^3` dissipative-margin interfaces implemented fail-closed.
-- [x] External High--High absorption preprint independently audited and placed on **HOLD** as a final semantic adapter; it is not a proof premise.
+- [x] Finite shellwise High--High / full `H^3` margin interfaces implemented fail-closed.
+- [x] External High--High preprint audited and held rather than promoted.
+- [x] P2B: EPSC finite-tape error -> finite modal time-window observation lift (`NS-P2B-EPSC-OBS-LIFT`).
+- [x] P2B: strict subcritical finite-observation scaling -> published finite-observation regularity gate (`NS-P2B-SUBCRITICAL-OBS`).
+- [x] P2B: energy+dissipation-only strict exponent gain REFUTED by exact critical-spike accounting.
+- [x] P2B: integrated shell window balance + total transfer conservation alone REFUTED as a source of strict contraction.
+- [x] P2B: strict cross-scale recurrence -> eventual gate PASS (`NS-P2B-SCALE-CONTRACTION`).
+- [x] Final non-vacuity audit: existential strict scale contraction is equivalent to regularity on `[0,T]` in the declared modal/dyadic adapter (`NS-P2-FINAL-EQUIV`).
 
-### Main derived reduction
+### Final equivalence
 
-For each finite Galerkin cutoff define
-
-```text
-X_N = ||u_N||_H3^2
-D_N = nu ||grad Lambda^3 u_N||_2^2
-(1/2) X_N' + D_N = P_N
-```
-
-If cutoff-independent constants `0 <= theta < 1` and `C_T < infinity` satisfy
+For dyadic modal scales define
 
 ```text
-P_N(t) <= theta D_N(t) + C_T (1 + X_N(t))
+R_j = (K_{N_j}^2)^(2p/(p-2)) / Lambda_j.
 ```
 
-for every cutoff and every `t in [0,T]`, then Gronwall gives a uniform all-`N` `H^3` bound. The final continuum layer is then the standard Galerkin/strong-solution continuation semantic adapter.
-
-### Single main residual theorem — `NS-P2-H3-MARGIN-UNIFORM`
-
-- [ ] For every admissible smooth periodic divergence-free unforced datum, every `nu>0`, and every finite `T`, construct from finite/checkable information constants `theta<1` and `C_T<infinity`, independent of cutoff, together with a sound finite/uniform certificate mechanism proving
+Let `SC(T)` assert finite nonnegative upper bounds `U_j` and constants `kappa,rho<1`, `B<infinity` satisfying
 
 ```text
-P_N(t) <= theta D_N(t) + C_T (1 + X_N(t))
+R_j <= U_j
+U_{j+1} <= kappa U_j + B rho^j
 ```
 
-for all finite `N` and all `t in [0,T]`.
+for all sufficiently large `j`.
 
-Non-vacuity requirements:
+Then, under the declared periodic modal finite-observation adapter,
 
-- [ ] `C_T` may not be obtained by assuming the desired uniform `H^3` bound.
-- [ ] no equivalent regularity oracle may be hidden in the certificate constructor.
-- [ ] finite time cells must have a proved all-time coverage/modulus.
-- [ ] finite cutoffs must have a proved uniform/all-`N` rule; a large maximum cutoff is not enough.
-- [ ] any shellwise High--High route must separately prove the Low--Low/Low--High closure instead of importing the audited preprint's unresolved step.
+```text
+regularity on [0,T]  <=>  SC(T).
+```
 
-**Handoff rule:** do not spend another P2 session on larger fixed cutoffs, more fixed-`N` integration steps, energy-only tails, adjacent compatibility, reader conditioning, or the held external adapter unless new mathematics directly advances `NS-P2-H3-MARGIN-UNIFORM`.
+- Regularity gives a cutoff-independent `H1` bound, hence `R_j <= C_T/Lambda_j`; dyadic `Lambda_{j+1}=4 Lambda_j` gives the explicit contraction `U_{j+1}=(1/4)U_j`.
+- `SC(T)` gives `R_j -> 0`; normalized fixed initial/forcing terms also vanish with scale, so a finite modal observation level satisfies the published regularity gate.
 
-Tracked by master issue #25. Issues #40 and #41 are closed after PR #42; #41 is closed `not_planned` because the external preprint is HOLD as a final adapter.
+Therefore the last P2B residual is not a lower-strength intermediate theorem. An **effective finite constructor** for `SC(T)` from genuinely weaker information would be new regularity-level mathematics and must be treated as a future direct attack, not as unfinished P2 bookkeeping.
+
+### Anti-reopening rule
+
+P2 is complete as a research phase. Do **not** reopen it by renaming regularity as another known necessary-and-sufficient criterion. A future NS attack must first show a genuinely weaker, independently checkable premise or new structural theorem. Otherwise mark it `REGULARITY-EQUIVALENT / HOLD`.
+
+Tracked issues #25 and #46 should be closed with the explicit note that the phase closed by reduction/equivalence, **not** by solving Clay.
 
 ## P3 — P vs NP load-bearing bridge
 
@@ -146,7 +141,8 @@ verified unrestricted defect capture
 For every Clay-bearing implication `A -> Target`:
 
 - [x] Require the question whether proving `A` is genuinely more structured than proving `Target` directly.
-- [ ] Identify any imported theorem equivalent in strength to the desired conclusion for each domain candidate.
+- [x] P2 final audit: existential finite-observation scale contraction is regularity-equivalent; retire it as a separate bridge.
+- [ ] Identify any imported theorem equivalent in strength to the desired conclusion for each remaining domain candidate.
 - [x] Mark HOLD when a premise merely renames the Clay bottleneck.
 - [ ] Continue registering counterexamples or vacuity findings in Toledo.
 
@@ -155,7 +151,7 @@ For every Clay-bearing implication `A -> Target`:
 - [x] No `Admitted` in the promoted P1 safe finite kernels and audited formal negative controls.
 - [x] Run `Print Assumptions` for the P1/P2 audited Coq theorems.
 - [x] Add counterexample tests for naive generic bridge forms.
-- [x] Add exact finite controls for NS A1V, validated tubes, residual localization, certificate completeness, H3-tail no-go, fixed-N extensibility, geometric-tail lifting, and the H3 margin interface.
+- [x] Add exact finite controls for NS A1V, validated tubes, residual localization, certificate completeness, H3-tail no-go, fixed-N extensibility, geometric-tail lifting, H3 margin, P2B criticality, scale contraction, and final equivalence algebra.
 - [ ] Add further symmetry aliases and representation-redundancy tests as domain adapters mature.
 - [x] Keep finite diagnostic claims separate from formal theorem status.
 - [x] Keep CI status attached to exact commit SHA.
@@ -210,6 +206,7 @@ Do not spend a full session primarily on these unless tied to a specific open br
 - increasing NS cutoff only for a larger number;
 - adding more fixed-N validated integration steps;
 - retrying the held High--High preprint without a repaired continuum proof;
+- reopening P2 through another regularity-equivalent criterion;
 - more tiny-circuit enumeration;
 - more RH zeros at finite height;
 - more elliptic-curve examples;
