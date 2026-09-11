@@ -1,0 +1,29 @@
+name: ns-fub-a1-h3-tail-nogo
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/NS_FUB_A1_H3_TAIL_NO_GO.md'
+      - 'reproduction/checks/check_ns_fub_a1_h3_tail_nogo.py'
+      - '.github/workflows/ns-fub-a1-h3-tail-nogo.yml'
+      - 'CLAY_RESEARCH_TODO.md'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  exact-tail-nogo-controls:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: exact energy-only H3 tail no-go controls
+        run: python3 reproduction/checks/check_ns_fub_a1_h3_tail_nogo.py
+      - name: claim-boundary guards
+        run: |
+          grep -q 'NS-FUB-A1-TAIL-L2-NOGO' paper/NS_FUB_A1_H3_TAIL_NO_GO.md
+          grep -q 'REFUTED' paper/NS_FUB_A1_H3_TAIL_NO_GO.md
+          grep -q 'OPEN' paper/NS_FUB_A1_H3_TAIL_NO_GO.md
+          grep -q 'does not prove or disprove Navier--Stokes global regularity' paper/NS_FUB_A1_H3_TAIL_NO_GO.md

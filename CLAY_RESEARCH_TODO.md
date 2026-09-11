@@ -56,38 +56,62 @@ A1E: finite-time singularity
 
 A1V: certified rational interval enclosure of a finite Galerkin state
      -> exact finite PASS/HOLD verification of ||u_N(q)||_H3 > B
-     [finite exact checker; CI required]
+     [finite exact checker; CI PASS]
 
 A1C: finite-time singularity
      -> constructible validated A1V certificate
-     [OPEN]
+     [general Clay-facing form OPEN]
 ```
 
-- [ ] Audit candidate witness classes:
-  - [x] cross-resolution compatibility: **adjacent/local or L2 compatibility alone rejected as insufficient**; any useful form needs all-refinement Cauchy/tail control and regularity relevance
-  - [x] failure of a uniform regularity-sensitive bound: `H^3` finite Galerkin exceedance isolated as A1E witness class
-  - [ ] failure of finite scale-extension/tail suppression
-  - [ ] regularity-relevant energy-transfer concentration/growth
-  - [ ] certificate recursion/extensibility failure
-  - [x] conditioning loss alone: rejected as a singularity witness unless a separate PDE-regularity implication is proved
-- [ ] Try to construct counterexamples to the remaining candidate witness classes.
-- [x] Reject any premise that already assumes smoothness or an equivalent Clay criterion without new finite leverage; `paper/NS_FUB_A1_H3_FINITE_WITNESS.md` records the non-vacuity boundary.
-- [ ] Build a validated finite-dynamics/data adapter that constructs rigorous rational enclosures for `u_N(q)` from the declared initial-data representation; this is the current A1C bottleneck.
-- [ ] Find a non-vacuous finite mechanism that forces a uniform regularity-sensitive bound or summable all-scale envelope without assuming global regularity.
+#### A1C finite certificate layer already closed in restricted settings
 
-Tracked by: `morrocwi/readout-problem-navier-stokes#25`.
+- [x] `A1C-V/RV`: exact fixed-`N=1` absolute and residual-centered validated Galerkin tubes; residual localization passes exact CI.
+- [x] `A1C-CV/G1`: finite tube-chain verification and pinned finite-step construction pass exact CI.
+- [x] `A1C-COMP-Q`: for a fixed finite rational polynomial/Galerkin ODE with rational data and a strict finite observable margin, a finite rational residual certificate exists.
+- [x] `A1C-ENUM-Q`: finite rational certificates are enumerable and exactly decidable, so exhaustive dovetailing eventually finds a certificate when the strict fixed-finite witness is true; **no useful runtime bound is claimed**.
+- [x] `A1C-XQ`: restricted rational-finite-data singularity-to-certificate consequence DERIVED under the A1E adapters.
+- [ ] General `A1C-X`: bridge arbitrary smooth/continuum initial data to constructive finite rational enclosures, arbitrary cutoffs, and the all-scale statement. This remains OPEN.
+
+Evidence: NS PRs #29, #30, #32 and #33; latest completeness merge `df022097ea899bacb917238be7a69b40c15e2107`.
+
+#### Candidate finite failure classes
+
+- [x] Cross-resolution compatibility: **adjacent/local or L2 compatibility alone rejected as insufficient**; any useful form needs all-refinement Cauchy/tail control and regularity relevance.
+- [x] Failure of a uniform regularity-sensitive bound: `H^3` finite Galerkin exceedance isolated as the A1E witness class.
+- [ ] Finite scale-extension/tail suppression:
+  - [x] **energy/L2-only tail smallness REFUTED** as an H3 tail mechanism. `paper/NS_FUB_A1_H3_TAIL_NO_GO.md` gives a one-mode divergence-free counterexample: for every `N`, `epsilon>0`, and finite `B`, an omitted tail can have `L2<=epsilon` but `H3>B`.
+  - [x] finite-band L2-to-H3 bounds identified as insufficient for the all-scale bridge because the constant grows with the outer cutoff.
+  - [ ] find a non-vacuous frequency-weighted / PDE-derived smoothing or decay mechanism that yields a summable/all-refinement H3-relevant tail envelope without assuming global regularity.
+- [ ] Regularity-relevant energy-transfer concentration/growth: still requires a theorem showing why the chosen observable is forced by singularity and is not merely correlated with high-frequency activity.
+- [ ] Certificate recursion/extensibility failure:
+  - fixed-N verifier/generator failures alone are **not** accepted as PDE failure; a complete certificate class exists in the fixed rational finite setting.
+  - [ ] determine whether any *uniform across N* certificate deterioration can be linked to regularity rather than algorithmic conditioning/resource growth.
+- [x] Conditioning loss alone rejected as a singularity witness unless a separate PDE-regularity implication is proved.
+
+#### Current P2 load-bearing frontier
+
+- [x] Construct counterexamples to weak local/adjacent compatibility.
+- [x] Construct counterexample to energy/L2-only H3 tail suppression (issue #34 / PR #37).
+- [x] Reject premises that simply assume smoothness or an equivalent Clay criterion without new finite leverage.
+- [ ] Extend the initial-data adapter from rational finite data to the actual admissible smooth/continuum data class with explicit certified projection/tail representation.
+- [ ] Find a PDE-derived all-scale frequency-weighted tail mechanism that survives the non-vacuity audit.
+- [ ] Formulate and test the strongest useful uniform extension theorem only after the required tail quantity is explicit.
+
+Tracked by: `morrocwi/readout-problem-navier-stokes#25`, #31 and #34.
 
 ### NS-FUB-A2
 
-- [ ] After A1C or an alternative witness stabilizes, formulate the converse exclusion theorem:
+- [ ] After the admissible all-scale tail mechanism stabilizes, formulate the converse exclusion theorem:
 
 ```text
-uniform exclusion of every admissible finite failure mode
+uniform exclusion of every admissible finite regularity failure
++ certified all-scale tail/compatibility control
   -> no finite-time singularity.
 ```
 
 - [x] Separate finite uniformity from the continuum/global semantic bridge.
 - [ ] Audit the template `uniform all-N H3 bound -> strong solution` for non-vacuity: the implication may be classical while proving the antecedent remains the Clay-strength difficulty.
+- [ ] Avoid treating a stronger uniform `H^{3+sigma}` bound as progress unless a new mechanism proves it; it is a mathematically sufficient tail repair but may simply strengthen the target premise.
 
 ## P3 — P vs NP load-bearing bridge
 
@@ -127,6 +151,7 @@ For every Clay-bearing implication `A -> Target`:
 - [x] No `Admitted` in the promoted P1 safe finite kernels and P2 formal negative controls.
 - [x] Run `Print Assumptions` for the P1/P2 audited Coq theorems.
 - [x] Add counterexample tests for naive generic bridge forms.
+- [x] Add exact finite controls for NS A1V, validated tubes, residual localization, certificate completeness, and energy-only H3-tail no-go.
 - [ ] Add further symmetry aliases and representation-redundancy tests as domain adapters mature.
 - [x] Keep finite diagnostic claims separate from formal theorem status.
 - [x] Keep CI status attached to exact commit SHA.
@@ -165,7 +190,7 @@ Use these as stress tests of the shared core, not equal-priority direct attacks 
 
 ## P8 — Toledo integration
 
-- [x] Keep `PROP-FUB-01..06`, `NS-FUB-A1/A2`, `PNP-FUB-A1` as non-canonical proposal IDs until source statements stabilize.
+- [x] Keep `PROP-FUB-01..06`, `NS-FUB-A1/A2`, `PNP-FUB-A1` and research sub-identifiers non-canonical until source statements stabilize.
 - [ ] Pin final repo/commit/path for each stabilized proposal before canonicalization.
 - [x] Attach P1/P2 exact tier/status evidence through Toledo provenance notes/issues.
 - [ ] Add valid parent/relation structure.
@@ -179,6 +204,7 @@ Tracked by: `morrocwi/toledo#11`.
 Do not spend a full session primarily on these unless tied to a specific open bridge:
 
 - increasing NS cutoff only for a larger number;
+- adding more fixed-N validated integration steps after the certificate-completeness result;
 - more tiny-circuit enumeration;
 - more RH zeros at finite height;
 - more elliptic-curve examples;

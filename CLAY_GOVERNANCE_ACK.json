@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "NS-FUB-A1C completeness refinement: fixed-finite rational residual-certificate completeness (A1C-COMP-Q), semidecision/enumeration (A1C-ENUM-Q), and restricted rational-finite-data singularity-to-certificate consequence (A1C-XQ). Exact regression controls and claim-boundary CI passed at source head 749bb47d782b9605329fb19fae1e39e43d51a998 together with residual, tube-chain, H3, and governance workflows. General Clay-facing A1C-X, arbitrary-N uniformity, efficient/adaptive generation, and continuum initial-data representation remain OPEN.",
+  "scope": "P2 NS-FUB-A1 tail audit: refute the energy/L2-only omitted-tail route to uniform H3 control with an analytic single-mode divergence-free Fourier counterexample; add exact regression controls and record the stronger-weight repair template. All relevant workflows passed at source head 122bae2ba54165075a74741b1636c8b83691314a. This narrows the finite scale-extension/tail-suppression candidate and does not promote a Navier--Stokes regularity conclusion.",
   "todo": {
-    "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already leaves the general validated finite-dynamics/data adapter and all-scale bridge OPEN. The theorem closes certificate-language completeness only for fixed finite rational polynomial dynamics with strict margins; it does not complete the general TODO."
+    "status": "updated",
+    "evidence": "CLAY_RESEARCH_TODO.md now records energy/L2-only H3 tail suppression as REFUTED, finite-band L2-to-H3 control as insufficient for the all-scale bridge, fixed-finite A1C completeness progress, and the remaining OPEN target: a non-vacuous frequency-weighted/PDE-derived all-scale tail mechanism."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Toledo merge a63bd3e0... pins residual-tube evidence; A1C-COMP-Q/ENUM-Q/XQ are ready for provenance pinning after this PR merges but remain non-canonical research identifiers."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. After merge, pin the energy-only H3-tail no-go as a non-canonical P2 negative result."
   },
-  "claim_effect": "status-only"
+  "claim_effect": "statement-change"
 }
