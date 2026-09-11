@@ -90,8 +90,6 @@ def shell_values(sol, W, h, d):
 def candidate_grid():
     a = np.logspace(-4, -1, 25)
     b = np.linspace(0.11, 0.50, 40)
-    # Include simple rational spacings close to the floating optimum so the
-    # subsequent exact validator can use especially simple step arithmetic.
     c = np.asarray([
         1/24, 1/22, 1/20, 1/19, 1/18, 9/160, 1/17, 1/16, 1/15, 1/14,
     ], dtype=float)
@@ -135,21 +133,29 @@ def main() -> int:
         J = sample_jacobian(sol, W, float(h), cube.d, free)
         s = np.linalg.svd(J, compute_uv=False)
         rank = int(np.linalg.matrix_rank(J, tol=max(J.shape) * np.finfo(float).eps * s[0]))
-        if rank == 49 and s[-1] > 0:
+        vals = shell_values(sol, W, float(h), cube.d)
+        abs_scale = float(max(1.0, np.max(np.abs(vals))))
+        row_scale = np.maximum(np.abs(vals), 1.0)
+        Jrel = J / row_scale[:, None]
+        srel = np.linalg.svd(Jrel, compute_uv=False)
+        rank_rel = int(np.linalg.matrix_rank(Jrel, tol=max(Jrel.shape) * np.finfo(float).eps * srel[0]))
+        if rank == 49 and rank_rel == 49 and s[-1] > 0 and srel[-1] > 0:
             try:
                 A = np.linalg.inv(J)
+                Arel = np.linalg.inv(Jrel)
                 ainv = float(np.linalg.norm(A, ord=np.inf))
+                arel = float(np.linalg.norm(Arel, ord=np.inf))
             except np.linalg.LinAlgError:
                 ainv = math.inf
+                arel = math.inf
             cond2 = float(s[0] / s[-1])
+            cond2rel = float(srel[0] / srel[-1])
             sigma_min = float(s[-1])
+            sigma_min_rel = float(srel[-1])
         else:
-            ainv = math.inf
-            cond2 = math.inf
-            sigma_min = 0.0
-        vals = shell_values(sol, W, float(h), cube.d)
-        scale = float(max(1.0, np.max(np.abs(vals))))
-        rho_proxy = ainv * 1e-6 * scale if math.isfinite(ainv) else math.inf
+            ainv = arel = math.inf
+            cond2 = cond2rel = math.inf
+            sigma_min = sigma_min_rel = 0.0
         records.append({
             "h": float(h),
             "T": float(MAX_NODE * h),
@@ -157,16 +163,20 @@ def main() -> int:
             "sigma_min": sigma_min,
             "cond2": cond2,
             "inverse_inf": ainv,
-            "sample_abs_scale": scale,
-            "rho_proxy_for_1e-6_relative_energy_noise": rho_proxy,
+            "sample_abs_scale": abs_scale,
+            "rho_proxy_for_1e-6_relative_energy_noise_using_global_abs_scale": ainv * 1e-6 * abs_scale if math.isfinite(ainv) else math.inf,
+            "sigma_min_relative_chart": sigma_min_rel,
+            "cond2_relative_chart": cond2rel,
+            "inverse_inf_relative_chart": arel,
+            "rho_proxy_for_1e-6_rowwise_relative_sensor_radius": arel * 1e-6 if math.isfinite(arel) else math.inf,
         })
 
     finite = [r for r in records if math.isfinite(r["inverse_inf"])]
     if not finite:
         raise RuntimeError("no finite full-rank sample Jacobian in the declared grid")
     best = min(finite, key=lambda r: r["inverse_inf"])
-    best_noise = min(finite, key=lambda r: r["rho_proxy_for_1e-6_relative_energy_noise"])
-    shortlist = sorted(finite, key=lambda r: r["inverse_inf"])[:15]
+    best_rel = min(finite, key=lambda r: r["inverse_inf_relative_chart"])
+    shortlist = sorted(finite, key=lambda r: r["inverse_inf_relative_chart"])[:15]
 
     summary = {
         "scope": "NON-CERTIFYING floating target selection only",
@@ -176,9 +186,10 @@ def main() -> int:
         "sample_count": 49,
         "searched_h_min": float(np.min(hs)),
         "searched_h_max": float(np.max(hs)),
-        "best_inverse_inf": best,
-        "best_1e-6_noise_proxy": best_noise,
-        "shortlist_by_inverse_inf": shortlist,
+        "best_absolute_chart_inverse_inf": best,
+        "best_rowwise_relative_chart_inverse_inf": best_rel,
+        "shortlist_by_relative_inverse_inf": shortlist,
+        "relative_measurement_model": "each row divided by max(|center shell energy|,1); sigma then approximates a uniform rowwise relative sensor radius",
         "physical_interpretation": "if t*=t U/L, then Delta t_phys=h L/U and total window=23 h L/U; no seconds are claimed until L,U are declared",
         "claim_boundary": "diagnostic only; candidate must be recertified with validated finite flow/tangent intervals and an exact or outward-rounded preconditioner",
     }
@@ -190,7 +201,7 @@ def main() -> int:
             "name": "floating target selection for a finite-time direct sample schedule",
             "tier": "finite_diagnostic",
             "status": "PASS",
-            "evidence": f"searched {len(records)} h values; best floating inverse_inf at h={best['h']:.12g}, T={best['T']:.12g}; NON-CERTIFYING",
+            "evidence": f"best absolute h={best['h']:.12g}; best relative h={best_rel['h']:.12g}, relative Ainf={best_rel['inverse_inf_relative_chart']:.6g}; NON-CERTIFYING",
         }],
         "summary": summary,
     }, separators=(",", ":")))
