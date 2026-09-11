@@ -30,6 +30,22 @@ If changing theorem status/provenance, read `morrocwi/toledo/docs/CLAY_BRIDGE_PR
 - Use `PASS`, `DERIVED`, `OPEN`, and `HOLD` consistently with the evidence tier.
 - Do not hand-edit generated Toledo registry outputs.
 
+## Mandatory PR governance gate
+
+Clay-sensitive changes must go through a pull request to `main` so `.github/workflows/clay-governance.yml` can evaluate them before merge.
+
+If a PR changes a claim/proof-sensitive path, the same PR must update `CLAY_GOVERNANCE_ACK.json`.
+
+The acknowledgement must state:
+
+- `todo.status`: `updated` or `reviewed-no-change`, with evidence;
+- `toledo.status`: `updated`, `issue-open`, or `not-required`, with evidence;
+- `claim_effect`: one of `none`, `documentation-only`, `status-only`, `statement-change`, `formal-proof-change`, or `provenance-change`.
+
+For high-impact claim/formal/bridge changes, `toledo.status=not-required` is forbidden and `claim_effect=none` or `documentation-only` is forbidden. The CI job fails closed with `CLAY GOVERNANCE HOLD` if the acknowledgement is missing or inconsistent.
+
+Do not bypass this preventive check with a direct push for future Clay-sensitive work. The bootstrap commits that installed the gate predate this rule; subsequent governed changes should use PRs.
+
 ## Current highest-priority research fronts
 
 1. Shared safe-core formalization: `morrocwi/information-discrete-math#124`.
