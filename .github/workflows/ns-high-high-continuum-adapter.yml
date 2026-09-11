@@ -9,6 +9,7 @@ on:
       - 'paper/NS_P2_FINITE_TO_CONTINUUM_CLOSURE.md'
       - 'reproduction/checks/check_ns_high_high_absorption_adapter.py'
       - 'reproduction/checks/check_ns_p2_geometric_tail_lift.py'
+      - 'reproduction/checks/check_ns_p2_h3_margin_interface.py'
       - '.github/workflows/ns-high-high-continuum-adapter.yml'
       - 'CLAY_GOVERNANCE_ACK.json'
   workflow_dispatch:
@@ -21,10 +22,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: exact finite adapter checker
+      - name: exact finite High-High interface checker
         run: python3 reproduction/checks/check_ns_high_high_absorption_adapter.py
       - name: exact P2 geometric tail lift checker
         run: python3 reproduction/checks/check_ns_p2_geometric_tail_lift.py
+      - name: exact P2 H3 dissipative-margin interface checker
+        run: python3 reproduction/checks/check_ns_p2_h3_margin_interface.py
       - name: architecture and claim-boundary guards
         run: |
           python3 - <<'PY'
@@ -37,17 +40,20 @@ jobs:
           required_adapter = {
               'finite-core boundary': 'FINITE-NATIVE CORE',
               'continuum-adapter boundary': 'CONTINUUM SEMANTIC ADAPTER',
-              'preprint status': 'not peer-reviewed',
-              'all-shell OPEN marker': 'all-time / all-shell extension and weighted tail summability: **OPEN and Clay-bearing**',
-              'Clay OPEN marker': 'global regularity: **OPEN**',
+              'preprint status': 'candidate adapter **HOLD after independent audit**',
+              'audited eta cap': '0\\le\\eta<3/4',
+              'main H3 route': 'full uniform `H^3` dissipative-margin theorem',
+              'Clay OPEN marker': 'Clay Navier--Stokes global regularity: **OPEN**',
           }
           required_split = {
               'recent-transfer OPEN marker': 'Recent nonlinear transfer modulus',
           }
           required_closure = {
-              'geometric lift theorem': 'NS-P2-HH-GEOM-LIFT',
-              'single residual lemma': 'NS-P2-HH-UNIFORM',
+              'H3 margin theorem': 'NS-P2-H3-MARGIN',
+              'single residual lemma': 'NS-P2-H3-MARGIN-UNIFORM',
+              'geometric lift support': 'NS-P2-HH-GEOM-LIFT',
               'P2 reduction status': 'CLOSED AS A REDUCTION / OPEN AT ONE LOAD-BEARING LEMMA',
+              'preprint HOLD': 'High--High preprint is `HOLD`',
               'no Clay claim': 'No Clay solution is claimed',
           }
 
@@ -56,5 +62,5 @@ jobs:
           missing += [name for name, marker in required_closure.items() if marker not in closure]
           if missing:
               raise SystemExit('missing claim-boundary markers: ' + ', '.join(missing))
-          print('NS HIGH-HIGH ADAPTER CLAIM-BOUNDARY GUARDS PASS')
+          print('NS P2 ADAPTER/MARGIN CLAIM-BOUNDARY GUARDS PASS')
           PY
