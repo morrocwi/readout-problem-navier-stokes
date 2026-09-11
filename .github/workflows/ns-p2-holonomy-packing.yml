@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - 'paper/NS_P2_HOLONOMY_PACKING_DICHOTOMY.md'
+      - 'paper/NS_P2_HOLONOMY_WINDOW_PACKING.md'
       - 'reproduction/checks/check_ns_p2_holonomy_packing_dichotomy.py'
+      - 'reproduction/checks/check_ns_p2_holonomy_window_packing.py'
       - '.github/workflows/ns-p2-holonomy-packing.yml'
       - 'CLAY_GOVERNANCE_ACK.json'
   workflow_dispatch:
@@ -17,6 +19,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Exact rational packing fixture
         run: python3 reproduction/checks/check_ns_p2_holonomy_packing_dichotomy.py
+      - name: Exact time-window packing fixture
+        run: python3 reproduction/checks/check_ns_p2_holonomy_window_packing.py
       - name: Claim-boundary guard
         run: |
           python3 - <<'PY'
@@ -35,5 +39,20 @@ jobs:
           missing = [name for name, marker in required.items() if marker not in text]
           if missing:
               raise SystemExit('missing holonomy-packing claim markers: ' + ', '.join(missing))
-          print('NS P2 HOLONOMY PACKING CLAIM-BOUNDARY PASS')
+
+          window = Path('paper/NS_P2_HOLONOMY_WINDOW_PACKING.md').read_text()
+          window_required = {
+              'window tax': 'NS-P2-HOLONOMY-WINDOW-TAX` — **DERIVED**',
+              'window dichotomy': 'NS-P2-HOLONOMY-WINDOW-PACKING-OR-CUT` — **DERIVED**',
+              'switching refuted': 'NS-P2-PHASE-SWITCHING-EVADES-PACKED-HOLONOMY-TAX` — **REFUTED**',
+              'fixture': 'NS-P2-HOLONOMY-WINDOW-FIXTURE` — **PASS**',
+              'remainder open': 'conflict-free fresh-donor remainder control               OPEN',
+              'recurrence open': 'constructive R_j recurrence                               OPEN',
+              'parent open': 'NS-P2-FRUSTRATION-OR-CUT                                  OPEN',
+          }
+          missing = [name for name, marker in window_required.items() if marker not in window]
+          if missing:
+              raise SystemExit('missing holonomy-window claim markers: ' + ', '.join(missing))
+
+          print('NS P2 HOLONOMY PACKING + WINDOW CLAIM-BOUNDARY PASS')
           PY
