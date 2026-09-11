@@ -1,0 +1,31 @@
+name: ns-fub-a1-fixed-n-extensibility
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/NS_FUB_A1_FIXED_N_EXTENSIBILITY_NO_GO.md'
+      - 'reproduction/checks/check_ns_fub_a1_fixed_n_energy_extensibility.py'
+      - '.github/workflows/ns-fub-a1-fixed-n-extensibility.yml'
+      - 'CLAY_RESEARCH_TODO.md'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  exact-fixed-n-energy-extensibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: install dependency used by existing exact tensor builder
+        run: python3 -m pip install numpy
+      - name: exact N1 energy cancellation and viscous sign cross-check
+        run: python3 reproduction/checks/check_ns_fub_a1_fixed_n_energy_extensibility.py
+      - name: claim-boundary guards
+        run: |
+          grep -q 'NS-FUB-A1-FIXEDN-GLOBAL' paper/NS_FUB_A1_FIXED_N_EXTENSIBILITY_NO_GO.md
+          grep -q 'NS-FUB-A1-CERTFAIL-NOGO' paper/NS_FUB_A1_FIXED_N_EXTENSIBILITY_NO_GO.md
+          grep -q 'fixed-N certificate failure alone is REFUTED' paper/NS_FUB_A1_FIXED_N_EXTENSIBILITY_NO_GO.md
+          grep -q 'Clay Navier--Stokes regularity remain OPEN' paper/NS_FUB_A1_FIXED_N_EXTENSIBILITY_NO_GO.md
