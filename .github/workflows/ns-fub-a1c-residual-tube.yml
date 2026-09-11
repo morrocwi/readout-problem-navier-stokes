@@ -1,0 +1,29 @@
+name: ns-fub-a1c-residual-tube
+
+on:
+  pull_request:
+    paths:
+      - "paper/NS_FUB_A1C_RESIDUAL_TUBE.md"
+      - "reproduction/checks/check_ns_fub_a1c_n1_residual_tube.py"
+      - ".github/workflows/ns-fub-a1c-residual-tube.yml"
+      - "CLAY_GOVERNANCE_ACK.json"
+  push:
+    branches:
+      - "research/ns-fub-a1c-residual-tube-2026-09-11"
+    paths:
+      - "paper/NS_FUB_A1C_RESIDUAL_TUBE.md"
+      - "reproduction/checks/check_ns_fub_a1c_n1_residual_tube.py"
+      - ".github/workflows/ns-fub-a1c-residual-tube.yml"
+
+jobs:
+  exact-residual-tube:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: install numerical dependency used by exact tensor builder
+        run: python3 -m pip install numpy
+      - name: exact residual-centered N1 tube and negative control
+        run: python3 reproduction/checks/check_ns_fub_a1c_n1_residual_tube.py
