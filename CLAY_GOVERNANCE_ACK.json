@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P2 complex phase-holonomy continuation. Add exact Fourier-Leray all-n overlapping-channel and dyadic n-to-2n holonomy results, derive only local quantitative frustration taxes and local frustration-or-cut lemmas, preserve boundary coverage, temporal switching, cutoff-uniform recurrence, NS-P2-FRUSTRATION-OR-CUT, and Clay Navier-Stokes regularity as OPEN.",
+  "scope": "P2 complex phase-holonomy and geometric frustration-or-cut continuation. Add exact Fourier-Leray all-n overlapping-channel and dyadic n-to-2n holonomy results plus one three-parameter geometric family theorem. Promote only exact coefficient identities to PASS and local/family consequences to DERIVED. Preserve full dyadic boundary coverage, temporal switching, cutoff-uniform recurrence, NS-P2-FRUSTRATION-OR-CUT, and Clay Navier-Stokes regularity as OPEN.",
   "todo": {
     "status": "updated",
-    "evidence": "paper/NS_P2_COMPLEX_PHASE_HOLONOMY.md and paper/NS_P2_DYADIC_COMPLEX_PHASE_HOLONOMY.md record the exact complex phase-incidence obstructions, pi/4 angular deficit, local tax, H3-normalized scale dependence, and explicit claim boundaries. The next load-bearing target is dyadic boundary coverage versus phase-satisfiable sparse/forest escape, followed by temporal switching and the time-window recurrence adapter."
+    "evidence": "paper/NS_P2_COMPLEX_PHASE_HOLONOMY.md, paper/NS_P2_DYADIC_COMPLEX_PHASE_HOLONOMY.md, and paper/NS_P2_GEOMETRIC_FRUSTRATION_CUT_FAMILY.md record the exact phase-incidence obstructions, pi/4 taxes, a geometric phase-compatibility trichotomy, and a near-dyadic physical H3 coupling cut. The next load-bearing target is a symmetry/sector coverage theorem or an actual high-weight phase-compatible escape network, followed by temporal switching and time-window recurrence control."
   },
   "toledo": {
     "status": "issue-open",
