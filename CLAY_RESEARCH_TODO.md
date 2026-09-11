@@ -6,12 +6,23 @@
 
 ## P0 — Orientation / audit gate
 
-- [ ] Read `CLAY_READ_FIRST.md` before substantive work.
-- [ ] Read `CLAY_MULTI_PROBLEM_FINITE_BRIDGE_PROGRAM.md`.
-- [ ] Check NS `CLAIMS.md` for current claim boundaries.
-- [ ] Check IDM P-vs-NP PR #117 and issue #124.
-- [ ] Check Toledo `docs/CLAY_BRIDGE_PROGRAM_2026-09-11.md` and issue #11.
-- [ ] Record current branch/commit/CI/formal status before changing a theorem claim.
+- [x] Read `CLAY_READ_FIRST.md` before substantive work.
+- [x] Read `CLAY_MULTI_PROBLEM_FINITE_BRIDGE_PROGRAM.md`.
+- [x] Check NS `CLAIMS.md` for current claim boundaries.
+- [x] Check IDM P-vs-NP PR #117 and issue #124.
+- [x] Check Toledo `docs/CLAY_BRIDGE_PROGRAM_2026-09-11.md` and issue #11.
+- [x] Record current branch/commit/CI/formal status before changing a theorem claim.
+- [x] Freeze the P0 snapshot in `CLAY_P0_AUDIT_2026-09-11.md`.
+- [x] Record the P-vs-NP formal/CI HOLD finding in PR #117 and Toledo issue #11.
+
+### P0 findings / blockers carried forward
+
+- [ ] **PNP baseline blocker before P3:** synchronize `research/p-vs-np-readout` with current IDM `main`; at the P0 snapshot it is 181 commits ahead and 27 behind.
+- [ ] **PNP formal blocker before P3:** repair the Coq 8.20 failure in `formal/IDM_SATRestrictionDefect.v` (`wrong_root_forces_positive_defect`) and rerun focused formal CI green.
+- [ ] **PNP verifier blocker:** repair the no-`Admitted` lexical guard so ordinary English `admit` in comments is not reported as hidden formal assumptions.
+- [ ] **Governance hardening:** require `clay-governance` through branch protection/rulesets for NS, IDM and Toledo; the audited `main` branches currently report `protected:false`.
+
+P0 audit phase status: **CLOSED as an audit**, with the blockers above explicitly carried into later phases. No Clay theorem was promoted by P0.
 
 ## P1 — Shared finite obstruction / uniform bridge core
 
@@ -66,6 +77,8 @@ uniform exclusion of every admissible finite failure mode
 ## P3 — P vs NP load-bearing bridge
 
 Primary home: `morrocwi/information-discrete-math`, branch `research/p-vs-np-readout`, PR #117.
+
+**Entry gate:** do not promote new P3 formal claims until the P0 branch-sync and formal-CI blockers above are cleared.
 
 ### PNP-FUB-A1
 
