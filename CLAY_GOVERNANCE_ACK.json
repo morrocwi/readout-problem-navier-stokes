@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P2 NS-FUB-A1 certificate-extensibility audit: derive fixed-N Galerkin global extension from the finite-dimensional energy identity, connect it to fixed-finite residual certificate completeness, and rule out fixed-N certificate nonexistence as a genuine singularity witness. Add an exact N=1 characteristic-zero tensor/energy cancellation cross-check. General uniform-in-N deterioration and Clay regularity remain OPEN.",
+  "scope": "P2 NS-FUB-A1 certificate-extensibility audit: fixed-N Galerkin global extension is derived from the finite-dimensional energy identity and ODE continuation; fixed-finite residual certificate completeness rules out nonexistence of a valid finite trajectory certificate as a genuine fixed-N dynamical failure. Exact N=1 characteristic-zero tensor/energy cancellation and strict viscous dissipation cross-checks passed together with all relevant regression and governance workflows at source head cc687a011fdd2539d1280c1a48144fd80a15d27a. General uniform-in-N deterioration and Clay regularity remain OPEN.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already rejects fixed-N verifier/generator failure as a PDE failure and keeps the useful uniform-in-N deterioration question OPEN. This PR is intended to justify that boundary rigorously and will update the live status only after CI passes."
+    "evidence": "CLAY_RESEARCH_TODO.md already states that fixed-N verifier/generator failure is not accepted as a PDE failure and keeps the only viable version—uniform-in-N deterioration with a proved PDE-regularity meaning—OPEN. The current theorem justifies that existing boundary."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. If this PR passes and merges, pin the fixed-N global-extension and certificate-failure no-go results there as non-canonical P2 statements."
+    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. After merge, pin NS-FUB-A1-FIXEDN-GLOBAL, NS-FUB-A1C-CHAIN-EXIST-Q, and NS-FUB-A1-CERTFAIL-NOGO as non-canonical P2 statements."
   },
-  "claim_effect": "statement-change"
+  "claim_effect": "status-only"
 }
