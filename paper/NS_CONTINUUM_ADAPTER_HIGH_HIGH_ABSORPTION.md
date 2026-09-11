@@ -1,9 +1,9 @@
-# NS P2 — High–High absorption as a continuum semantic adapter
+# NS P2 — High–High absorption as a continuum semantic-adapter candidate
 
 **Date:** 2026-09-11  
 **Tracker:** issue #41.  
-**Status:** adapter specification / audit target.  
-**Claim boundary:** no global-regularity claim. The external source is a non-peer-reviewed preprint and is treated only as a candidate semantic adapter until independently audited.
+**Status:** candidate adapter **HOLD after independent audit**.  
+**Claim boundary:** no global-regularity claim. The external source is a non-peer-reviewed preprint; its current theorem/proof package is not accepted as a validated final adapter.
 
 ## 1. Architectural rule
 
@@ -21,38 +21,95 @@ FINITE-NATIVE CORE
           | uniform translation theorem
           v
 CONTINUUM SEMANTIC ADAPTER
-  shellwise High–High absorption
-  weighted Sobolev closure
-  continuation theorem
+  independently proved regularity implication
           |
           v
 GLOBAL REGULARITY CONSEQUENCE
 ```
 
-The Clay-strength work is on the first arrow. A continuum theorem may close the second arrow if its hypotheses have already been established by the finite-native system without circularly assuming the desired regularity.
+The Clay-strength work is on the first arrow. A continuum theorem may close the second arrow only if its hypotheses have already been established without circularly assuming the desired regularity **and** the continuum theorem itself survives independent audit.
 
-## 2. External candidate adapter
+## 2. External High--High candidate
 
-A directly aligned candidate is:
+A structurally aligned candidate is:
 
 Shin-ichi Inage, *Conditional Regularity of the Three-Dimensional Navier–Stokes Equations via High–High Triadic Absorption*, Preprints.org, version 1 posted 20 March 2026, DOI `10.20944/preprints202603.1591.v1`.
 
-The source explicitly presents its main regularity theorem as **conditional**, not as an unconditional solution of the 3D Navier–Stokes global-regularity problem. The posted version is a preprint and is not peer-reviewed.
+The source presents its main regularity theorem as conditional, not as an unconditional solution of the 3D Navier--Stokes global-regularity problem. The posted version is a preprint and is not peer-reviewed.
 
-The relevant continuum condition is schematically
+Its intended continuum condition is schematically
 
 \[
 T_j^{HH}(t)\le \eta V_j(t)+\rho_j(t),
-\qquad 0<\eta<1,
 \]
 
-with a Sobolev-weighted summability condition on the shell remainder `rho_j`. Under its internal Low–Low / Low–High estimates, the paper derives a closed weighted Sobolev inequality and then invokes continuation for `s>5/2`.
+plus Sobolev-weighted control of `rho_j`, followed by a weighted energy estimate and continuation for `s>5/2`.
 
-This programme does **not** adopt the later motivational/dynamical claims of that preprint as proved inputs. Only a theorem that survives independent audit may be used as an adapter.
+This architecture is useful as a **translation target**. The current preprint, however, is not accepted as the final semantic adapter for the reasons below.
 
-## 3. Finite certificate language
+## 3. Independent audit findings — adapter HOLD
 
-For a finite shell/time cell `(j,I)`, define a proposed adapter certificate record
+### A. Absorption-parameter mismatch
+
+The theorem statement permits `eta in (0,1)`, but the displayed proof later requires
+
+\[
+0<\eta<\frac34 c_0
+\]
+
+in order to leave a positive viscous coefficient after the Low--Low/Low--High allocation and High--High absorption. Under the paper's displayed dyadic normalization one has `D_j >= V_j`, so a safe direct mapping uses `c_0=1` and therefore
+
+\[
+\boxed{0\le\eta<3/4}
+\]
+
+rather than merely `eta<1`.
+
+Our finite checker consequently treats `3/4` as the conservative cap when testing this particular candidate adapter. A different independently proved adapter may use a different certified cap.
+
+### B. Main-text linear closure is not supplied by the appendix estimate
+
+The main argument requires a linear weighted estimate of the form
+
+\[
+\frac{d}{dt}X_s + c_1Y_s\le C(1+X_s)
+\]
+
+so that Gronwall closes the `H^s` norm.
+
+But the appendix's displayed Low--High summation gives a term of order
+
+\[
+\|u\|_{H^s}^3 = X_s^{3/2},
+\]
+
+and then records an inequality containing that cubic term before subsequently writing the desired linear inequality without a displayed derivation that removes or absorbs the cubic contribution. The missing step is load-bearing: `X_s^{3/2}` cannot simply be replaced by `C(1+X_s)` with a solution-independent constant.
+
+Therefore the current text does not establish the claimed linear Gronwall closure from the displayed appendix bounds.
+
+### C. Weighted remainder model does not by itself justify the infinite-shell sum
+
+The appendix models a remainder with scale comparable to
+
+\[
+\rho_j\lesssim 2^{-2sj}\|u\|_{H^s}^2.
+\]
+
+Multiplying by the theorem's Sobolev weight `2^{2sj}` leaves a quantity of constant order in `j`. Such a model does not yield an infinite weighted sum unless an additional decaying factor, finite support theorem, or other summability mechanism is proved. A statement that only finitely many shells contribute is not available for a general smooth continuum solution.
+
+This is exactly the all-shell gap that the finite-first programme refuses to hide.
+
+### Audit ruling
+
+```text
+Inage High--High preprint as final continuum adapter: HOLD
+```
+
+The shellwise absorption idea remains useful as a candidate *subroute*, but no P2 or Clay conclusion may depend on the current preprint as if its continuum closure were already established.
+
+## 4. Finite certificate language retained as a reusable interface
+
+For a finite shell/time cell `(j,I)`, define
 
 \[
 \mathcal A_{j,I}=
@@ -61,115 +118,84 @@ For a finite shell/time cell `(j,I)`, define a proposed adapter certificate reco
 
 where all numeric fields are rational and
 
-- `T^+` is a certified upper bound on the High–High transfer relevant to the adapter convention;
-- `V^-` is a certified lower bound on the viscous shell quantity;
+- `T^+` is a certified upper bound on a declared nonlinear shell-transfer quantity;
+- `V^-` is a certified lower bound on the matching viscous shell quantity;
 - `rho^+ >= 0` is the declared remainder budget;
-- `eta` is a rational number with `0 <= eta < 1`;
-- `w_j` is the Sobolev shell weight used by the target adapter.
+- `eta` is a rational absorption parameter;
+- `w_j` is the declared Sobolev shell weight.
 
-The local exact verifier accepts only if
+The local verifier accepts only if
 
 \[
 T^+_{j,I}\le \eta V^-_{j,I}+\rho^+_{j,I}.
 \]
 
-If the certified bounds are sound, this finite inequality implies the desired absorption inequality on that shell/time cell.
-
-The checker is deliberately one-sided and fail-closed. Missing or non-strict evidence returns HOLD; it never infers absorption from numerical appearance.
-
-## 4. Finite weighted-remainder verifier
-
-For a finite shell range `j0 <= j <= J`, a finite certificate may also verify
+For the audited Inage mapping it additionally requires
 
 \[
-R_{\le J}:=\sum_{j=j_0}^{J} w_j\rho^+_j\le R^+_{\le J}
+0\le\eta<3/4.
 \]
 
-by exact rational arithmetic.
+The checker is fail-closed and does not infer the truth of the continuum theorem.
 
-This is still only a finite prefix. To feed a continuum adapter one additionally needs a certified tail theorem
+## 5. Finite weighted remainder verifier
+
+For a finite shell range `j0 <= j <= J`, exact rational arithmetic can verify
 
 \[
-\sum_{j>J}w_j\rho_j\le R^+_{>J}
+R_{\le J}:=\sum_{j=j_0}^{J} w_j\rho^+_j.
 \]
 
-or another uniform summability theorem. The adapter is not allowed to replace this missing all-shell step.
+A finite prefix is never silently promoted to an infinite sum. The separate theorem `NS-P2-HH-GEOM-LIFT` in `paper/NS_P2_FINITE_TO_CONTINUUM_CLOSURE.md` gives one exact sufficient translation when the true tail defect has a certified geometric envelope with `64q<1` in the `H^3` case.
 
-## 5. Translation obligations
+## 6. Translation obligations if a corrected High--High adapter is pursued
 
-Before the external theorem can be used, the programme must prove all of the following translations.
+A corrected/self-contained High--High route would still need:
 
-### A. Convention map
+1. a convention map from repository Fourier/Galerkin shells to the continuum dyadic decomposition;
+2. sound finite enclosures of the chosen nonlinear transfer and viscous quantity;
+3. time-cell coverage;
+4. an all-shell tail theorem;
+5. weighted remainder summability;
+6. a separately proved continuum energy closure, including every Low--Low/Low--High term with constants that genuinely give a linear/subcritical differential inequality.
 
-Map the repository's Fourier/Galerkin modes and shell grouping to the adapter's dyadic shell convention. This includes normalization, signs, energy definitions, Leray projection convention, and the precise definition of `T_j^{HH}` and `V_j`.
+Until item 6 is proved, High--High absorption is not the main P2 adapter.
 
-### B. Finite transfer enclosure
+## 7. Main P2 route after the audit
 
-Construct a finite exact/interval certificate whose `T^+_{j,I}` really bounds the continuum-adapter High–High shell transfer for the represented finite state/time cell.
+The main route is now adapter-neutral. Define the full finite-Galerkin `H^3` nonlinear production and viscous dissipation
 
-### C. Viscous lower enclosure
+\[
+\mathcal P_N(t)
+:=\left\langle \Lambda^3u_N,
+\Lambda^3\bigl[-P_N(u_N\cdot\nabla u_N)\bigr]\right\rangle,
+\]
 
-Construct a certified `V^-_{j,I}` in the same normalization.
+\[
+\mathcal D_N(t)
+:=\nu\|\nabla\Lambda^3u_N\|_2^2,
+\qquad
+X_N(t):=\|u_N(t)\|_{H^3}^2.
+\]
 
-### D. Time coverage
+The clean residual target is a uniform finite certificate theorem producing constants `theta<1` and `C_T<infinity`, independent of `N`, such that
 
-A finite list of time cells must cover the target time interval, or an analytic interpolation/variation modulus must bridge the gaps.
+\[
+\boxed{
+\mathcal P_N(t)
+\le \theta\mathcal D_N(t)+C_T(1+X_N(t))
+}
+\]
 
-### E. All-shell extension
+for every cutoff and every time in the target finite interval.
 
-Finite shell verification must be extended to every shell required by the adapter using a summable tail theorem, not by enumerating a large but finite maximum shell.
-
-### F. Remainder summability
-
-The weighted `rho_j` remainder must satisfy the adapter's global summability hypothesis by an independent finite/uniform proof.
-
-Only after A–F are established does the continuum conditional theorem become a legitimate semantic adapter.
-
-## 6. Non-vacuity audit
-
-The following do **not** count as successful finite-to-adapter bridges:
-
-1. defining `rho_j` to be the exact positive defect `max(T_j^{HH}-eta V_j,0)` and then assuming its Sobolev-weighted sum is finite without a new bound;
-2. assuming a uniform `H^s`, `s>5/2`, bound in order to prove the weighted remainder summability needed to recover that same regularity;
-3. checking finitely many shells and silently replacing `j<=J` by `j<infinity`;
-4. using an unvalidated simulation of `T_j^{HH}` as a certificate;
-5. relying on the external preprint's heuristic phase/coherence discussion as if it proved the absorption hypothesis unconditionally.
-
-Any such route is HOLD under the programme's non-vacuity rule.
-
-## 7. Relationship to the current P2 tail split
-
-`paper/NS_FUB_A1_STOKES_NONLINEAR_TAIL_SPLIT.md` isolates
-
-```text
-linear Stokes memory       -> explicit high-frequency tail gain
-old nonlinear history      -> explicit gain when a positive time gap exists
-recent nonlinear transfer  -> OPEN load-bearing term
-```
-
-The High–High adapter suggests a sharper target for that recent term: rather than bounding it only as an undifferentiated Duhamel remainder, decompose recent nonlinear transfer into shellwise interaction classes and certify that the dangerous High–High component is absorbed by viscosity up to a weighted summable remainder.
-
-Thus the two lines connect as
-
-```text
-Stokes/old-history explicit tail control
-+ finite High–High absorption certificates for recent transfer
-+ all-shell weighted remainder theorem
-        |
-        v
-external continuum absorption adapter
-        |
-        v
-H^s closure / continuation.
-```
-
-This is the strongest current P2 architecture because the continuum work is reused only after the finite/native obligations have been discharged.
+This directly yields a uniform `H^3` differential inequality and therefore needs only the standard Galerkin/continuation semantic adapter at the end. The High--High geometric route is one possible method for proving this margin, not an assumed continuum theorem.
 
 ## 8. Current status
 
-- continuum High–High theorem: **candidate external adapter; independent audit required**;
-- finite local absorption inequality checker: **safe exact kernel target**;
-- finite-to-dyadic convention map: **OPEN**;
-- actual `T_j^{HH}` interval constructor: **OPEN**;
-- all-time / all-shell extension and weighted tail summability: **OPEN and Clay-bearing**;
-- Clay Navier–Stokes global regularity: **OPEN**.
+- finite local absorption checker: **PASS as an exact arithmetic interface**;
+- `NS-P2-HH-GEOM-LIFT`: **DERIVED** as an adapter-neutral weighted-tail lifting lemma;
+- Inage preprint as final continuum adapter: **HOLD**;
+- corrected/self-contained High--High continuum closure: **OPEN**;
+- full uniform `H^3` dissipative-margin theorem: **OPEN and load-bearing**;
+- Clay Navier--Stokes global regularity: **OPEN**.
