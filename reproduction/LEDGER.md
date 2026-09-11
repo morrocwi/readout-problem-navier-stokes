@@ -1,6 +1,6 @@
 # Reproduction Ledger -- Readout-Navier-Stokes Development Series
 
-Generated: 2026-09-11T07:48:25.044287+00:00
+Generated: 2026-09-11T08:22:58.787931+00:00
 
 Volumes 1-6 are the deposited series; Volume 7 is the later EPSC research lane.
 
@@ -130,7 +130,7 @@ Status counts: DERIVED=30, N/A=47, NOT_RUN=1, OPEN=38, PASS=83
 | 6 | Vol6-NSRFC-RK4-stage-exactness |  | finite_diagnostic | PASS | terminal target from stage-conditioned retained RK4 agrees with the full RK4 recurrence to the declared 1e-12 gate |
 | 6 | Vol6-NSRFC-RK4-backend-equivalence |  | finite_diagnostic | PASS | fused direct-triad RHS and pseudo-spectral FFT RHS agree on the same finite mode cube to the declared 1e-12 gate |
 | 6 | Vol6-NSRFC-RK4-break-even |  | finite_diagnostic | PASS | retained rollout is enabled only with a >=5% calibration margin; otherwise execution falls back to full RK4 |
-| 6 | Vol6-NSXiMin-triad-lineage | Direct NS ordered-triad sum reproduces the exact retained nonlinear tape | finite_diagnostic | PASS | max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.212e-18 |
+| 6 | Vol6-NSXiMin-triad-lineage | Direct NS ordered-triad sum reproduces the exact retained nonlinear tape | finite_diagnostic | PASS | max triad/pseudospectral eta residual=2.602e-18; total nonlinear transfer defect=3.646e-18 |
 | 6 | Vol6-NSXiMin-translation-gauge | Spatial translation is a future-shell-readout equivalence of the finite NS system | finite_diagnostic | PASS | shell defect=3.469e-18; eta defect=1.518e-18; future 20-step shell defect=1.388e-17 |
 | 6 | Vol6-NSXiMin-exact-quotient | Canonical minimal exact dynamically sufficient state is the quotient by future shell-readout equivalence | Dr | N/A | Standard quotient/universal-property theorem stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md; not promoted to a machine-checked tier. |
 | 6 | Vol6-NSXiMin-finite-jet | For a fixed finite polynomial Galerkin truncation, a finite Lie-readout jet realizes the future-readout quotient | Dr | N/A | Uses polynomial NS Galerkin dynamics + Hilbert basis theorem + analytic-output identity theorem; proof and exact lineage are stated in reproduction/NS_MINIMAL_DYNAMIC_READOUT.md. |
@@ -164,7 +164,7 @@ Status counts: DERIVED=30, N/A=47, NOT_RUN=1, OPEN=38, PASS=83
 | 7 | V7-EPSC18-N1-LOCAL-INVERSE-EXISTENCE | full N=1 finite quotient has a local real energy-jet inverse on the certified slice | Dr | DERIVED | nonzero rational 49x49 Jacobian minor follows from the nonzero good-prime reduction; finite-dimensional inverse-function theorem then gives a local real inverse on the slice |
 | 7 | V7-EPSC18-N1-QUANTITATIVE-RADIUS | strictly positive certified numerical radius for the full N=1 local inverse | Dr | DERIVED | proved by check_volume7_eps18_n1_explicit_radius.py and tightened by check_volume7_eps18_n1_rowwise_radius.py; this is a mathematical positive-radius certificate, not yet a practically informative measurement tolerance |
 | 7 | V7-EPSC18-N1-PRACTICAL-RADIUS | practically informative certified radius for the full N=1 energy-jet inverse | Open | OPEN | requires an effective entrywise interval Jacobian/preconditioner and robust branch/noise handling; the current rigorous positive radii remain extremely conservative |
-| 7 | V7-EPSC18-N1-ROW-CHART-SEARCH | deterministic conditioning search over structurally admissible N=1 shell-row pairs | finite_diagnostic | PASS | six deterministic starts; best floating objective=6.389166e+26; final hill-climb swaps=15; final chart exact modular rank=49 |
+| 7 | V7-EPSC18-N1-ROW-CHART-SEARCH | deterministic conditioning search over structurally admissible N=1 shell-row pairs | finite_diagnostic | PASS | six deterministic starts; best floating objective=6.389166e+26; final hill-climb swaps=16; final chart exact modular rank=49 |
 | 7 | V7-EPSC18-N1-ROW-OPTIMIZED-RADIUS | exactly certified componentwise radius on the selected N=1 observation chart | Dr | DERIVED | final candidate is re-inverted over Q with nonzero exact determinant; 10^(-28) < r <= 10^(-27); q<=1/2; baseline first-independent chart was 10^(-28) < r <= 10^(-27) |
 | 7 | V7-EPSC18-N1-ROW-OPTIMIZATION-GAIN | row-chart optimization improves the certified N=1 componentwise radius | finite_diagnostic | PASS | exact radius ratio best/current > 1=True; power-of-ten lower-bracket index moves from 28 to 28 |
 | 7 | V7-EPSC18-N1-MEASUREMENT-READY-AFTER-ROW-SEARCH | measurement-ready robust inverse after finite observation-row optimization | Open | OPEN | the finite chart is optimized and then exactly recertified, but practical measurement readiness still requires branch/noise containment and a sufficiently large physically interpreted radius |
