@@ -23,9 +23,26 @@ jobs:
         run: python3 reproduction/checks/check_ns_high_high_absorption_adapter.py
       - name: architecture and claim-boundary guards
         run: |
-          grep -Fq 'FINITE-NATIVE CORE' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
-          grep -Fq 'CONTINUUM SEMANTIC ADAPTER' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
-          grep -Fq 'not peer-reviewed' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
-          grep -Fq 'all-shell extension and weighted tail summability: **OPEN and Clay-bearing**' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
-          grep -Fq 'recent nonlinear transfer modulus' paper/NS_FUB_A1_STOKES_NONLINEAR_TAIL_SPLIT.md
-          grep -Fq 'Clay Navier--Stokes global regularity: **OPEN**' paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md
+          python3 - <<'PY'
+          from pathlib import Path
+
+          adapter = Path('paper/NS_CONTINUUM_ADAPTER_HIGH_HIGH_ABSORPTION.md').read_text()
+          split = Path('paper/NS_FUB_A1_STOKES_NONLINEAR_TAIL_SPLIT.md').read_text()
+
+          required_adapter = {
+              'finite-core boundary': 'FINITE-NATIVE CORE',
+              'continuum-adapter boundary': 'CONTINUUM SEMANTIC ADAPTER',
+              'preprint status': 'not peer-reviewed',
+              'all-shell OPEN marker': 'all-time / all-shell extension and weighted tail summability: **OPEN and Clay-bearing**',
+              'Clay OPEN marker': 'Clay Navier--Stokes global regularity: **OPEN**',
+          }
+          required_split = {
+              'recent-transfer OPEN marker': 'recent nonlinear transfer modulus',
+          }
+
+          missing = [name for name, marker in required_adapter.items() if marker not in adapter]
+          missing += [name for name, marker in required_split.items() if marker not in split]
+          if missing:
+              raise SystemExit('missing claim-boundary markers: ' + ', '.join(missing))
+          print('NS HIGH-HIGH ADAPTER CLAIM-BOUNDARY GUARDS PASS')
+          PY
