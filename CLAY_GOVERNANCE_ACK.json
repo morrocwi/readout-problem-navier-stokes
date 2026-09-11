@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P2 complex phase-holonomy and geometric frustration-or-cut continuation. Add exact Fourier-Leray all-n overlapping-channel and dyadic n-to-2n holonomy results plus one three-parameter geometric family theorem. Promote only exact coefficient identities to PASS and local/family consequences to DERIVED. Preserve full dyadic boundary coverage, temporal switching, cutoff-uniform recurrence, NS-P2-FRUSTRATION-OR-CUT, and Clay Navier-Stokes regularity as OPEN.",
+  "scope": "P2 polarization-gauge red-team and shared-frame coverage reduction. Preserve the exact earlier standard-basis Fourier-Leray coefficient/holonomy identities, but correct their load-bearing interpretation: single-triad and coplanar-ladder scalar-channel holonomy is not invariant under real divergence-free polarization-basis changes. Add the exact triad-adapted sparse tensor, shared-mode projective frame mismatch, coefficient floor, weighted frame-dispersion identity, and separated-pair mass bound. Preserve actual dyadic flux weighting/non-overcounted packing, the low-dispersion frame-concentration remainder, temporal switching, constructive R_j recurrence, NS-P2-FRUSTRATION-OR-CUT, and Clay Navier-Stokes regularity as OPEN.",
   "todo": {
-    "status": "updated",
-    "evidence": "paper/NS_P2_COMPLEX_PHASE_HOLONOMY.md, paper/NS_P2_DYADIC_COMPLEX_PHASE_HOLONOMY.md, and paper/NS_P2_GEOMETRIC_FRUSTRATION_CUT_FAMILY.md record the exact phase-incidence obstructions, pi/4 taxes, a geometric phase-compatibility trichotomy, and a near-dyadic physical H3 coupling cut. The next load-bearing target is a symmetry/sector coverage theorem or an actual high-weight phase-compatible escape network, followed by temporal switching and time-window recurrence control."
+    "status": "reviewed-no-change",
+    "evidence": "The load-bearing frontier is narrowed by paper/NS_P2_POLARIZATION_GAUGE_FRAME_COVER.md: future attacks that approach P2 closure must now reduce either actual-flux weighting/non-overcounted frame-pair packing or the low-dispersion frame-concentration escape branch before temporal switching and recurrence. The existing TODO already keeps dyadic coverage/decomposition, temporal switching, and R_j recurrence OPEN; no unrelated queue items are changed in this PR."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. Canonical provenance must be updated only after this PR merges, using the final immutable merge SHA and paths. The moving research branch is not final provenance."
+    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. If this PR merges, Toledo should pin the immutable NS merge SHA and record the polarization-gauge correction plus the new frame-dispersion reduction without assigning canonical codes or promoting NS-P2-FRUSTRATION-OR-CUT."
   },
   "claim_effect": "statement-change"
 }
