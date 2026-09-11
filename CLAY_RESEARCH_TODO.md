@@ -39,95 +39,99 @@ Primary home: `morrocwi/information-discrete-math`.
 Evidence:
 
 - IDM PR #125 merged as `1ddf295ea6fd9c504a10e6296fdea5bb97cf78fd`: 11 Coq 8.20 safe-core theorems axiom-free.
-- IDM PR #127 / issue #126: P2 negative controls refute naive FUB-03/04/05 forms while strengthened forms remain OPEN.
+- IDM PR #127 / issue #126: negative controls refute naive FUB-03/04/05 forms while strengthened forms remain OPEN.
 
 ## P2 — Navier--Stokes load-bearing bridge
 
 Primary home: this repository.
 
-### NS-FUB-A1
-
-- [x] State a precise regularity-sensitive theorem decomposition in `paper/NS_FUB_A1_H3_FINITE_WITNESS.md`:
+### Phase ruling
 
 ```text
-A1E: finite-time singularity
-     -> for every finite B, some finite Galerkin cutoff N and rational q<T* satisfy ||u_N(q)||_H3 > B
-     [DERIVED under explicitly declared continuation + compact-interval Galerkin adapters]
-
-A1V: certified rational interval enclosure of a finite Galerkin state
-     -> exact finite PASS/HOLD verification of ||u_N(q)||_H3 > B
-     [finite exact checker; CI PASS]
-
-A1C: finite-time singularity
-     -> constructible validated A1V certificate
-     [general Clay-facing form OPEN]
+P2 = CLOSED AS A REDUCTION
+NS-P2-H3-MARGIN-UNIFORM = OPEN / HOLD frontier
+Clay Navier--Stokes global regularity = OPEN
 ```
 
-#### A1C finite certificate layer already closed in restricted settings
+Canonical P2 handoff: `paper/NS_P2_FINITE_TO_CONTINUUM_CLOSURE.md`.  
+Latest reduction merge: NS PR #42, commit `83e966df251e548fd9574d9553d7f4bf5551877b`.
 
-- [x] `A1C-V/RV`: exact fixed-`N=1` absolute and residual-centered validated Galerkin tubes; residual localization passes exact CI.
-- [x] `A1C-CV/G1`: finite tube-chain verification and pinned finite-step construction pass exact CI.
-- [x] `A1C-COMP-Q`: for a fixed finite rational polynomial/Galerkin ODE with rational data and a strict finite observable margin, a finite rational residual certificate exists.
-- [x] `A1C-ENUM-Q`: finite rational certificates are enumerable and exactly decidable, so exhaustive dovetailing eventually finds a certificate when the strict fixed-finite witness is true; **no useful runtime bound is claimed**.
-- [x] `A1C-XQ`: restricted rational-finite-data singularity-to-certificate consequence DERIVED under the A1E adapters.
-- [ ] General `A1C-X`: bridge arbitrary smooth/continuum initial data to constructive finite rational enclosures, arbitrary cutoffs, and the all-scale statement. This remains OPEN.
+The phase is closed because the useful finite/continuum architecture has been reduced to one explicit uniform theorem target. It is **not** closed as a Millennium solution.
 
-Evidence: NS PRs #29, #30, #32 and #33; latest completeness merge `df022097ea899bacb917238be7a69b40c15e2107`.
+### P2 layers already closed or ruled out
 
-#### Candidate finite failure classes
+- [x] `A1E`: finite-time singularity forces arbitrarily large finite-Galerkin `H^3` exceedances under explicitly declared classical continuation + compact-time Galerkin adapters.
+- [x] `A1V`: exact finite rational PASS/HOLD verification of a certified finite Galerkin `H^3` exceedance.
+- [x] `A1C-V/RV`: exact fixed-`N=1` validated absolute/residual tubes.
+- [x] `A1C-CV/G1`: exact finite tube-chain verification.
+- [x] `A1C-COMP-Q`: fixed finite rational polynomial/Galerkin strict witness -> finite rational residual certificate.
+- [x] `A1C-ENUM-Q`: exhaustive rational certificate semidecision; no useful runtime claimed.
+- [x] Adjacent/local or `L2` cross-resolution compatibility rejected as a global bridge.
+- [x] Energy/`L2`-only omitted-tail control REFUTED as an `H^3` tail mechanism (issue #34 / PR #37, merge `af97fc84542dc042b3b6c386458fc0afbd797bef`).
+- [x] Fixed-`N` certificate/trajectory breakdown REFUTED as a standalone singularity witness (issue #38 / PR #39, merge `72d7672ea1753794e452fd0bb5206dea7be21764`).
+- [x] Positive-lag Stokes and old-Duhamel histories receive explicit all-scale `H^3` tail envelopes.
+- [x] `NS-P2-HH-GEOM-LIFT`: finite prefix + true geometric High--High defect tail with `64q<1` gives an exact `H^3`-weighted remainder bound.
+- [x] Exact finite shellwise absorption and full `H^3` dissipative-margin interfaces implemented fail-closed.
+- [x] External High--High absorption preprint independently audited and placed on **HOLD** as a final semantic adapter; it is not a proof premise.
 
-- [x] Cross-resolution compatibility: **adjacent/local or L2 compatibility alone rejected as insufficient**; any useful form needs all-refinement Cauchy/tail control and regularity relevance.
-- [x] Failure of a uniform regularity-sensitive bound: `H^3` finite Galerkin exceedance isolated as the A1E witness class.
-- [ ] Finite scale-extension/tail suppression:
-  - [x] **energy/L2-only tail smallness REFUTED** as an H3 tail mechanism. `paper/NS_FUB_A1_H3_TAIL_NO_GO.md` gives a one-mode divergence-free counterexample: for every `N`, `epsilon>0`, and finite `B`, an omitted tail can have `L2<=epsilon` but `H3>B`.
-  - [x] finite-band L2-to-H3 bounds identified as insufficient for the all-scale bridge because the constant grows with the outer cutoff.
-  - [ ] find a non-vacuous frequency-weighted / PDE-derived smoothing or decay mechanism that yields a summable/all-refinement H3-relevant tail envelope without assuming global regularity.
-- [ ] Regularity-relevant energy-transfer concentration/growth: still requires a theorem showing why the chosen observable is forced by singularity and is not merely correlated with high-frequency activity.
-- [ ] Certificate recursion/extensibility failure:
-  - fixed-N verifier/generator failures alone are **not** accepted as PDE failure; a complete certificate class exists in the fixed rational finite setting.
-  - [ ] determine whether any *uniform across N* certificate deterioration can be linked to regularity rather than algorithmic conditioning/resource growth.
-- [x] Conditioning loss alone rejected as a singularity witness unless a separate PDE-regularity implication is proved.
+### Main derived reduction
 
-#### Current P2 load-bearing frontier
-
-- [x] Construct counterexamples to weak local/adjacent compatibility.
-- [x] Construct counterexample to energy/L2-only H3 tail suppression (issue #34 / PR #37).
-- [x] Reject premises that simply assume smoothness or an equivalent Clay criterion without new finite leverage.
-- [ ] Extend the initial-data adapter from rational finite data to the actual admissible smooth/continuum data class with explicit certified projection/tail representation.
-- [ ] Find a PDE-derived all-scale frequency-weighted tail mechanism that survives the non-vacuity audit.
-- [ ] Formulate and test the strongest useful uniform extension theorem only after the required tail quantity is explicit.
-
-Tracked by: `morrocwi/readout-problem-navier-stokes#25`, #31 and #34.
-
-### NS-FUB-A2
-
-- [ ] After the admissible all-scale tail mechanism stabilizes, formulate the converse exclusion theorem:
+For each finite Galerkin cutoff define
 
 ```text
-uniform exclusion of every admissible finite regularity failure
-+ certified all-scale tail/compatibility control
-  -> no finite-time singularity.
+X_N = ||u_N||_H3^2
+D_N = nu ||grad Lambda^3 u_N||_2^2
+(1/2) X_N' + D_N = P_N
 ```
 
-- [x] Separate finite uniformity from the continuum/global semantic bridge.
-- [ ] Audit the template `uniform all-N H3 bound -> strong solution` for non-vacuity: the implication may be classical while proving the antecedent remains the Clay-strength difficulty.
-- [ ] Avoid treating a stronger uniform `H^{3+sigma}` bound as progress unless a new mechanism proves it; it is a mathematically sufficient tail repair but may simply strengthen the target premise.
+If cutoff-independent constants `0 <= theta < 1` and `C_T < infinity` satisfy
+
+```text
+P_N(t) <= theta D_N(t) + C_T (1 + X_N(t))
+```
+
+for every cutoff and every `t in [0,T]`, then Gronwall gives a uniform all-`N` `H^3` bound. The final continuum layer is then the standard Galerkin/strong-solution continuation semantic adapter.
+
+### Single main residual theorem — `NS-P2-H3-MARGIN-UNIFORM`
+
+- [ ] For every admissible smooth periodic divergence-free unforced datum, every `nu>0`, and every finite `T`, construct from finite/checkable information constants `theta<1` and `C_T<infinity`, independent of cutoff, together with a sound finite/uniform certificate mechanism proving
+
+```text
+P_N(t) <= theta D_N(t) + C_T (1 + X_N(t))
+```
+
+for all finite `N` and all `t in [0,T]`.
+
+Non-vacuity requirements:
+
+- [ ] `C_T` may not be obtained by assuming the desired uniform `H^3` bound.
+- [ ] no equivalent regularity oracle may be hidden in the certificate constructor.
+- [ ] finite time cells must have a proved all-time coverage/modulus.
+- [ ] finite cutoffs must have a proved uniform/all-`N` rule; a large maximum cutoff is not enough.
+- [ ] any shellwise High--High route must separately prove the Low--Low/Low--High closure instead of importing the audited preprint's unresolved step.
+
+**Handoff rule:** do not spend another P2 session on larger fixed cutoffs, more fixed-`N` integration steps, energy-only tails, adjacent compatibility, reader conditioning, or the held external adapter unless new mathematics directly advances `NS-P2-H3-MARGIN-UNIFORM`.
+
+Tracked by master issue #25. Issues #40 and #41 are closed after PR #42; #41 is closed `not_planned` because the external preprint is HOLD as a final adapter.
 
 ## P3 — P vs NP load-bearing bridge
 
 Primary home: `morrocwi/information-discrete-math`, branch `research/p-vs-np-readout`, PR #117.
 
-**Entry gate:** do not promote new P3 formal claims until the P0 branch-sync and formal-CI blockers above are cleared.
+**Entry gate:** clear the P0 branch-sync/formal-CI blockers before promoting new P3 formal claims.
 
 ### PNP-FUB-A1
 
+- [ ] Synchronize `research/p-vs-np-readout` with current IDM `main` without losing the research lane.
+- [ ] Repair `wrong_root_forces_positive_defect` under Coq 8.20 and restore focused formal CI.
+- [ ] Repair the no-`Admitted` lexical guard false-positive on ordinary English `admit` in comments.
 - [ ] Construct or refute an unrestricted efficient defect/hitting-support theorem.
 - [ ] Require inverse-polynomial capture probability.
 - [ ] Audit for hidden SAT oracle.
 - [ ] Audit for hidden equivalence oracle.
 - [ ] Audit for MCSP-like hardness.
 - [ ] Audit for exponential enumeration disguised as support generation.
-- [x] Record the generic P2 negative control: defect existence alone does not imply efficient capture in an unstructured black-box family.
+- [x] Record the generic negative control: defect existence alone does not imply efficient capture in an unstructured black-box family.
 - [ ] Keep tiny-circuit enumeration as calibration/negative control only, not the main frontier.
 - [ ] Preserve the explicit transfer:
 
@@ -148,10 +152,10 @@ For every Clay-bearing implication `A -> Target`:
 
 ## P5 — Formal verification / adversarial testing
 
-- [x] No `Admitted` in the promoted P1 safe finite kernels and P2 formal negative controls.
+- [x] No `Admitted` in the promoted P1 safe finite kernels and audited formal negative controls.
 - [x] Run `Print Assumptions` for the P1/P2 audited Coq theorems.
 - [x] Add counterexample tests for naive generic bridge forms.
-- [x] Add exact finite controls for NS A1V, validated tubes, residual localization, certificate completeness, and energy-only H3-tail no-go.
+- [x] Add exact finite controls for NS A1V, validated tubes, residual localization, certificate completeness, H3-tail no-go, fixed-N extensibility, geometric-tail lifting, and the H3 margin interface.
 - [ ] Add further symmetry aliases and representation-redundancy tests as domain adapters mature.
 - [x] Keep finite diagnostic claims separate from formal theorem status.
 - [x] Keep CI status attached to exact commit SHA.
@@ -204,13 +208,14 @@ Tracked by: `morrocwi/toledo#11`.
 Do not spend a full session primarily on these unless tied to a specific open bridge:
 
 - increasing NS cutoff only for a larger number;
-- adding more fixed-N validated integration steps after the certificate-completeness result;
+- adding more fixed-N validated integration steps;
+- retrying the held High--High preprint without a repaired continuum proof;
 - more tiny-circuit enumeration;
 - more RH zeros at finite height;
 - more elliptic-curve examples;
 - larger Yang--Mills simulations;
 - runtime optimization with no theorem consequence;
-- new interpretation prose with no source/theorem change.
+- interpretation prose with no source/theorem change.
 
 ## Definition of meaningful progress
 
