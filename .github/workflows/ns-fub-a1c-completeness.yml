@@ -1,0 +1,27 @@
+name: ns-fub-a1c-completeness
+
+on:
+  pull_request:
+    paths:
+      - 'paper/NS_FUB_A1C_FINITE_CERTIFICATE_COMPLETENESS.md'
+      - 'reproduction/checks/check_ns_fub_a1c_certificate_completeness_controls.py'
+      - '.github/workflows/ns-fub-a1c-completeness.yml'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  exact-completeness-controls:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: exact residual-certificate completeness controls
+        run: python3 reproduction/checks/check_ns_fub_a1c_certificate_completeness_controls.py
+      - name: theorem-note claim boundary
+        run: |
+          grep -q 'NS-FUB-A1C-COMP-Q' paper/NS_FUB_A1C_FINITE_CERTIFICATE_COMPLETENESS.md
+          grep -q 'NS-FUB-A1C-ENUM-Q' paper/NS_FUB_A1C_FINITE_CERTIFICATE_COMPLETENESS.md
+          grep -q 'No useful runtime bound is claimed' paper/NS_FUB_A1C_FINITE_CERTIFICATE_COMPLETENESS.md
+          grep -q 'A1C-X.*OPEN' paper/NS_FUB_A1C_FINITE_CERTIFICATE_COMPLETENESS.md || grep -q 'general Clay-facing.*A1C-X' paper/NS_FUB_A1C_FINITE_CERTIFICATE_COMPLETENESS.md
