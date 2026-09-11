@@ -10,5 +10,5 @@
     "status": "issue-open",
     "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Toledo merge 3a2b3ea8... records P2 and A1E/A1V/A1C provenance; this PR adds a non-canonical A1C-V verifier/calibration layer only."
   },
-  "claim_effect": "formal-proof-change"
+  "claim_effect": "statement-change"
 }
