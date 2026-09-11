@@ -90,7 +90,12 @@ def shell_values(sol, W, h, d):
 def candidate_grid():
     a = np.logspace(-4, -1, 25)
     b = np.linspace(0.11, 0.50, 40)
-    return np.unique(np.concatenate([a, b]))
+    # Include simple rational spacings close to the floating optimum so the
+    # subsequent exact validator can use especially simple step arithmetic.
+    c = np.asarray([
+        1/24, 1/22, 1/20, 1/19, 1/18, 9/160, 1/17, 1/16, 1/15, 1/14,
+    ], dtype=float)
+    return np.unique(np.concatenate([a, b, c]))
 
 
 def main() -> int:
@@ -161,7 +166,7 @@ def main() -> int:
         raise RuntimeError("no finite full-rank sample Jacobian in the declared grid")
     best = min(finite, key=lambda r: r["inverse_inf"])
     best_noise = min(finite, key=lambda r: r["rho_proxy_for_1e-6_relative_energy_noise"])
-    shortlist = sorted(finite, key=lambda r: r["inverse_inf"])[:10]
+    shortlist = sorted(finite, key=lambda r: r["inverse_inf"])[:15]
 
     summary = {
         "scope": "NON-CERTIFYING floating target selection only",
