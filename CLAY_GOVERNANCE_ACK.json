@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P2 NS-FUB-A1 tail audit: add the analytic single-mode Fourier counterexample showing that arbitrarily small omitted L2/energy tail does not bound the omitted H3 tail, plus exact regression controls and a stronger-weight repair template. This narrows the finite scale-extension/tail-suppression candidate; it does not promote a Navier--Stokes regularity conclusion.",
+  "scope": "P2 NS-FUB-A1 tail audit: refute the energy/L2-only omitted-tail route to uniform H3 control with an analytic single-mode divergence-free Fourier counterexample; add exact regression controls and record the stronger-weight repair template. All relevant workflows passed at source head 122bae2ba54165075a74741b1636c8b83691314a. This narrows the finite scale-extension/tail-suppression candidate and does not promote a Navier--Stokes regularity conclusion.",
   "todo": {
-    "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already leaves finite scale-extension/tail suppression and the non-vacuous all-scale tail mechanism OPEN. This PR is intended to refute only the energy/L2-only subcase; the positive frequency-weighted/PDE-derived mechanism remains OPEN."
+    "status": "updated",
+    "evidence": "CLAY_RESEARCH_TODO.md now records energy/L2-only H3 tail suppression as REFUTED, finite-band L2-to-H3 control as insufficient for the all-scale bridge, fixed-finite A1C completeness progress, and the remaining OPEN target: a non-vacuous frequency-weighted/PDE-derived all-scale tail mechanism."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. If this PR passes and merges, the energy-only H3-tail no-go result will be pinned there as a non-canonical P2 negative result."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. After merge, pin the energy-only H3-tail no-go as a non-canonical P2 negative result."
   },
   "claim_effect": "statement-change"
 }
