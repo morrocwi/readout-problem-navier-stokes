@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "Bootstrap Clay research governance CI; no theorem or claim status changed.",
+  "scope": "P0 Clay research audit: freeze repository heads, CI/formal state, claim boundaries and process blockers; update the live TODO. No theorem statement or Clay conclusion is promoted.",
   "todo": {
-    "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md reviewed; current priorities remain IDM #124, NS #25, P-vs-NP PR #117, Toledo #11."
+    "status": "updated",
+    "evidence": "CLAY_RESEARCH_TODO.md marks the P0 audit complete and carries forward the P-vs-NP branch-sync/formal-CI blockers plus branch-protection governance hardening."
   },
   "toledo": {
-    "status": "not-required",
-    "evidence": "Governance infrastructure only; no theorem statement, proof tier, proposal status, or provenance claim changed."
+    "status": "issue-open",
+    "evidence": "morrocwi/toledo#11 received the P0 audit provenance/status comment: PNP-FUB-A1 remains OPEN, audited P-vs-NP lane-wide formal evidence is HOLD at head 2e5466c6..., and NS/shared bridge proposals remain OPEN."
   },
-  "claim_effect": "none"
+  "claim_effect": "status-only"
 }
