@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P2 NS-FUB-A1 tail/adapter refinement: derive explicit positive-lag Stokes and old-Duhamel H3 tail envelopes, isolate the recent nonlinear-transfer term as the load-bearing OPEN piece, and specify a strict semantic-adapter boundary to a candidate external High-High absorption conditional-regularity theorem. Add an exact rational finite checker for local High-High absorption inequalities and finite-prefix remainder budgets. The external preprint is explicitly non-peer-reviewed and is not used as a finite-core premise or unconditional result.",
+  "scope": "P2 NS-FUB-A1 tail/adapter closure as a reduction: derive explicit positive-lag Stokes and old-Duhamel H3 tail envelopes; isolate recent nonlinear transfer; add a finite exact High-High absorption interface; add NS-P2-HH-GEOM-LIFT, which converts a finite prefix plus an all-shell geometric High-High defect envelope with 64q<1 into the H3-weighted remainder condition required by a continuum adapter; isolate NS-P2-HH-UNIFORM as the single remaining Clay-bearing lemma. P2 is not promoted to a Clay solution.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already requires a non-vacuous PDE-derived frequency-weighted all-scale tail mechanism and a theorem making energy-transfer observables regularity-relevant. Issues #40 and #41 refine those existing P2 targets into the recent-transfer modulus and finite-to-High-High-adapter translation obligations."
+    "evidence": "The live TODO already leaves the PDE-derived all-scale frequency-weighted tail mechanism OPEN. The new closure note narrows that target to NS-P2-HH-UNIFORM and explicitly rules out returning to fixed-N, energy-only, or local-compatibility substitutes."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. If this branch passes and merges, pin only the derived Stokes/positive-lag tail estimates and the adapter specification; the external High-High theorem remains a candidate adapter pending independent audit."
+    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. After merge, pin the derived Stokes/positive-lag tail estimates, NS-P2-HH-GEOM-LIFT, the adapter interface, and the residual OPEN lemma. The external High-High preprint remains a candidate semantic adapter pending independent audit."
   },
   "claim_effect": "statement-change"
 }
