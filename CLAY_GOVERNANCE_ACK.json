@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P0-P2 consolidated research handoff plus reopened direct Navier-Stokes triad/phase attack. Preserve NS-P2-FINAL-EQUIV as DERIVED under its declared adapter, withdraw only the earlier stopping inference that regularity-equivalence justifies abandoning the constructive attack, record exact triad counterexamples/finite structural results, and set NS-P2-FRUSTRATION-OR-CUT plus constructive all-scale recurrence as OPEN targets.",
+  "scope": "P2 complex phase-holonomy continuation. Add exact Fourier-Leray all-n overlapping-channel and dyadic n-to-2n holonomy results, derive only local quantitative frustration taxes and local frustration-or-cut lemmas, preserve boundary coverage, temporal switching, cutoff-uniform recurrence, NS-P2-FRUSTRATION-OR-CUT, and Clay Navier-Stokes regularity as OPEN.",
   "todo": {
     "status": "updated",
-    "evidence": "CLAY_RESEARCH_TODO.md now points to CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md and FUTURE_WORK_P2_TRIAD_ATTACK.md, records P2 constructive attack as active, preserves the equivalence theorem, lists exact triad findings, and defines the overlapping-complex-triad frustration-or-cut frontier."
+    "evidence": "paper/NS_P2_COMPLEX_PHASE_HOLONOMY.md and paper/NS_P2_DYADIC_COMPLEX_PHASE_HOLONOMY.md record the exact complex phase-incidence obstructions, pi/4 angular deficit, local tax, H3-normalized scale dependence, and explicit claim boundaries. The next load-bearing target is dyadic boundary coverage versus phase-satisfiable sparse/forest escape, followed by temporal switching and the time-window recurrence adapter."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. The current PR must merge first; then Toledo should pin the final NS merge SHA/path for the reopened triad findings and methodological status correction. No moving branch head should be treated as final provenance."
+    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. Canonical provenance must be updated only after this PR merges, using the final immutable merge SHA and paths. The moving research branch is not final provenance."
   },
   "claim_effect": "statement-change"
 }
