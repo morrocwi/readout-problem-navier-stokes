@@ -6,9 +6,11 @@ on:
     paths:
       - 'paper/NS_P2B_FINITE_OBSERVATION_WINDOW_ATTACK.md'
       - 'paper/NS_P2B_SCALE_CONTRACTION.md'
+      - 'paper/NS_P2B_WINDOW_BALANCE_NO_GO.md'
       - 'reproduction/checks/check_ns_p2b_critical_intermittency.py'
       - 'reproduction/checks/check_ns_p2b_finite_observation_lift.py'
       - 'reproduction/checks/check_ns_p2b_scale_contraction.py'
+      - 'reproduction/checks/check_ns_p2b_window_balance_nogo.py'
       - '.github/workflows/ns-p2b-finite-observation.yml'
       - 'CLAY_RESEARCH_TODO.md'
       - 'CLAY_GOVERNANCE_ACK.json'
@@ -28,12 +30,15 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2b_finite_observation_lift.py
       - name: exact scale-contraction controls
         run: python3 reproduction/checks/check_ns_p2b_scale_contraction.py
+      - name: exact window-balance accounting no-go
+        run: python3 reproduction/checks/check_ns_p2b_window_balance_nogo.py
       - name: claim-boundary guards
         run: |
           python3 - <<'PY'
           from pathlib import Path
           attack = Path('paper/NS_P2B_FINITE_OBSERVATION_WINDOW_ATTACK.md').read_text()
           contraction = Path('paper/NS_P2B_SCALE_CONTRACTION.md').read_text()
+          balance = Path('paper/NS_P2B_WINDOW_BALANCE_NO_GO.md').read_text()
           required_attack = {
               'IDM source': 'NS_ENERGY_TRANSFER_OBSERVABILITY.md',
               'EPSC source': 'DISCRETE_EPSILON_COMPLETION.md',
@@ -51,8 +56,16 @@ jobs:
               'critical falsifier': 'R_N=1',
               'Clay boundary': 'Clay Navier--Stokes remains OPEN',
           }
+          required_balance = {
+              'window balance': 'exact integrated shell balance',
+              'transfer conservation': 'integrated nonlinear transfer is exactly conservative',
+              'accounting ruling': 'accounting-only route REFUTED',
+              'triad frontier': 'Triad-level uniform contraction:** OPEN/HOLD',
+              'not NSE': 'not an NSE solution',
+          }
           missing = [name for name, marker in required_attack.items() if marker not in attack]
           missing += [name for name, marker in required_contraction.items() if marker not in contraction]
+          missing += [name for name, marker in required_balance.items() if marker not in balance]
           if missing:
               raise SystemExit('missing P2B claim-boundary markers: ' + ', '.join(missing))
           print('NS P2B CLAIM-BOUNDARY GUARDS PASS')
