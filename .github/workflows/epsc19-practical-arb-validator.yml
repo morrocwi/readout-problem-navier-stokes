@@ -1,0 +1,21 @@
+name: epsc19-practical-arb-validator
+
+on:
+  push:
+    branches:
+      - epsc19-practical-sample-schedule
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install validation dependencies
+        run: python -m pip install --upgrade pip numpy scipy python-flint
+      - name: Run rigorous h=1/14 validator
+        run: python reproduction/checks/check_volume7_eps19_n1_practical_arb_validator.py
