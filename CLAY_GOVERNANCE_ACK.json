@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "Post-merge P2 handoff: update the live Clay research queue to record P2 as CLOSED AS A REDUCTION, preserve Clay regularity as OPEN, identify NS-P2-H3-MARGIN-UNIFORM as the single main OPEN/HOLD frontier, and redirect the next active phase to P3 after its existing branch/formal blockers are cleared.",
+  "scope": "P2B alternate attack derived from IDM finite window-transfer accounting and EPSC, translated through Readout Genesis/Universe architecture, and connected to a published finite-observation regularity adapter. Add NS-P2B-EPSC-OBS-LIFT, NS-P2B-SUBCRITICAL-OBS, and an exact energy-budget criticality negative control. The route is CLOSED AS A REDUCTION / OPEN at NS-P2B-ANTI-INTERMITTENCY; Clay Navier-Stokes remains OPEN.",
   "todo": {
-    "status": "updated",
-    "evidence": "CLAY_RESEARCH_TODO.md now records the P2 merge 83e966df..., closed/ruled-out P2 subroutes, the exact residual margin theorem, non-vacuity requirements, the held external High-High adapter, and the P3 entry blockers."
+    "status": "reviewed-no-change",
+    "evidence": "The existing P2 handoff explicitly permits reopening only for new mathematics directly advancing the uniform regularity frontier. Issue #44 and paper/NS_P2B_FINITE_OBSERVATION_WINDOW_ATTACK.md record this new alternate route; fixed-N and energy-only routes remain ruled out."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization gate; a Toledo provenance PR separately pins the P2 reduction status and residual lemma."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. After merge, pin the finite-observation lift and subcritical reduction as DERIVED, the energy-only criticality inference as REFUTED, and NS-P2B-ANTI-INTERMITTENCY as OPEN/HOLD."
   },
-  "claim_effect": "status-only"
+  "claim_effect": "statement-change"
 }
