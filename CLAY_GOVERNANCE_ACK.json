@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "NS-FUB-A1C localization refinement: fixed-N=1 residual-centered validated tube and exact negative control for localization failure of absolute symmetric propagation. Final-head CI at 926acb40c67a09e64d238709efa5d8e7c1b9e097 passed residual-tube, absolute-tube, finite-chain, H3-witness, and Clay-governance workflows. A1C-G and A1C-X remain OPEN.",
+  "scope": "NS-FUB-A1C completeness refinement: derive a fixed-finite rational residual-certificate completeness theorem (A1C-COMP-Q), a semidecision/enumeration corollary (A1C-ENUM-Q), and a restricted rational-finite-data singularity-to-certificate consequence (A1C-XQ). Exact regression controls are added, but the general Clay-facing A1C-X, arbitrary-N uniformity, efficient/adaptive generation, and continuum initial-data representation remain OPEN.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md keeps the general validated finite-dynamics/data adapter OPEN. The residual verifier materially improves localization and closes only the fixed-N checker/search sublayer; it does not prove arbitrary-target termination or arbitrary-N coverage."
+    "evidence": "CLAY_RESEARCH_TODO.md already leaves the general validated finite-dynamics/data adapter and all-scale bridge OPEN. The new theorem closes certificate-language completeness only for fixed finite rational polynomial dynamics with strict margins; it does not complete the general TODO."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Toledo merge b16ec2d2... pins the prior finite-chain layer; residual-centered A1C-RV/RG1 evidence is ready to pin after this PR merges."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Toledo PR #16 pins the merged residual-tube evidence; A1C-COMP-Q/ENUM-Q/XQ remain non-canonical research identifiers pending source review and CI."
   },
-  "claim_effect": "status-only"
+  "claim_effect": "statement-change"
 }
