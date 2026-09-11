@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "NS-FUB-A1C completeness refinement: derive a fixed-finite rational residual-certificate completeness theorem (A1C-COMP-Q), a semidecision/enumeration corollary (A1C-ENUM-Q), and a restricted rational-finite-data singularity-to-certificate consequence (A1C-XQ). Exact regression controls are added, but the general Clay-facing A1C-X, arbitrary-N uniformity, efficient/adaptive generation, and continuum initial-data representation remain OPEN.",
+  "scope": "NS-FUB-A1C completeness refinement: fixed-finite rational residual-certificate completeness (A1C-COMP-Q), semidecision/enumeration (A1C-ENUM-Q), and restricted rational-finite-data singularity-to-certificate consequence (A1C-XQ). Exact regression controls and claim-boundary CI passed at source head 749bb47d782b9605329fb19fae1e39e43d51a998 together with residual, tube-chain, H3, and governance workflows. General Clay-facing A1C-X, arbitrary-N uniformity, efficient/adaptive generation, and continuum initial-data representation remain OPEN.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already leaves the general validated finite-dynamics/data adapter and all-scale bridge OPEN. The new theorem closes certificate-language completeness only for fixed finite rational polynomial dynamics with strict margins; it does not complete the general TODO."
+    "evidence": "CLAY_RESEARCH_TODO.md already leaves the general validated finite-dynamics/data adapter and all-scale bridge OPEN. The theorem closes certificate-language completeness only for fixed finite rational polynomial dynamics with strict margins; it does not complete the general TODO."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Toledo PR #16 pins the merged residual-tube evidence; A1C-COMP-Q/ENUM-Q/XQ remain non-canonical research identifiers pending source review and CI."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Toledo merge a63bd3e0... pins residual-tube evidence; A1C-COMP-Q/ENUM-Q/XQ are ready for provenance pinning after this PR merges but remain non-canonical research identifiers."
   },
-  "claim_effect": "statement-change"
+  "claim_effect": "status-only"
 }
