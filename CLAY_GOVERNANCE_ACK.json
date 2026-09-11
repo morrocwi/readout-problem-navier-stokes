@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "Final P2 non-vacuity audit. Prove NS-P2-FINAL-EQUIV: in the declared periodic modal/dyadic finite-observation adapter, existential strict scale contraction SC(T) is equivalent to regularity on the target finite interval. Close P2 as a research/reduction phase, retire NS-P2-H3-MARGIN-UNIFORM and NS-P2B-SCALE-CONTRACTION-UNIFORM as active separate bridge targets, and preserve Clay Navier-Stokes global regularity as OPEN.",
+  "scope": "P0-P2 consolidated research handoff plus reopened direct Navier-Stokes triad/phase attack. Preserve NS-P2-FINAL-EQUIV as DERIVED under its declared adapter, withdraw only the earlier stopping inference that regularity-equivalence justifies abandoning the constructive attack, record exact triad counterexamples/finite structural results, and set NS-P2-FRUSTRATION-OR-CUT plus constructive all-scale recurrence as OPEN targets.",
   "todo": {
     "status": "updated",
-    "evidence": "CLAY_RESEARCH_TODO.md now records P2 = CLOSED AS A RESEARCH / REDUCTION PHASE, the regularity-equivalence theorem, the anti-reopening rule, and the requirement that future NS work present a genuinely weaker independently checkable premise rather than a renamed regularity criterion."
+    "evidence": "CLAY_RESEARCH_TODO.md now points to CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md and FUTURE_WORK_P2_TRIAD_ATTACK.md, records P2 constructive attack as active, preserves the equivalence theorem, lists exact triad findings, and defines the overlapping-complex-triad frustration-or-cut frontier."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. After merge, Toledo must record NS-P2-FINAL-EQUIV as a derived non-vacuity/equivalence result, mark the P2 residual criteria as regularity-equivalent/retired rather than solved, and preserve the Clay target as OPEN."
+    "evidence": "morrocwi/toledo#11 remains the provenance/canonicalization gate. The current PR must merge first; then Toledo should pin the final NS merge SHA/path for the reopened triad findings and methodological status correction. No moving branch head should be treated as final provenance."
   },
   "claim_effect": "statement-change"
 }

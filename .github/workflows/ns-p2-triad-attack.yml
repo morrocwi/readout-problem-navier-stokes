@@ -1,0 +1,91 @@
+name: ns-p2-triad-attack
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md'
+      - 'FUTURE_WORK_P2_TRIAD_ATTACK.md'
+      - 'paper/NS_P2_TRIAD_PHASE_READOUT_ATTACK.md'
+      - 'reproduction/checks/check_ns_p2_triad_phase_stress.py'
+      - 'reproduction/checks/check_ns_p2_triad_coherence_defect.py'
+      - 'reproduction/checks/check_ns_p2_n1_h3_sign_frustration.py'
+      - 'reproduction/checks/check_ns_p2_n1_frustration_tax.py'
+      - 'reproduction/checks/check_ns_p2_ladder_frustration_alln.py'
+      - 'reproduction/checks/check_ns_p2_dyadic_hh_motif_alln.py'
+      - '.github/workflows/ns-p2-triad-attack.yml'
+      - 'CLAY_RESEARCH_TODO.md'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  exact-triad-attack:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install checker dependencies
+        run: python -m pip install numpy sympy
+      - name: Exact isolated-triad phase stress
+        run: python3 reproduction/checks/check_ns_p2_triad_phase_stress.py
+      - name: Exact isolated-triad coherence defect
+        run: python3 reproduction/checks/check_ns_p2_triad_coherence_defect.py
+      - name: Exact N=1 H3 sign-frustration classification
+        run: python3 reproduction/checks/check_ns_p2_n1_h3_sign_frustration.py
+      - name: Exact N=1 four-term frustration tax
+        run: python3 reproduction/checks/check_ns_p2_n1_frustration_tax.py
+      - name: Symbolic all-n ladder frustration family
+        run: python3 reproduction/checks/check_ns_p2_ladder_frustration_alln.py
+      - name: Symbolic all-n dyadic high-high motif
+        run: python3 reproduction/checks/check_ns_p2_dyadic_hh_motif_alln.py
+      - name: Claim-boundary and handoff guards
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          paper = Path('paper/NS_P2_TRIAD_PHASE_READOUT_ATTACK.md').read_text()
+          paper_required = {
+              'falsification rule': 'Equivalence does not justify rejecting',
+              'phase coordinate': 'signed coordinate `r`',
+              'shell-only refuted': 'NS-P2-TRIAD-PHASE-01',
+              'viscosity-only refuted': 'NS-P2-TRIAD-PHASE-02',
+              'N1 sign frustration': 'NS-P2-N1-H3-SIGN-FRUSTRATION',
+              'frustration tax': 'frustration tax',
+              'open phase-complete target': 'NS-P2-PHASE-COMPLETE-CONTRACTION` — OPEN',
+              'open frustration-or-cut': 'NS-P2-FRUSTRATION-OR-CUT` — OPEN',
+              'no all-scale claim': 'No all-scale strict deficit has yet been proved',
+          }
+          missing = [name for name, marker in paper_required.items() if marker not in paper]
+          if missing:
+              raise SystemExit('missing triad-attack claim markers: ' + ', '.join(missing))
+
+          handoff = Path('CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md').read_text()
+          handoff_required = {
+              'P0 section': '# P0',
+              'P1 section': '# P1',
+              'P2 active target': 'NS-P2-FRUSTRATION-OR-CUT',
+              'equivalence correction': 'equivalence != refutation',
+              'dyadic motif bound': '7\\sqrt2}{8n^2}',
+              'next-AI pointer': 'The next AI should begin',
+          }
+          missing = [name for name, marker in handoff_required.items() if marker not in handoff]
+          if missing:
+              raise SystemExit('missing P0-P2 handoff markers: ' + ', '.join(missing))
+
+          future = Path('FUTURE_WORK_P2_TRIAD_ATTACK.md').read_text()
+          future_required = {
+              'holonomy': 'complex phase-holonomy',
+              'falsification': 'SAT   -> naive network-frustration claim is REFUTED',
+              'frustration-or-cut': 'frustration-or-amplitude-cut lemma',
+              'time switching': 'temporal coherence budget',
+              'recurrence': 'R_{j+1}',
+              'git contract': 'branch\n-> exact checker/theorem document',
+          }
+          missing = [name for name, marker in future_required.items() if marker not in future]
+          if missing:
+              raise SystemExit('missing P2 future-work markers: ' + ', '.join(missing))
+
+          print('NS P2 TRIAD ATTACK + HANDOFF CLAIM-BOUNDARY PASS')
+          PY

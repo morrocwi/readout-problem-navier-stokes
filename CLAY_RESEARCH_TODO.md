@@ -22,7 +22,7 @@
 - [ ] **PNP verifier blocker:** repair the no-`Admitted` lexical guard so ordinary English `admit` in comments is not reported as hidden formal assumptions.
 - [ ] **Governance hardening:** require `clay-governance` through branch protection/rulesets for NS, IDM and Toledo; the audited `main` branches currently report `protected:false`.
 
-P0 audit phase status: **CLOSED as an audit**, with the blockers above explicitly carried into later phases. No Clay theorem was promoted by P0.
+P0 audit phase status: **CLOSED as an audit**, with the blockers above explicitly carried into later phases.
 
 ## P1 — Shared finite obstruction / uniform bridge core
 
@@ -39,75 +39,134 @@ Primary home: `morrocwi/information-discrete-math`.
 Evidence:
 
 - IDM PR #125 merged as `1ddf295ea6fd9c504a10e6296fdea5bb97cf78fd`: 11 Coq 8.20 safe-core theorems axiom-free.
-- IDM PR #127 / issue #126: negative controls refute naive FUB-03/04/05 forms while strengthened forms remain OPEN.
+- IDM P2 negative controls refute naive FUB-03/04/05 forms while strengthened forms remain OPEN.
 
-## P2 — Navier--Stokes load-bearing bridge
+## P2 — Navier--Stokes direct bridge attack
 
 Primary home: this repository.
 
-### FINAL phase ruling
+### Read-first handoff
+
+Before new P2 work, read:
 
 ```text
-P2 = CLOSED AS A RESEARCH / REDUCTION PHASE
-P2B finite-observation route = CLOSED AS REGULARITY-EQUIVALENT
-NS-P2-H3-MARGIN-UNIFORM = RETIRED as an active separate bridge target
-NS-P2B-SCALE-CONTRACTION-UNIFORM = REGULARITY-EQUIVALENT existentially
-Clay Navier--Stokes global regularity = OPEN
+CLAY_P0_P2_RESEARCH_HANDOFF_2026-09-11.md
+FUTURE_WORK_P2_TRIAD_ATTACK.md
+paper/NS_P2_TRIAD_PHASE_READOUT_ATTACK.md
 ```
 
-Final closure theorem: `paper/NS_P2_FINAL_CLOSURE_EQUIVALENCE.md` (`NS-P2-FINAL-EQUIV`).  
-P2B source merge: `9d6f516734d1a151bae987a8df33c05273bcd32b`.
+### Corrected status rule
 
-### What P2 established before closure
-
-- [x] `A1E`: finite-time singularity forces arbitrarily large finite-Galerkin `H^3` exceedances under explicitly declared continuation/Galerkin adapters.
-- [x] `A1V`: exact finite rational PASS/HOLD verification of a certified finite Galerkin `H^3` exceedance.
-- [x] Fixed-`N` validated trajectory/tube and rational certificate machinery.
-- [x] Energy/`L2`-only omitted-tail control REFUTED as an `H^3` tail mechanism.
-- [x] Fixed-`N` certificate breakdown REFUTED as a standalone singularity witness.
-- [x] Positive-lag Stokes and old-Duhamel histories receive explicit all-scale `H^3` tail envelopes.
-- [x] Finite shellwise High--High / full `H^3` margin interfaces implemented fail-closed.
-- [x] External High--High preprint audited and held rather than promoted.
-- [x] P2B: EPSC finite-tape error -> finite modal time-window observation lift (`NS-P2B-EPSC-OBS-LIFT`).
-- [x] P2B: strict subcritical finite-observation scaling -> published finite-observation regularity gate (`NS-P2B-SUBCRITICAL-OBS`).
-- [x] P2B: energy+dissipation-only strict exponent gain REFUTED by exact critical-spike accounting.
-- [x] P2B: integrated shell window balance + total transfer conservation alone REFUTED as a source of strict contraction.
-- [x] P2B: strict cross-scale recurrence -> eventual gate PASS (`NS-P2B-SCALE-CONTRACTION`).
-- [x] Final non-vacuity audit: existential strict scale contraction is equivalent to regularity on `[0,T]` in the declared modal/dyadic adapter (`NS-P2-FINAL-EQUIV`).
-
-### Final equivalence
-
-For dyadic modal scales define
+The theorem `NS-P2-FINAL-EQUIV` remains **DERIVED** under its declared adapter:
 
 ```text
-R_j = (K_{N_j}^2)^(2p/(p-2)) / Lambda_j.
+regularity on [0,T] <=> existential SC(T)
 ```
 
-Let `SC(T)` assert finite nonnegative upper bounds `U_j` and constants `kappa,rho<1`, `B<infinity` satisfying
+However, the earlier workflow inference
 
 ```text
-R_j <= U_j
-U_{j+1} <= kappa U_j + B rho^j
+regularity-equivalent => stop attacking the proposal
 ```
 
-for all sufficiently large `j`.
+is withdrawn. Equivalence is not refutation. A constructive proof of `SC(T)` from genuinely weaker finite/checkable NSE structure remains a valid direct attack.
 
-Then, under the declared periodic modal finite-observation adapter,
+Current ruling:
 
 ```text
-regularity on [0,T]  <=>  SC(T).
+P2 historical reduction architecture = established
+P2 constructive direct attack = REOPENED / ACTIVE
+NS-P2-FINAL-EQUIV = DERIVED
+NS-P2B-SCALE-CONTRACTION-UNIFORM = OPEN as constructive target
+NS-P2-FRUSTRATION-OR-CUT = OPEN load-bearing structural target
 ```
 
-- Regularity gives a cutoff-independent `H1` bound, hence `R_j <= C_T/Lambda_j`; dyadic `Lambda_{j+1}=4 Lambda_j` gives the explicit contraction `U_{j+1}=(1/4)U_j`.
-- `SC(T)` gives `R_j -> 0`; normalized fixed initial/forcing terms also vanish with scale, so a finite modal observation level satisfies the published regularity gate.
+### P2 established results retained
 
-Therefore the last P2B residual is not a lower-strength intermediate theorem. An **effective finite constructor** for `SC(T)` from genuinely weaker information would be new regularity-level mathematics and must be treated as a future direct attack, not as unfinished P2 bookkeeping.
+- [x] `A1E`: finite-time singularity forces arbitrarily large finite-Galerkin `H^3` exceedances under declared adapters.
+- [x] `A1V`: exact finite rational PASS/HOLD verification of finite `H^3` exceedance.
+- [x] Fixed-`N` validated tube, tube chain, residual tube and finite rational certificate-completeness machinery.
+- [x] `L2`/energy-only omitted-tail control REFUTED as an `H^3` tail mechanism.
+- [x] Fixed-`N` certificate/trajectory breakdown REFUTED as a standalone singularity witness.
+- [x] Positive-lag Stokes and old-Duhamel histories have explicit all-scale `H^3` tail envelopes.
+- [x] Adapter-neutral `H^3` dissipative-margin implication -> uniform `H^3` Gronwall bound DERIVED.
+- [x] `NS-P2-HH-GEOM-LIFT` weighted geometric-tail arithmetic DERIVED.
+- [x] External High--High preprint held rather than promoted.
+- [x] `NS-P2B-EPSC-OBS-LIFT` DERIVED.
+- [x] `NS-P2B-SUBCRITICAL-OBS` DERIVED.
+- [x] Energy+dissipation-only strict critical exponent gain REFUTED as an inference by critical-spike accounting.
+- [x] Integrated shell balance + total transfer conservation alone REFUTED as sufficient source of strict contraction.
+- [x] `NS-P2B-SCALE-CONTRACTION`: strict recurrence -> `R_j -> 0` -> eventual observation-gate PASS DERIVED.
+- [x] `NS-P2-FINAL-EQUIV`: regularity <-> existential `SC(T)` DERIVED under declared adapter.
 
-### Anti-reopening rule
+### Reopened exact triad attack — current results
 
-P2 is complete as a research phase. Do **not** reopen it by renaming regularity as another known necessary-and-sufficient criterion. A future NS attack must first show a genuinely weaker, independently checkable premise or new structural theorem. Otherwise mark it `REGULARITY-EQUIVALENT / HOLD`.
+- [x] Shell-energy-only signed transfer/contraction REFUTED by an actual exact NSE triad with identical `(x,y,z)` and opposite phase coordinate `r`.
+- [x] Viscosity-only contraction of normalized phase coherence REFUTED; viscous contribution cancels from `d log|r/sqrt(xyz)|/dt`.
+- [x] Exact isolated-triad identity `D=xyz-r^2`, `D'=-16 nu D`; perfect phase locking `D=0` can persist.
+- [x] Exact N=1 H3 nonlinear-production polynomial: 432 nonzero cubic monomials and GF(2) all-sign alignment is UNSAT.
+- [x] Exact four-term finite frustration tax `|Q_cycle| <= S_cycle - 2 m_cycle`.
+- [x] Symbolic all-n ladder frustration family constructed.
+- [x] Symbolic dyadic high-high motif `q=(n,n,0)`, `r=(n,-n,0)`, `t=(2n,0,0)` derived with
 
-Tracked issues #25 and #46 should be closed with the explicit note that the phase closed by reduction/equivalence, **not** by solving Clay.
+```text
+Q_n = C_n Im(z_q z_r conjugate(z_t))
+C_n = 8 n^7 (28 n^4 + 18 n^2 + 3)
+Gamma_n <= 7 sqrt(2)/(8 n^2)
+```
+
+- [x] Claim correction: one complex triad's four-real-monomial sign pattern is not by itself genuine network frustration; a single triad can choose a maximizing phase.
+
+### Current P2 load-bearing frontier
+
+#### `NS-P2-FRUSTRATION-OR-CUT` — OPEN
+
+For overlapping transfer-active complex triads crossing dyadic boundaries, prove or refute a quantitative dichotomy:
+
+```text
+phase-holonomy incompatibility -> strict cancellation tax
+OR
+required amplitude becomes small -> transfer-chain cut
+```
+
+Strong enough to imply a recurrence
+
+```text
+R_{j+1} <= (1-delta_j) R_j + beta_j
+```
+
+with a uniform or nonuniform decay condition sufficient for `R_j -> 0`.
+
+Immediate work order is specified in `FUTURE_WORK_P2_TRIAD_ATTACK.md`:
+
+- [ ] build exact complex phase-incidence/holonomy checker for overlapping triads;
+- [ ] search counterexample/SAT assignments before asserting frustration;
+- [ ] extract the smallest genuine complex UNSAT holonomy cycle if one exists;
+- [ ] turn holonomy mismatch into quantitative phase deficit;
+- [ ] prove frustration-or-amplitude-cut lemma;
+- [ ] prove dyadic boundary cycle coverage/decomposition;
+- [ ] control temporal phase switching in the finite-observation time window;
+- [ ] aggregate to all-scale recurrence and explicit recent-nonlinear remainder decay;
+- [ ] formalize stable finite lemmas and rerun fail-closed CI.
+
+### P2 anti-shortcut rules
+
+Do not substitute any of the following for the open theorem:
+
+```text
+larger fixed N
+longer finite integration
+L2 tail for H3 tail
+fixed-N solver failure
+adjacent compatibility
+energy accounting alone
+window balance alone
+single-triad decoherence
+single-triad real-coordinate sign frustration
+another regularity criterion with no new constructive mechanism
+```
+
+A candidate is REFUTED only by a matching counterexample/impossibility proof.
 
 ## P3 — P vs NP load-bearing bridge
 
@@ -138,21 +197,23 @@ verified unrestricted defect capture
 
 ## P4 — Non-vacuity / hidden-target audit
 
-For every Clay-bearing implication `A -> Target`:
+For every target-bearing implication `A -> Target`:
 
 - [x] Require the question whether proving `A` is genuinely more structured than proving `Target` directly.
-- [x] P2 final audit: existential finite-observation scale contraction is regularity-equivalent; retire it as a separate bridge.
-- [ ] Identify any imported theorem equivalent in strength to the desired conclusion for each remaining domain candidate.
-- [x] Mark HOLD when a premise merely renames the Clay bottleneck.
-- [ ] Continue registering counterexamples or vacuity findings in Toledo.
+- [x] Record `NS-P2-FINAL-EQUIV` as an equivalence theorem.
+- [x] Correct the stopping rule: equivalence alone does not refute or prohibit a constructive attack on `A`.
+- [ ] Identify any hidden regularity oracle or equivalent premise inside each proposed constructor.
+- [ ] Continue registering matching counterexamples and status/provenance changes in Toledo.
 
 ## P5 — Formal verification / adversarial testing
 
-- [x] No `Admitted` in the promoted P1 safe finite kernels and audited formal negative controls.
-- [x] Run `Print Assumptions` for the P1/P2 audited Coq theorems.
+- [x] No `Admitted` in promoted P1 safe finite kernels and audited formal negative controls.
+- [x] Run `Print Assumptions` for promoted P1/P2 audited Coq theorems.
 - [x] Add counterexample tests for naive generic bridge forms.
-- [x] Add exact finite controls for NS A1V, validated tubes, residual localization, certificate completeness, H3-tail no-go, fixed-N extensibility, geometric-tail lifting, H3 margin, P2B criticality, scale contraction, and final equivalence algebra.
-- [ ] Add further symmetry aliases and representation-redundancy tests as domain adapters mature.
+- [x] Add exact finite controls for NS A1V, validated tubes, residual localization, certificate completeness, H3-tail no-go, fixed-N extensibility, geometric-tail lifting, H3 margin, P2B criticality, scale contraction and final equivalence algebra.
+- [x] Add exact triad phase stress, coherence-defect, N=1 sign-frustration, finite frustration-tax, all-n ladder and dyadic high-high motif controls.
+- [ ] Add exact overlapping-complex-triad phase-holonomy controls.
+- [ ] Formalize stable finite holonomy/frustration-or-cut lemmas after statement stabilization.
 - [x] Keep finite diagnostic claims separate from formal theorem status.
 - [x] Keep CI status attached to exact commit SHA.
 
@@ -169,7 +230,7 @@ Start only after the shared kernel has at least one stable formal layer.
 - [ ] Identify the separate continuum existence/limit bridge.
 - [ ] Search for failure modes showing the NS analogy is insufficient.
 
-Status: candidate third direct lane, not yet a Clay proof route.
+Status: candidate third direct lane, not yet a proof route.
 
 ## P7 — RH / BSD / Hodge probes
 
@@ -190,9 +251,10 @@ Use these as stress tests of the shared core, not equal-priority direct attacks 
 
 ## P8 — Toledo integration
 
-- [x] Keep `PROP-FUB-01..06`, `NS-FUB-A1/A2`, `PNP-FUB-A1` and research sub-identifiers non-canonical until source statements stabilize.
-- [ ] Pin final repo/commit/path for each stabilized proposal before canonicalization.
-- [x] Attach P1/P2 exact tier/status evidence through Toledo provenance notes/issues.
+- [x] Keep research proposal identifiers non-canonical until source statements stabilize.
+- [ ] Pin final repo/merge commit/path for PR #48 results after merge.
+- [x] Preserve previous P1/P2 exact tier/status provenance.
+- [ ] Add the reopened P2 triad findings to Toledo after NS merge, including the methodological correction that equivalence is not refutation.
 - [ ] Add valid parent/relation structure.
 - [ ] Map new Coq/Rocq identifiers only from actual formal evidence after canonical audit.
 - [ ] Run normal Toledo build/checkers; do not hand-edit generated registry outputs.
@@ -205,8 +267,7 @@ Do not spend a full session primarily on these unless tied to a specific open br
 
 - increasing NS cutoff only for a larger number;
 - adding more fixed-N validated integration steps;
-- retrying the held High--High preprint without a repaired continuum proof;
-- reopening P2 through another regularity-equivalent criterion;
+- retrying the held High--High preprint without a repaired proof;
 - more tiny-circuit enumeration;
 - more RH zeros at finite height;
 - more elliptic-curve examples;
@@ -219,10 +280,16 @@ Do not spend a full session primarily on these unless tied to a specific open br
 A session is high-value if it does at least one of the following:
 
 1. proves a reusable finite theorem;
-2. finds a counterexample that kills an invalid bridge;
+2. finds a matching counterexample that kills an invalid bridge;
 3. narrows an OPEN statement to a precise load-bearing lemma;
 4. formalizes a safe reusable kernel;
 5. produces a domain adapter with explicit hypotheses;
-6. closes a provenance/status ambiguity in Toledo.
+6. proves a genuine overlapping-triad phase-holonomy/frustration-or-cut result;
+7. closes a provenance/status ambiguity in Toledo.
 
-The preferred next target is always the smallest statement carrying the most downstream dependencies.
+The preferred current NS target is the smallest statement carrying the most downstream dependencies:
+
+```text
+overlapping complex triad phase incidence
+  -> quantitative frustration-or-cut ?
+```
