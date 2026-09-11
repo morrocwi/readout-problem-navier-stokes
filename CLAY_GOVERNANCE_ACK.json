@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P2B alternate attack derived from IDM finite window-transfer accounting and EPSC, translated through Readout Genesis/Universe architecture, and connected to a published finite-observation regularity adapter. Add NS-P2B-EPSC-OBS-LIFT and NS-P2B-SUBCRITICAL-OBS; refute energy+dissipation-only derivation of exponent slack; derive NS-P2B-SCALE-CONTRACTION; and strengthen the negative audit with an exact integrated shell-accounting countermodel satisfying window balance, transfer conservation, and finite cumulative budgets while remaining critical. Therefore accounting-only anti-intermittency is REFUTED and the remaining viable frontier is a genuine NSE triad-level uniform contraction law. Clay Navier-Stokes remains OPEN.",
+  "scope": "Final P2 non-vacuity audit. Prove NS-P2-FINAL-EQUIV: in the declared periodic modal/dyadic finite-observation adapter, existential strict scale contraction SC(T) is equivalent to regularity on the target finite interval. Close P2 as a research/reduction phase, retire NS-P2-H3-MARGIN-UNIFORM and NS-P2B-SCALE-CONTRACTION-UNIFORM as active separate bridge targets, and preserve Clay Navier-Stokes global regularity as OPEN.",
   "todo": {
-    "status": "reviewed-no-change",
-    "evidence": "The existing P2 handoff permits reopening only for new mathematics directly advancing the uniform regularity frontier. Issue #44 and the P2B notes record the new finite-observation route, its scale-contraction reduction, and the stronger window-balance no-go. Fixed-N, energy-only, and accounting-only substitutes are ruled out."
+    "status": "updated",
+    "evidence": "CLAY_RESEARCH_TODO.md now records P2 = CLOSED AS A RESEARCH / REDUCTION PHASE, the regularity-equivalence theorem, the anti-reopening rule, and the requirement that future NS work present a genuinely weaker independently checkable premise rather than a renamed regularity criterion."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. After merge, pin NS-P2B-EPSC-OBS-LIFT, NS-P2B-SUBCRITICAL-OBS, and NS-P2B-SCALE-CONTRACTION as DERIVED; energy-only and accounting-only criticality inferences as REFUTED; and NS-P2B-SCALE-CONTRACTION-UNIFORM / triad-level anti-intermittency as OPEN/HOLD."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate. After merge, Toledo must record NS-P2-FINAL-EQUIV as a derived non-vacuity/equivalence result, mark the P2 residual criteria as regularity-equivalent/retired rather than solved, and preserve the Clay target as OPEN."
   },
   "claim_effect": "statement-change"
 }
