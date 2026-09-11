@@ -176,6 +176,15 @@ Exact results recorded against this architecture (`paper/NS_P2_MULTISOURCE_CANCE
 - [ ] OCSR at generation 2 on any seed; antipodal-source configurations; symmetry-free two-shell N=2.
 - [ ] Supply or downgrade the unstated "zero-cancellation source-ray alignment — DERIVED" lemma.
 
+Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j ≤ (1−δ)νD_j + Cρ^j`),
+`paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`:
+
+- [x] Recurrence identity `R_{j+1} ≤ κR_j + C_η R^sh_{j+1}` DERIVED; content = shell-own critical ratio geometric.
+- [x] Universal-constant form REFUTED (exact triad witness `T/D = 20`; `n⁶` excess; 2.5-D fillers).
+- [x] Solution-dependent form REGULARITY-EQUIVALENT / HOLD per FINAL-EQUIV §8.
+- [x] Budget ratio `∫T_j/∫D_j = 1 + 1/(2ν)` DERIVED: accounting cannot give `δ > 0`.
+- [ ] Only residue: constructive generator of `R^sh_j ≤ Bρ^j` from finite records (= `NS-P2B-SCALE-CONTRACTION-UNIFORM`).
+
 ### P2 anti-shortcut rules
 
 Do not substitute any of the following for the open theorem:

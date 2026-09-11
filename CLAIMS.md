@@ -153,6 +153,19 @@ checker `reproduction/checks/check_ns_p2_multisource_cancellation.py`.
 | Any of the above is an all-seed or all-generation theorem | **No.** Finite exact instances only. |
 | "zero-cancellation source-ray alignment" is DERIVED | **HOLD** — cited five times in the standalone, stated nowhere. |
 
+## Uniform full-convolution scale-loss candidate
+
+Primary source: `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`; checker `reproduction/checks/check_ns_p2_uniform_scale_loss_audit.py`.
+
+| Claim | Status |
+|---|---|
+| `R_{j+1} ≤ κR_j + C_η R^sh_{j+1}` with `κ=(1+η)^{r−1}/4 < 1` for small `η` | **DERIVED** identity (spectral orthogonality + convexity); exact fixture PASS. A scale recurrence is equivalent to the shell-(j+1) own critical ratio being geometric. |
+| `T_j ≤ (1−δ)νD_j + Cρ^j` pointwise with universal constants holds for every NSE solution | **REFUTED.** Exact triad state (`x=y=z=1, r=1, ν=1/200`) has `T/D = 20`; amplitude-tuned excess grows like `n⁶`; regular 2.5-D fillers scale like `A⁴`. |
+| Same statement on fixed-length windows | **REFUTED** at the witness state for windows `≤ 91/50`; holds at the long viscous window there; general form OPEN. Fixed-window form does not control the L^p window norm `K` in any case. |
+| Energy/dissipation accounting produces `δ > 0` | **No.** Critical budget gives `∫T_j/∫D_j = 1 + 1/(2ν)` for every `j`. |
+| Same statement with solution-dependent constants | **REGULARITY-EQUIVALENT / HOLD** (regular ⇒ `|T_j| ≤ CM₃³8^{−j}`; (SL-pt) ⇒ uniform H¹ ⇒ regular). Recorded per `NS_P2_FINAL_CLOSURE_EQUIVALENCE.md` §8, not as an open bridge. |
+| A constructive finite generator of the shell ratios exists | **OPEN** (`NS-P2B-SCALE-CONTRACTION-UNIFORM`). |
+
 ## Current measurement-to-continuum chain
 
 ```text
