@@ -48,7 +48,7 @@ The Fourier reality constraint `û(−p)=conj û(p)` is **vacuous** on all three
 
 ## 4. W3 generation 1 through k — outward suppression kills the parent
 
-With free `c ⊥ k` at the target, the descendants `D1_i = B_{p_i,k}(a_i,c)`, `D2_i = B_{q_i,k}(b_i,c)` land on six **distinct** targets with `|s|² = 3` (Section 115), so suppression must be nullity, not cancellation. Both are direction-locked and share one invertible 2×2 matrix `M_i` (`det = 3/4`, `M2 = −M1`). Nullity of both pins `(A_i)` and `(B_i)` to the same line, so the parent determinant `C_i = A_{2i}B_{1i} − A_{1i}B_{2i}` vanishes identically; the Gröbner check shows `c₁C_i, c₂C_i ∈ ⟨D1·e, D2·e⟩` while `C_i ∉`, i.e. `c = 0` is exactly the escape.
+With free `c ⊥ k` at the target, the descendants `D1_i = B_{p_i,k}(a_i,c)`, `D2_i = B_{q_i,k}(b_i,c)` land on six **distinct** targets with `|s|² = 3` (Section 115), so suppression must be nullity, not cancellation. Both are direction-locked and share one invertible 2×2 matrix `M_i` (`det = 3/4`, `M2 = −M1`). Nullity of both pins `(A_i)` and `(B_i)` to the same line, so the parent determinant `C_i = A_{2i}B_{1i} − A_{1i}B_{2i}` vanishes identically (checker: substitution argument with `det M_i = 3/4`); a scratch Gröbner computation (not in-repo) additionally shows `c₁C_i, c₂C_i ∈ ⟨D1·e, D2·e⟩` while `C_i ∉`, i.e. `c = 0` is exactly the escape.
 
 This is Section 13–14 at `K = P = Q`: the conditions `(K²−P²)yt = 0` become vacuous and the two remaining conditions share one linear form. It is strictly stronger than the self-closure lemma on this configuration (that lemma controls only `⟨c,B_pq⟩`, vacuous when `c ⊥ e_θ`; this kills `B_pq` itself).
 
@@ -58,7 +58,7 @@ This is Section 13–14 at `K = P = Q`: the conditions `(K²−P²)yt = 0` becom
 
 ## 5. W3 depth-1 full convolution with dead k-mode — not lossless
 
-Taking `û(k)=0` and the 12 real modes `±p_i, ±q_i`, one full local convolution generation (Section 35) gives 60 pairs on 44 targets: `±k` exactly cancelled; six targets at `|t|² = 9/4` are projection zeros (raw vector parallel to `t`); **36 targets with `F_t ≠ 0`, 30 of them single-source** (forced novelty, Section 111.7) and six at `|t|² = 3/4` with only partial cancellation (`C_t = √39/4 − √3/2`). No rescaling within the `Σg_i = 0` family kills the off-`k` forcings except the zero field, because the `(p_i,p_j)` and `(q_i,q_j)` forcings scale as `λ_iλ_j`, `μ_iμ_j` and never see the `k`-balance.
+Taking `û(k)=0` and the 12 real modes `±p_i, ±q_i`, one full local convolution generation (Section 35) gives 60 pairs on 44 targets: `±k` exactly cancelled; six targets at `|t|² = 9/4` are projection zeros (raw vector parallel to `t`); **36 targets with `F_t ≠ 0`, 30 of them single-source** (forced novelty, eq. (111.7)) and six at `|t|² = 3/4` with only partial cancellation (analytic value `C_t = √39/4 − √3/2`, not asserted by the checker). Analytic remark (not asserted by the checker): no rescaling within the `Σg_i = 0` family kills the off-`k` forcings except the zero field, because the `(p_i,p_j)` and `(q_i,q_j)` forcings scale as `λ_iλ_j`, `μ_iμ_j` and never see the `k`-balance.
 
 ### Status
 

@@ -144,7 +144,7 @@ checker `reproduction/checks/check_ns_p2_multisource_cancellation.py`.
 | `CR_0(Q-bar^sc_P2) subset P u D` (chain-recurrent zero-defect core is planar or degenerate) | **OPEN** — canonical target (109.3 / 118.3). |
 | OWR, FNW, OCSR, IRR, Witness Soundness | **OPEN** (112.3, 114.3, 117.5, 111.2, 111.5). |
 | Equal-shell projective null structure (113.1)–(113.3) | **PASS** — exact CAS certification, discrepancy factor 1; promoted from the source's SCRATCH-DERIVED. |
-| Equal source shells lock `B_{p,q}` to the `p x q` direction; unequal shells give the full `k`-perp image | **PASS on exact instances; corollary of Section 14** (`B_T ∝ Q²−P²`). Not a new lemma. |
+| Equal source shells lock `B_{p,q}` to the `p x q` direction; unequal shells give the full `k`-perp image (rank 1 iff `|p|=|q|`) | **PASS on exact instances; DERIVED generically as a corollary of Section 14** (`B_T ∝ Q²−P²`). Not a new lemma. |
 | Exact zero-sum multi-source cancellation at a target is impossible for genuinely 3D productive triads | **No.** Witnesses W1 (two-shell N=2), W2 (rank-2, real and complex), W3 (equal-shell N=3) cancel exactly; it is impossible only for two equal-source-shell triads with non-parallel normals. Reality constraint vacuous on all three; antipodal-source cases OPEN. |
 | These witnesses refute OWR/SBX/OCSR | **No.** The standalone already carries the "exactly cancelled" branch (112, 116). The witnesses show that branch is nonempty and generic; whether its deficit `C_k > 0` is a payable loss is Witness Soundness, OPEN. |
 | Direction lock forces phase frustration at a shared target | **No.** Transfer signs are free via `sign(C_i)`. |
@@ -160,9 +160,9 @@ Primary source: `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`; checker `reproduction
 | Claim | Status |
 |---|---|
 | `R_{j+1} ≤ κR_j + C_η R^sh_{j+1}` with `κ=(1+η)^{r−1}/4 < 1` for small `η` | **DERIVED** identity (spectral orthogonality + convexity); exact fixture PASS. A scale recurrence is equivalent to the shell-(j+1) own critical ratio being geometric. |
-| `T_j ≤ (1−δ)νD_j + Cρ^j` pointwise with universal constants holds for every NSE solution | **REFUTED.** Exact triad state (`x=y=z=1, r=1, ν=1/200`) has `T/D = 20`; amplitude-tuned excess grows like `n⁶`; regular 2.5-D fillers scale like `A⁴`. |
-| Same statement on fixed-length windows | **REFUTED** at the witness state for windows `≤ 91/50`; holds at the long viscous window there; general form OPEN. Fixed-window form does not control the L^p window norm `K` in any case. |
-| Energy/dissipation accounting produces `δ > 0` | **No.** Critical budget gives `∫T_j/∫D_j = 1 + 1/(2ν)` for every `j`. |
+| `T_j ≤ (1−δ)νD_j + Cρ^j` pointwise with universal constants holds for every NSE solution | **REFUTED** by the exact triad state (`x=y=z=1, r=1, ν=1/200`): `T/D = 20` at the datum (checker PASS; transfers to NSE by rate agreement at the datum). Supporting scalings — amplitude-tuned excess `∝ n⁶`, regular 2.5-D fillers `∝ A⁴` — are analytic (`Dr`), not executed. |
+| Same statement on fixed-length windows | **REFUTED on the 3-mode Galerkin truncation** for windows `≤ 91/50` (scratch validated integration, not reproduced in-repo); holds at the long viscous window on the truncation. NSE windowed form beyond short windows: OPEN. Fixed-window form does not control the L^p window norm `K` in any case. |
+| Energy/dissipation accounting produces `δ > 0` | **No, in the P2C-3 critical budget:** `∫T_j/∫D_j = 1 + 1/(2ν)` for every `j` (arithmetic on the budget's definition). |
 | Same statement with solution-dependent constants | **REGULARITY-EQUIVALENT / HOLD** (regular ⇒ `|T_j| ≤ CM₃³8^{−j}`; (SL-pt) ⇒ uniform H¹ ⇒ regular). Recorded per `NS_P2_FINAL_CLOSURE_EQUIVALENCE.md` §8, not as an open bridge. |
 | A constructive finite generator of the shell ratios exists | **OPEN** (`NS-P2B-SCALE-CONTRACTION-UNIFORM`). |
 

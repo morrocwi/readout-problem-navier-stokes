@@ -73,9 +73,14 @@ for eta in (F(1, 10), F(1, 2), F(4, 7)):
             assert (xx + yy) ** r_exp <= (1 + eta) ** (r_exp - 1) * xx ** r_exp + Ceta * yy ** r_exp
 assert (1 + F(3, 5)) ** 3 / 4 > 1                      # eta = 3/5 exceeds the p=4 threshold 4^{1/3}-1
 assert (1 + F(1, 2)) ** 3 / 4 == F(27, 32) < 1
-# R_{j+1} >= R_j / 4 always (K is monotone in N, Lambda_{j+1} = 4 Lambda_j): no recurrence has kappa < 1/4 with B = 0
-K2 = F(3)
-assert (K2 ** r_exp) / 4 == (K2 ** r_exp) / (4 * 1)
+# R_{j+1} >= R_j / 4 always: K_{N_{j+1}}^2 >= K_{N_j}^2 (cumulative projector) and Lambda_{j+1} = 4 Lambda_j,
+# so no recurrence can have kappa < 1/4 with B = 0.  Monotonicity fixture on several pairs.
+Lam = F(7)
+for K2_low, K2_high in ((F(1), F(1)), (F(1, 2), F(3)), (F(2), F(5, 2)), (F(0), F(1, 9))):
+    assert K2_high >= K2_low
+    R_low = K2_low ** r_exp / Lam
+    R_high = K2_high ** r_exp / (4 * Lam)
+    assert R_high >= R_low / 4
 
 print("NS P2 uniform scale-loss audit")
 print("pointwise (SL) at exact triad state: T/D = 20, excess >= 19/20 for every delta")

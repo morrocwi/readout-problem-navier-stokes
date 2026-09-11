@@ -14,7 +14,7 @@
 \mathcal T_j^{\rm full}\le(1-\delta)\,\nu\mathcal D_j+C\rho^j,
 \]
 
-with the claimed chain (SL) ⇒ `R_{j+1} ≤ κR_j + Bρ^j` ⇒ `R_j → 0` ⇒ finite-observation gate ⇒ regularity. Conventions (Sections 71, 106.3 of the standalone; P2B): shell energy `E_j = ‖|D|χ_j u‖₂²`, `D_j = ‖∇|D|χ_j u‖₂²`, exact balance `½Ė_j + νD_j = T_j`, coercivity `D_j ≥ a²N_j²E_j`, `R_j = (K_{N_j}²)^r/Λ_j`, `r = 2p/(p−2)`. `T_j` and `νD_j` are rates of H¹ shell energy; the remainder is a rate (pointwise) or an energy (windowed).
+with the claimed chain (SL) ⇒ `R_{j+1} ≤ κR_j + Bρ^j` ⇒ `R_j → 0` ⇒ finite-observation gate ⇒ regularity. Conventions (Section 71 and eq. (106.3) of the standalone; P2B): shell energy `E_j = ‖|D|χ_j u‖₂²`, `D_j = ‖∇|D|χ_j u‖₂²`, exact balance `½Ė_j + νD_j = T_j`, coercivity `D_j ≥ a²N_j²E_j`, `R_j = (K_{N_j}²)^r/Λ_j`, `r = 2p/(p−2)`. `T_j` and `νD_j` are rates of H¹ shell energy; the remainder is a rate (pointwise) or an energy (windowed).
 
 Three readings: **(SL-pt)** pointwise in time; **(SL-win\*)** on every sub-interval of every window; **(SL-win)** on fixed-length windows only.
 
@@ -49,19 +49,19 @@ At the repository's exact isolated-triad state (`check_ns_p2_triad_phase_stress.
 \boxed{T/D = 20,\qquad T-(1-\delta)D\ \ge\ 19/20\ \ \forall\delta\in(0,1]},
 \]
 
-at a state of a globally regular fixed-`N` Galerkin solution. Homothetic scaling (vorticity coefficients `n`-independent, `s_k → n²s_k`) on the coherent state `x=y=z=E`, `r=E^{3/2}` gives `T/D = 20√E/n²`; tuning `√E = n²/10` makes `T = 2D` with excess growing like `n⁶` — no `Cρ^j` absorbs it. Independently, regular 2.5-D flows with amplitude `A` fill shell 1 at rate `∼A⁴W₀t`, unbounded in `A`.
+at a state of a globally regular fixed-`N` Galerkin solution; the instantaneous rates at the datum coincide with those of the NSE solution started there, so this pointwise refutation transfers to NSE. Two supporting scaling arguments are **analytic (`Dr`), not executed checks**: the homothetic law (vorticity coefficients `n`-independent, `s_k → n²s_k`) on the coherent state `x=y=z=E`, `r=E^{3/2}` gives `T/D = 20√E/n²`, and tuning `√E = n²/10` makes `T = 2D` with excess growing like `n⁶` (the checker verifies only the algebra given the law); and regular 2.5-D flows with amplitude `A` fill shell 1 at rate `∼A⁴W₀t`, unbounded in `A` (unchecked analytic scaling).
 
 ### Status
 
-`NS-P2-SCALE-LOSS-POINTWISE-UNIVERSAL` — **REFUTED** (exact witness PASS).
+`NS-P2-SCALE-LOSS-POINTWISE-UNIVERSAL` — **REFUTED** (exact witness PASS at the datum; scaling arguments `Dr`).
 
-## 4. Windowed (SL) at the same state
+## 4. Windowed (SL) at the same state — 3-mode Galerkin truncation only
 
-Exact identity on the closed triad system: `∫_I T − ∫_I D = z(t₁) − z(t₀)`. Validated exact-interval Taylor integration (order 24, step 1/50, outward rounding to `2^{−160}`) gives `z > 1` on `(0, 91/50]` with first return `t* ∈ (1.82, 1.84)`: (SL-win) **fails for every window `|I| ≤ 91/50`** at this state, with the same non-absorbability, and **holds for the long viscous window** `|I| = 1/(νn²) = 200` (`z(200) ≤ 3e^{−2} < 1`, any `δ ≤ 2/75`). Lengthening the window only moves the witness to a growth phase.
+The computations in this section are on the **closed 3-mode triad ODE**, a fixed-`N` Galerkin truncation; it is not an NSE solution (its full convolution forces six outside modes). They transfer to NSE only for windows short enough that continuity from `ż(0) = 19/20 > 0` applies; the specific numbers below do **not** transfer. Exact identity on the truncation: `∫_I T − ∫_I D = z(t₁) − z(t₀)`. A validated exact-interval Taylor integration (order 24, step 1/50, outward rounding to `2^{−160}`; **scratch computation, not reproduced in-repo**) gives `z > 1` on `(0, 91/50]` with first return `t* ∈ (1.82, 1.84)`, so on the truncation (SL-win) fails for every window `|I| ≤ 91/50` and holds for the long viscous window `|I| = 1/(νn²) = 200` (`z(200) ≤ 3e^{−2} < 1`, any `δ ≤ 2/75`). Lengthening the window only moves the witness to a growth phase.
 
 ### Status
 
-`NS-P2-SCALE-LOSS-WINDOW-SHORT` — **REFUTED at the witness state**; long-window form — not refuted here, **OPEN**.
+`NS-P2-SCALE-LOSS-WINDOW-SHORT` — **REFUTED on the 3-mode truncation** (short windows, by continuity from the exact datum rate); NSE windowed form beyond that — **OPEN**.
 
 ## 5. Abstract critical budget
 
@@ -71,7 +71,7 @@ In the P2C-3 budget (`N_j = 2^j`, `e_j = N_j^{−1}`, `A_j = N_j`, `δ_j = N_j^{
 \boxed{\frac{\int T_j}{\int D_j} = 1+\frac{1}{2\nu}\quad\text{for every }j}
 \]
 
-(= 101 at `ν = 1/200`): `O(1)`, `j`-independent, strictly above 1, with summable budgets. Energy/dissipation accounting cannot produce `δ > 0`; consistent with the P2B `R_j ≡ 1` no-go.
+(= 101 at `ν = 1/200`): `O(1)`, `j`-independent, strictly above 1, with summable budgets. Within this budget the ratio is arithmetic on the definition `∫T_j = e_j + ∫D_j`; it shows that energy/dissipation accounting **in the P2C-3 critical budget** cannot produce `δ > 0`, consistent with the P2B `R_j ≡ 1` no-go.
 
 ### Status
 
@@ -79,7 +79,7 @@ In the P2C-3 budget (`N_j = 2^j`, `e_j = N_j^{−1}`, `A_j = N_j`, `δ_j = N_j^{
 
 ## 6. Solution-dependent constants — regularity-equivalent
 
-If `C` may depend on the solution, (SL-pt) holds for every H³-regular solution with **any** `δ ∈ (0,1]`: `|T_j| ≤ C M₃³ 8^{−j}` with `M₃ = sup_t‖u‖_{H³}`. Conversely (SL-pt) ⇒ uniform H¹ bound on `[0,T]` (sum the Gronwall bounds over `j`) ⇒ regularity by the classical H¹ criterion — the `R_j` machinery is not even needed. Hence
+If `C` may depend on the solution, (SL-pt) holds for every H³-regular solution with **any** `δ ∈ (0,1]`: `|T_j| ≤ C M₃³ 8^{−j}` with `M₃ = sup_t‖u‖_{H³}`. Conversely (SL-pt) ⇒ uniform H¹ bound on `[0,T]` (sum the Gronwall bounds over `j`) ⇒ regularity by the classical H¹ continuation criterion (standard analytic result, relayed, `Dr`) — the `R_j` machinery is not even needed. Hence
 
 \[
 \boxed{\text{(SL-pt) with solution-dependent constants}\iff\text{regularity on }[0,T]},
@@ -101,10 +101,10 @@ Normalising by amplitude removes every counterexample above (`T/(D√E) = 20·4^
 recurrence identity R_{j+1} <= kappa R_j + C_eta R^sh_{j+1}          DERIVED / PASS
 (SL-pt) => R_j -> 0                                                  DERIVED
 (SL-win) fixed windows => R_j -> 0                                   OPEN / insufficient
-(SL-pt), universal constants                                         REFUTED (T/D = 20 witness; n^6 excess; 2.5-D fillers)
-(SL-win) short windows at the witness state                          REFUTED
-(SL-win) long viscous window at the witness state                    holds; general form OPEN
-critical-budget ratio 1 + 1/(2 nu)                                   DERIVED
+(SL-pt), universal constants                                         REFUTED (exact T/D = 20 witness; n^6 / 2.5-D scalings analytic Dr)
+(SL-win) short windows, 3-mode Galerkin truncation                   REFUTED on the truncation (scratch integration, not in-repo)
+(SL-win) long viscous window on the truncation                       holds there; NSE windowed form OPEN
+critical-budget ratio 1 + 1/(2 nu) (P2C-3 budget)                    DERIVED
 (SL) with solution-dependent constants                               REGULARITY-EQUIVALENT / HOLD
 constructive generator of shell ratios (NS-P2B-SCALE-CONTRACTION-UNIFORM)  OPEN
 Clay Navier-Stokes regularity                                        OPEN

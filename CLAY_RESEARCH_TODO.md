@@ -169,7 +169,11 @@ current preferred move: OCSR + global multi-source cancellation compatibility + 
 
 Exact results recorded against this architecture (`paper/NS_P2_MULTISOURCE_CANCELLATION_OCSR_GEN1.md`):
 
-- [x] (113.1)–(113.3) certified exactly; equal source shells lock the interaction direction (Section 14 corollary); rank 1 iff `|p|=|q|`.
+- [x] (113.1)–(113.3) certified exactly; equal source shells lock the interaction direction (Section 14 corollary); rank 1 iff `|p|=|q|` (exact instances PASS, generic statement DERIVED via Section 14).
+
+Which order governs: the holonomy work list above (FW-1…FW-12) remains valid as checker material; the
+standalone's (118.4) move — OCSR + global multi-source cancellation compatibility + Witness Soundness —
+is the current canonical priority for the interior.
 - [x] Exact multi-source cancellation witnesses W1/W2/W3 (two-shell N=2, rank-2 genericity, equal-shell N=3); reality constraint vacuous on all three.
 - [x] W3 generation 1: suppressing both outward descendants forces a non-productive parent; W3 depth-1 full convolution is not lossless (36 nonzero targets, 30 single-source).
 - [ ] Witness Soundness for `D_cancel` on the three witnesses (is `C_k > 0` a payable loss or a constraint?).
@@ -180,9 +184,9 @@ Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j �
 `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`:
 
 - [x] Recurrence identity `R_{j+1} ≤ κR_j + C_η R^sh_{j+1}` DERIVED; content = shell-own critical ratio geometric.
-- [x] Universal-constant form REFUTED (exact triad witness `T/D = 20`; `n⁶` excess; 2.5-D fillers).
+- [x] Universal-constant form REFUTED (exact triad witness `T/D = 20` at the datum; `n⁶` excess and 2.5-D fillers are analytic `Dr` scalings; windowed numbers are on the 3-mode Galerkin truncation only).
 - [x] Solution-dependent form REGULARITY-EQUIVALENT / HOLD per FINAL-EQUIV §8.
-- [x] Budget ratio `∫T_j/∫D_j = 1 + 1/(2ν)` DERIVED: accounting cannot give `δ > 0`.
+- [x] Budget ratio `∫T_j/∫D_j = 1 + 1/(2ν)` DERIVED: accounting in the P2C-3 critical budget cannot give `δ > 0`.
 - [ ] Only residue: constructive generator of `R^sh_j ≤ Bρ^j` from finite records (= `NS-P2B-SCALE-CONTRACTION-UNIFORM`).
 
 ### P2 anti-shortcut rules
