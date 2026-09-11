@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-11",
-  "scope": "P0 Clay research audit: freeze repository heads, CI/formal state, claim boundaries and process blockers; update the live TODO. No theorem statement or Clay conclusion is promoted.",
+  "scope": "NS-FUB-A1 statement refinement: split the singularity witness target into an analytic H3 finite-Galerkin exceedance bridge (A1E), an exact finite interval verifier (A1V), and an OPEN constructive validated-capture bridge (A1C). No Clay conclusion is promoted.",
   "todo": {
     "status": "updated",
-    "evidence": "CLAY_RESEARCH_TODO.md marks the P0 audit complete and carries forward the P-vs-NP branch-sync/formal-CI blockers plus branch-protection governance hardening."
+    "evidence": "CLAY_RESEARCH_TODO.md records P1 completion evidence, P2 negative-control consequences, rejects adjacent/L2 compatibility as a standalone singularity witness, and identifies A1C plus a non-vacuous uniform regularity-sensitive mechanism as the current NS bottlenecks."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 received the P0 audit provenance/status comment: PNP-FUB-A1 remains OPEN, audited P-vs-NP lane-wide formal evidence is HOLD at head 2e5466c6..., and NS/shared bridge proposals remain OPEN."
+    "evidence": "morrocwi/toledo#11 remains the canonicalization/provenance gate; Toledo PR #12 records P1/P2 status. NS-FUB-A1E/A1V/A1C are research sub-identifiers only and are not canonical Toledo codes."
   },
-  "claim_effect": "status-only"
+  "claim_effect": "statement-change"
 }
