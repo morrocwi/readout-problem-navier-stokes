@@ -232,6 +232,13 @@ Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j �
 - [x] Budget ratio `∫T_j/∫D_j = 1 + 1/(2ν)` DERIVED: accounting in the P2C-3 critical budget cannot give `δ > 0`.
 - [ ] Only residue: constructive generator of `R^sh_j ≤ Bρ^j` from finite records (= `NS-P2B-SCALE-CONTRACTION-UNIFORM`).
 
+Audit of the Uniform Retention Gap sketch (`H³` shell readouts `R_j`, Duhamel window `τ_j = c/(νλ²_{j+1})`, open inequality (RRB) `𝒩_{j+1} ≤ αR_j + C2^{−σj}B`), `paper/NS_P2_UNIFORM_RETENTION_GAP_AUDIT.md`:
+
+- [x] Chain (RRB) ⇒ `R_j ≤ C_Tθ^j` ⇒ `Σ R_j < ∞` ⇒ uniform `H³` DERIVED (exact fixtures; `q ≠ 2^{−σ}` for the pure geometric form).
+- [x] Energy-only remainder `B(E₀, ν, T)` REFUTED-as-stated at the `t = 0` rate × window proxy: exact `G` increases on full-dyadic-shell data up to `λ₀ = 8` (step ratios → 2, `√λ` scaling `Dr`); cube-surface and few-mode data decrease (negative control). Solution-dependent remainder REGULARITY-EQUIVALENT / HOLD per FINAL-EQUIV §8.
+- [ ] Protocol v2: measure `α_j^N(T)` with the full Duhamel integral (validated integration, in-repo) on the family-B/C data at `λ₀ = 1, 2, 4`; prediction `α_j^N ∝ √(E₀λ₀)/ν`.
+- [ ] Residue unchanged: constructive generator of the remainder without an `M₃` oracle (= `NS-P2B-SCALE-CONTRACTION-UNIFORM`).
+
 ### P2 anti-shortcut rules
 
 Do not substitute any of the following for the open theorem:
