@@ -166,6 +166,19 @@ Primary source: `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`; checker `reproduction
 | Same statement with solution-dependent constants | **REGULARITY-EQUIVALENT / HOLD** (regular ⇒ `|T_j| ≤ CM₃³8^{−j}`; (SL-pt) ⇒ uniform H¹ ⇒ regular). Recorded per `NS_P2_FINAL_CLOSURE_EQUIVALENCE.md` §8, not as an open bridge. |
 | A constructive finite generator of the shell ratios exists | **OPEN** (`NS-P2B-SCALE-CONTRACTION-UNIFORM`). |
 
+## Uniform retention-gap sketch (H³ shell readouts, Duhamel window)
+
+Primary source: `paper/NS_P2_UNIFORM_RETENTION_GAP_AUDIT.md`; checker `reproduction/checks/check_ns_p2_retention_gap_audit.py`.
+
+| Claim | Status |
+|---|---|
+| (RRB) `𝒩_{j+1} ≤ αR_j + C2^{−σj}B`, `α < 1−e^{−c}` ⇒ `R_j ≤ C_Tθ^j` ⇒ `Σ_j R_j < ∞` ⇒ uniform `H³` | **DERIVED** chain (old-history factor `e^{−ν|k|²τ_j} ≤ e^{−c}`, recurrence `q = α/(1−e^{−c})`, geometric convolution, ℓ¹ ≥ ℓ² over shells); exact fixtures PASS. `C_Tθ^j` needs `q ≠ 2^{−σ}` (else `jθ^{j−1}`, still summable). Compactness ⇒ smooth is relayed. |
+| (RRB) with an energy-only remainder `B(E₀, ν, T)` | **REFUTED-as-stated** at the `t = 0` rate × window proxy: on full-dyadic-shell data the exact lattice factor `G` (with `(𝒩/R)² = c_w²E₀G/ν²`) increases `0.232 → 0.238 → 0.340 → 0.647` for `λ₀ = 1, 2, 4, 8` (cross polarization) and `0.208 → 0.217 → 0.407` (coherent Leray-z), step ratios approaching the Bernstein prediction `2` (`√λ` ratio scaling, analytic `Dr`). The windowed quantity itself is not computed. |
+| Same on cube-surface (`|k|_∞ = λ₀`) or few-mode data | Ratio **decreases** (`≈ 0.232, 0.073, 0.039`; few-mode exactly `∝ λ₀^{−2}`): negative control — only Bernstein-saturating data see the obstruction. |
+| (RRB) with a solution-dependent remainder | **REGULARITY-EQUIVALENT / HOLD** per `NS_P2_FINAL_CLOSURE_EQUIVALENCE.md` §8 (regular ⇒ (RRB) with `σ = 1`, relayed; (RRB) ⇒ regular by the chain). Neither direction of the equivalence sketch is checked by a fixture. |
+| Window bilinear constant `α_j^N(T)` | **DEFINITION** only (protocol v2: full Duhamel integral, validated integration, in-repo); not measured. |
+| A constructive finite generator of the remainder exists | **OPEN** (`NS-P2B-SCALE-CONTRACTION-UNIFORM`). |
+
 ## Current measurement-to-continuum chain
 
 ```text
