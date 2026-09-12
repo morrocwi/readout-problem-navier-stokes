@@ -36,6 +36,10 @@ on:
       - 'reproduction/checks/check_ns_p2_typeP_loop_transport.py'
       - 'paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md'
       - 'reproduction/checks/check_ns_p2_uniform_scale_loss_audit.py'
+      - 'paper/NS_P2_FORCED_ADDRESS_AUDIT.md'
+      - 'reproduction/checks/check_ns_p2_forced_address_audit.py'
+      - 'reproduction/checks/check_ns_p2_t0_02_forced_address_prethreshold.py'
+      - 'reproduction/data/ns_p2_t0_02_A_d2_prethreshold.json'
       - 'paper/NS_P2_FORCED_ADDRESS_ACCOUNTING_RULE.md'
       - 'reproduction/checks/check_ns_p2_forced_address_accounting.py'
       - '.github/workflows/ns-p2-multisource-cancellation.yml'
@@ -84,6 +88,10 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2_m3_suppression_labels.py
       - name: Exact uniform scale-loss audit fixtures
         run: python3 reproduction/checks/check_ns_p2_uniform_scale_loss_audit.py
+      - name: Exact per-address forced-address audit (classifier, W1/W2/W3A, NPSC box-2 subset, isotropic guard)
+        run: python3 reproduction/checks/check_ns_p2_forced_address_audit.py
+      - name: T0-02 pre-threshold forced-address audit (float semantics, NUMERICAL_ZERO separated)
+        run: python3 reproduction/checks/check_ns_p2_t0_02_forced_address_prethreshold.py
       - name: Exact forced-address accounting rule + three RSC-O skeleton fixtures
         run: python3 reproduction/checks/check_ns_p2_forced_address_accounting.py
       - name: Claim-boundary guards
@@ -213,6 +221,24 @@ jobs:
           if missing:
               raise SystemExit('missing forced-address accounting claim markers: ' + ', '.join(missing))
           print('NS P2 FORCED-ADDRESS ACCOUNTING CLAIM-BOUNDARY PASS')
+
+          fa = Path('paper/NS_P2_FORCED_ADDRESS_AUDIT.md').read_text()
+          fa_required = {
+              'audit proposal not in toledo': 'PROP-P3-FORCED-ADDRESS-AUDIT-01` — not yet in Toledo',
+              'invariant proposal not in toledo': 'PROP-P3-ISOTROPIC-SATURATION-INVARIANT-01` — not yet in Toledo',
+              'status proposal': '**Status:** NEW DERIVATION / PROPOSAL; instrument + finite diagnostic',
+              'boxed invariant': 'no empty forced address may disappear from the accounting',
+              'numerical zero never exact': 'never renamed `EXACT_CANCELLED`',
+              'box1 not reaudited': 'NPSC box-1 hits (12)                                                not re-audited',
+              '610 record not rerun': 'FINITE_DIAGNOSTIC record of an internal run, not re-run here',
+              'basis lesson': 'point coordinates are basis-dependent; reuse the generator',
+              'proves nothing': 'The instrument proves nothing about OCSR, Witness Soundness, G6/G7 or Clay',
+              'OCSR open': 'OCSR / Witness Soundness / G6/G7                                    OPEN',
+              'clay open': 'Clay Navier-Stokes regularity                                       OPEN',
+          }
+          missing = [k for k, m in fa_required.items() if m not in fa]
+          if missing:
+              raise SystemExit('missing forced-address audit claim markers: ' + ', '.join(missing))
 
           standalone = Path('paper/NS_P2_STANDALONE_VNEXT.md').read_text()
           for m in ['**Status:** OPEN', 'Clay Navier–Stokes regularity:** OPEN', '# 118.']:

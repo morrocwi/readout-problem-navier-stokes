@@ -209,6 +209,20 @@ Sources: `paper/NS_P2_FORCED_ADDRESS_ACCOUNTING_RULE.md`, checker `reproduction/
 - [ ] TODO: coincidence strata (symbolic targets coinciding with each other or with inside addresses) and difference targets `p − q` (negation-closed web) for the skeleton fixtures; other skeletons; `m > 3`.
 - [ ] TODO: A3 shell-5 planar 3-cycle — closure / productivity audit; A3 is NOT closed.
 
+### Per-address forced-address audit after PR #66 (2026-09-13)
+
+Sources: `paper/NS_P2_FORCED_ADDRESS_AUDIT.md`, checkers `reproduction/checks/check_ns_p2_forced_address_audit.py`, `reproduction/checks/check_ns_p2_t0_02_forced_address_prethreshold.py`, data `reproduction/data/ns_p2_t0_02_A_d2_prethreshold.json`.
+
+- [x] `PROP-P3-FORCED-ADDRESS-AUDIT-01` (not yet in Toledo): evaluated per-ADDRESS form of the PR #66 rule — unit = one address after aggregation; states `ISOTROPIC_TARGET > ACTIVE > EXACT_CANCELLED > NULL_BY_GEOMETRY > TED > FORGOTTEN_REGISTERED / FORGOTTEN_INSIDE (⇒ INVALID CLOSURE TEST)`; exact decisions on exact inputs only; `NUMERICAL_ZERO(eps)` the sole zero state on float inputs, never renamed EXACT; invariant: for every address outside the populated set, `F(a) = 0 ∨ a enters the ledger`.
+- [x] `PROP-P3-ISOTROPIC-SATURATION-INVARIANT-01` (not yet in Toledo): every denominator-cleared symbolic closure test saturates every symbolic pair sum by `u_t (t·t) − 1 = 0` (or asserts `t·t ≠ 0`); the classifier flags an isotropic target before any zero / nonzero decision (origin: the PR #66 R1 isotropic-artifact retraction).
+- [x] Calibration: W1 / W2 / W3 point A INVALID with 10 / 12 / 18 FORGOTTEN_INSIDE addresses (open seeds; counts equal the internal record).
+- [x] NPSC box-2 hits, evaluated per address with the sweep's own `perp_basis` (verbatim): 20-hit fixed-index CI subset 20/20 INVALID (exactly 2 FORGOTTEN_REGISTERED each); 610/610 INVALID as an internal finite_diagnostic record (not re-run in CI). This partially discharges the PR #66 item "per-address `A ∨ B` rerun of the NPSC sweep" for the concrete points; the symbolic per-address `A ∨ B` rerun of the sweep (varieties, not points) stays open.
+- [x] T0-02 pre-threshold audit (point A, d = 2, five samples, float semantics declared, no rational rounding in decisions): `FORGOTTEN_REGISTERED = 0` at every `t > 0` sample; 23 forced-and-empty generation-1 addresses at `t = 0` (the datum's first-step targets); 187 sub-threshold-but-nonzero addresses at `t = 0.003` that the retention-threshold reader would call "not energised" (reader artefact, not an accounting omission). Exit layer TED by construction (1 867 / 1 874 exit half addresses loaded per window).
+- [x] Process lesson: point coordinates are basis-dependent — a first internal pass with a different basis of `m^⊥` reported 10 spurious valid NPSC hits; every hit record must carry (or cite) the basis that defined its coordinates.
+- [ ] TODO: box-1 NPSC hits (12) per-address audit; per-address audit of the fully-populated variant's Gröbner output (System A on all addresses) rather than points only.
+- [ ] TODO: T0-02 pre-threshold audit at `d = 3` and point B; other retention thresholds / `λ_0`; the `d = 2` exit load ledgered as TED is not integrated (T0-02 report, validation (3)).
+- [ ] TODO: symbolic per-address `A ∨ B` rerun of the NPSC sweep (PR #66 item), with the isotropic-saturation invariant on every symbolic pair sum.
+
 Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j ≤ (1−δ)νD_j + Cρ^j`),
 `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`:
 
