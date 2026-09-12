@@ -193,6 +193,12 @@ Sources: `paper/NS_P2_PROJECTIVE_HOLONOMY_TYPE_AUDIT.md` (three-line rigidity, T
 - [x] M3 calibration on the orthogonal-turn generation-1 chain (2026-09-13): the time-honest gen-1 web (`±p0, ±q0, ±p1, ±q1`, H1-flat real amplitudes exact over `Q(√5)`, cell `|t|² ≤ 500`) is registered in `check_ns_p2_m3_suppression_labels.py` as an EXACT FIXTURE / FINITE DIAGNOSTIC with provenance (internal generator script `ot_chain_gen1_timehonest.py`, commit `83d8b5bf`). Result: `UNRESOLVED = 0`, O12/E8/C0/T2, `N_{O,1}/N_{O,≥2}` = 12/0; every target single-source, so no C; selected channels `p1`, `p2` NOVELTY. Not evidence that RSC passes globally.
 - [ ] M3 on the five-mode complex-phase OT web (`p2` grown, `Z/4` donor phases): requires extending the web contract from real `u(−m) = u(m)` to Hermitian `u(−m) = conj u(m)`; not registered.
 
+### RSC-O frontier after PR #63 (2026-09-13)
+
+- [x] `PROP-P3-RSC-O-ONE-SIDED-SILENT-LAYER-01` (`paper/NS_P2_RSC_O_ONE_SIDED_SILENT_LAYER.md`, checker `reproduction/checks/check_ns_p2_rsc_o_one_sided_silent_layer.py`, not yet in Toledo): under one-sided `O_+` persistence every recruit has `q_j ∈ a_+^⊥`, `[b_j] = [a_+]` (ALT-1, PR #63), hence `b_i·q_j = b_j·q_i = 0` and `B_{q_i,q_j}(b_i,b_j) = 0` for all `i, j` — the recruit layer is a 2D3C-like passive layer with respect to internal recruit–recruit interactions only (not a full 2D3C branch; layer/core interactions unconstrained). Reduction: all persistent productivity must cross the layer/core interface. Exact symbolic PASS + two rational fixtures + off-line control. RSC-O branch B is reduced, not closed.
+- [ ] Next target box (OPEN): passive `O_+` layer + active `O_-` core ⇒ double-O ∨ E ∨ C ∨ novelty/exit, for a compact productive full-convolution-closed zero-novelty one-sided history.
+- [ ] RSC-O branch C: parallel anchor/recruit degeneracy (`p × q = 0`) — classify as scale-ray / rank / terminal structure; OPEN.
+
 Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j ≤ (1−δ)νD_j + Cρ^j`),
 `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`:
 

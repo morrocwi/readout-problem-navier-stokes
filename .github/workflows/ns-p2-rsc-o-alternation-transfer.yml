@@ -6,6 +6,9 @@ on:
     paths:
       - 'paper/NS_P2_RSC_O_ALTERNATION_TRANSFER.md'
       - 'reproduction/checks/check_ns_p2_rsc_o_alternation_transfer.py'
+      - 'paper/NS_P2_RSC_O_ONE_SIDED_SILENT_LAYER.md'
+      - 'reproduction/checks/check_ns_p2_rsc_o_one_sided_silent_layer.py'
+      - 'CLAY_RESEARCH_TODO.md'
       - '.github/workflows/ns-p2-rsc-o-alternation-transfer.yml'
       - 'CLAY_GOVERNANCE_ACK.json'
   workflow_dispatch:
@@ -22,6 +25,8 @@ jobs:
         run: python -m pip install sympy
       - name: Exact RSC-O alternation transfer checker
         run: python3 reproduction/checks/check_ns_p2_rsc_o_alternation_transfer.py
+      - name: Exact RSC-O one-sided silent-layer checker
+        run: python3 reproduction/checks/check_ns_p2_rsc_o_one_sided_silent_layer.py
       - name: Claim-boundary guards
         run: |
           python3 - <<'PY'
@@ -39,4 +44,24 @@ jobs:
           if missing:
               raise SystemExit('missing RSC-O alternation claim markers: ' + ', '.join(missing))
           print('NS P2 RSC-O ALTERNATION CLAIM-BOUNDARY PASS')
+
+          layer = Path('paper/NS_P2_RSC_O_ONE_SIDED_SILENT_LAYER.md').read_text()
+          layer_required = {
+              'proposal not in toledo': 'PROP-P3-RSC-O-ONE-SIDED-SILENT-LAYER-01` — not yet in Toledo',
+              'status proposal': '**Status:** NEW DERIVATION / PROPOSAL',
+              'alt-1 reuse': 'PR #63, merged at `936225f7`',
+              'passive layer wording': '2D3C-like passive layer with respect to internal recruit–recruit interactions',
+              'not full 2D3C': 'This is **not** a full 2D3C',
+              'interface reduction': 'all persistent productivity crosses the layer/core interface',
+              'next box open': 'novelty / exit         (OPEN)',
+              'branch B not closed': 'this reduction only; not closed',
+              'branch C open': 'RSC-O branch C (parallel anchor/recruit degeneracy)                 OPEN',
+              'rsc-o open': 'RSC-O global                                                     OPEN',
+              'clay open': 'Clay Navier-Stokes regularity                                    OPEN',
+              'no loss shortcut': 'No cancellation label is promoted to physical loss.',
+          }
+          missing = [k for k, v in layer_required.items() if v not in layer]
+          if missing:
+              raise SystemExit('missing RSC-O silent-layer claim markers: ' + ', '.join(missing))
+          print('NS P2 RSC-O ONE-SIDED SILENT-LAYER CLAIM-BOUNDARY PASS')
           PY
