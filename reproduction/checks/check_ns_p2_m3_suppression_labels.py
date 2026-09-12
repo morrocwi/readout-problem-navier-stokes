@@ -5,7 +5,7 @@ Proposal id: PROP-P3-M3-SUPPRESSION-LABELS-01 (not yet in Toledo).
 Paper: paper/NS_P2_M3_SUPPRESSION_LABELS.md
 Parent interface: paper/NS_P2_RECURSIVE_SUPPRESSION_CHARGING_CARD.md (M3 label-set semantics).
 
-For a finite registered web of real modes (u(-m) = u(m), exact amplitudes over Q(sqrt3)),
+For a finite registered web of real modes (u(-m) = u(m), exact amplitudes over Q(sqrt3) / Q(sqrt5)),
 enumerate every target t = p + q of one full local convolution generation and classify
 every SUPPRESSED target (net forcing exactly zero while at least one pair lands on t)
 by a LABEL SET L(t), a subset of {O, E, C, T}:
@@ -33,7 +33,7 @@ Double-O counter (per suppressed target e):
   parallel polarizations are NOT double-O.
   Reported per fixture: N_{O,1} = #{e : rank O(e) = 1},  N_{O,>=2} = #{e : rank O(e) >= 2}.
 
-All arithmetic is exact (sympy over Q and Q(sqrt3)); no floats, no randomness.
+All arithmetic is exact (sympy over Q, Q(sqrt3) and Q(sqrt5)); no floats, no randomness.
 """
 
 import itertools
@@ -207,14 +207,87 @@ for lbl, (kv, av) in modes_w3.items():
     assert sp.simplify(kv.dot(kv)) == 1, lbl                      # all fourteen modes on the unit shell
 S3 = summarize("W3 point A (cell |t|^2 < 3)", classify(modes_w3, lambda n2: n2 < 3))
 
-# Orthogonal-turn generation-1 chain: OMITTED.  check_ns_p2_orthogonal_turn_allscale_escape.py
-# registers wavevectors (p_j, q_j, k_j) and channel coefficients only; it carries no exact
-# amplitude vectors, so no registered web exists to classify.  Stated in the paper.
+# ---------------------------------------------------------------------------
+# Fixture OT: orthogonal-turn generation-1 chain, time-honest web (EXACT FIXTURE / FINITE
+# DIAGNOSTIC).  Similitude A = [[3,0,4],[4,0,-3],[0,5,0]] (A^T A = 25 I), seed p0 = (1,0,0),
+# q0 = (2,4,0); p1 = p0 + q0 = (3,4,0), q1 = A q0 = (6,8,20).  Only the four modes the two
+# selected steps need are registered (p2 = p1 + q1 not yet grown).  Polarizations fixed by the
+# selected chain (NS_P2_ORTHOGONAL_TURN_ALLSCALE_ESCAPE.md sec. 5): p0 -> T0, q0 -> N0,
+# p1 -> N0 (axis exchange T1 = N0), q1 -> N1, with N_j = p_j x q_j / |p_j x q_j|,
+# T0 = N0 x p0 / |p0|.  Amplitudes H1-flat, |alpha_k| = 1 / |k|, real, so u(-m) = u(m); every
+# amplitude vector is an exact literal over Q(sqrt5).  Declared cell: |t|^2 <= |q1|^2 = 500
+# (the generator's own "OFF <= q1" split), so every target beyond the q1 shell is a registered
+# exit (T).
+#
+# Provenance: generator script ot_chain_gen1_timehonest.py (polarization chain also in
+# ot_chain_gen1_fullconv.py) of the internal attack repository, commit
+# 83d8b5bf0ed15ab81033e0ce92af6e80c9596c95; the wavevectors, polarizations and H1-flat
+# magnitudes are copied exactly from that script, and the public wavevector/turn geometry is
+# the one certified by check_ns_p2_orthogonal_turn_allscale_escape.py.
+# ---------------------------------------------------------------------------
+R5 = sp.sqrt(5)
+A_OT = sp.Matrix([[3, 0, 4], [4, 0, -3], [0, 5, 0]])
+assert A_OT.T * A_OT == 25 * sp.eye(3)
+p0_ot, q0_ot = V(1, 0, 0), V(2, 4, 0)
+p1_ot = p0_ot + q0_ot
+q1_ot = A_OT * q0_ot
+assert p1_ot == A_OT * p0_ot
+assert p1_ot == V(3, 4, 0) and q1_ot == V(6, 8, 20)
+n0_ot = p0_ot.cross(q0_ot)
+n1_ot = p1_ot.cross(q1_ot)
+assert n0_ot.dot(n1_ot) == 0                                       # orthogonal turn
+N0_ot = n0_ot / sp.sqrt(n0_ot.dot(n0_ot))
+N1_ot = n1_ot / sp.sqrt(n1_ot.dot(n1_ot))
+T0_ot = N0_ot.cross(p0_ot / sp.sqrt(p0_ot.dot(p0_ot)))
+assert N0_ot == V(0, 0, 1) and T0_ot == V(0, 1, 0)
+assert N1_ot == V(sp.Rational(4, 5), -sp.Rational(3, 5), 0)
+assert sp.simplify(N1_ot.cross(p1_ot / sp.sqrt(p1_ot.dot(p1_ot))) - N0_ot) == sp.zeros(3, 1)   # T1 = N0
+wv_ot = {"p0": p0_ot, "q0": q0_ot, "p1": p1_ot, "q1": q1_ot}
+pol_ot = {"p0": T0_ot, "q0": N0_ot, "p1": N0_ot, "q1": N1_ot}
+mag_ot = {k: 1 / sp.sqrt(wv_ot[k].dot(wv_ot[k])) for k in wv_ot}            # H1-flat |alpha| = 1/|k|
+assert {str(sp.nsimplify(m)) for m in mag_ot.values()} == {"1", "sqrt(5)/10", "1/5", "sqrt(5)/50"}
+
+
+def is_exact_vector(v):
+    """Every entry algebraic and free of floating-point atoms."""
+    return all(x.is_algebraic and not any(a.is_Float for a in sp.preorder_traversal(x)) for x in v)
+
+
+modes_ot = {}
+for k in wv_ot:
+    amp = sp.Matrix([sp.nsimplify(x) for x in mag_ot[k] * pol_ot[k]])
+    modes_ot[k] = (wv_ot[k], amp)
+    modes_ot["-" + k] = (-wv_ot[k], amp)                                # real web: u(-m) = u(m)
+for lbl, (kv, av) in modes_ot.items():
+    assert sp.simplify(kv.dot(av)) == 0, lbl                            # k . u_k = 0 for every mode
+    assert is_exact_vector(av), lbl                                     # exact amplitude, no floats
+    assert av != sp.zeros(3, 1), lbl
+assert modes_ot["q1"][1] == V(2 * R5 / 125, -3 * R5 / 250, 0)
+
+# The interaction operator is the same Fourier-Leray form as the other checkers:
+# B(p,q,a,b) = P_{p+q}[(a.q) b + (b.p) a], asserted symbolically.
+_P = sp.Matrix(sp.symbols('P1:4', real=True)); _Q = sp.Matrix(sp.symbols('Q1:4', real=True))
+_a = sp.Matrix(sp.symbols('a1:4', real=True)); _b = sp.Matrix(sp.symbols('b1:4', real=True))
+_src = (_a.dot(_Q)) * _b + (_b.dot(_P)) * _a
+_k = _P + _Q
+assert sp.simplify(B(_P, _Q, _a, _b) - (_src - (_src.dot(_k) / _k.dot(_k)) * _k)) == sp.zeros(3, 1)
+
+S4 = summarize("OT gen-1 time-honest, H1-flat (cell |t|^2 <= 500)", classify(modes_ot, lambda n2: n2 <= 500))
+
+# Label output is independent of the amplitude normalization on this single-source web: the
+# generator's second normalization (critical, |alpha|^2 = 1/|k|) gives identical labels.
+modes_ot_crit = {}
+for k in wv_ot:
+    amp = sp.Matrix([sp.nsimplify(x) for x in (1 / sp.sqrt(sp.sqrt(wv_ot[k].dot(wv_ot[k])))) * pol_ot[k]])
+    assert is_exact_vector(amp), k
+    modes_ot_crit[k] = (wv_ot[k], amp)
+    modes_ot_crit["-" + k] = (-wv_ot[k], amp)
+S4c = summarize("OT gen-1 time-honest, critical (cell |t|^2 <= 500)", classify(modes_ot_crit, lambda n2: n2 <= 500))
 
 # ---------------------------------------------------------------------------
 # Deterministic exact assertions.
 # ---------------------------------------------------------------------------
-for S in (S1, S2, S3):
+for S in (S1, S2, S3, S4, S4c):
     assert S["status"].get("UNRESOLVED", 0) == 0, S["status"]     # fail-closed: none unresolved
 
 # W1: the k target (1,0,0) is C without E (two-shell cancellation, no equal-shell pair).
@@ -249,7 +322,28 @@ assert (S3["N_O1"], S3["N_O2"]) == (14, 2), (S3["N_O1"], S3["N_O2"])
 double_o_w3 = sorted(str(r["t"]) for r in S3["records"] if r["status"] == "SUPPRESSED" and r["O_rank"] >= 2)
 assert double_o_w3 == ["(0, 0, -1)", "(0, 0, 1)"], double_o_w3
 
+# OT gen-1 time-honest web (EXACT FIXTURE / FINITE DIAGNOSTIC; not evidence that RSC passes globally).
+assert len(S4["records"]) == 32 and S4["status"]["SUPPRESSED"] == 12 and S4["status"]["NOVELTY"] == 20
+assert dict(S4["labels"]) == {"O": 12, "E": 8, "T": 2}                 # C = 0: no multi-source target
+assert (S4["N_O1"], S4["N_O2"]) == (12, 0), (S4["N_O1"], S4["N_O2"])
+# Every target of this web is single-source (one pair lands on it), so C cannot occur and every
+# suppressed target is a projection zero of its only contribution.
+assert all(r["n_contrib"] == 1 for r in S4["records"])
+assert all(r["n_nonzero"] == 0 for r in S4["records"] if r["status"] == "SUPPRESSED")
+# Selected forward channel p1 = p0 + q0 is productive (NOVELTY), as the chain requires.
+assert find(S4["records"], (3, 4, 0))["status"] == "NOVELTY"
+assert find(S4["records"], (9, 12, 20))["status"] == "NOVELTY"          # p2 = p1 + q1 target
+# Tree-return target p0 = (1,0,0) from (-q0, p1) is O-suppressed: N0 . p1 = 0 and N0 . q0 = 0.
+ot_p0 = find(S4["records"], (1, 0, 0))
+assert ot_p0["status"] == "SUPPRESSED" and ot_p0["labels"] == ["O"], ot_p0
+# Self-pair target 2 q1 = (12,16,40) is {O, E, T}: outside the cell |t|^2 <= 500.
+ot_2q1 = find(S4["records"], (12, 16, 40))
+assert ot_2q1["labels"] == ["O", "E", "T"], ot_2q1
+# Normalization independence of the labels on this web.
+assert dict(S4c["labels"]) == dict(S4["labels"]) and dict(S4c["status"]) == dict(S4["status"])
+assert (S4c["N_O1"], S4c["N_O2"]) == (S4["N_O1"], S4["N_O2"])
+
 print("W1 k target (1,0,0): C without E;  W2 k target (1,1,1): C without E;  W3 k target (0,0,1): C and E")
-print("orthogonal-turn gen-1 chain: omitted (no exact amplitude vectors registered in its checker)")
+print("OT gen-1 time-honest web: UNRESOLVED=0, O12/E8/C0/T2, N_O,1/N_O,>=2 = 12/0 (EXACT FIXTURE / FINITE DIAGNOSTIC)")
 print("C is an accounting label (exact multi-source cancellation), never a physical loss; Witness Soundness OPEN")
 print("NS-P2 M3 SUPPRESSION LABELS PASS")
