@@ -14,6 +14,7 @@ on:
       - 'paper/NS_P2_GENERAL_ANCHOR_CROSS_NULLITY.md'
       - 'paper/NS_P2_MULTI_ANCHOR_SUPPRESSION.md'
       - 'paper/NS_P2_SHELL_CONDITIONED_SPAN.md'
+      - 'paper/NS_P2_RANK2_POLARIZATION_PLANE_RIGIDITY.md'
       - 'reproduction/checks/check_ns_p2_multisource_cancellation.py'
       - 'reproduction/checks/check_ns_p2_witness_soundness_w123.py'
       - 'reproduction/checks/check_ns_p2_antipodal_cancellation_outward.py'
@@ -22,6 +23,7 @@ on:
       - 'reproduction/checks/check_ns_p2_general_anchor_cross_nullity.py'
       - 'reproduction/checks/check_ns_p2_multi_anchor_suppression.py'
       - 'reproduction/checks/check_ns_p2_shell_conditioned_span.py'
+      - 'reproduction/checks/check_ns_p2_rank2_polarization_plane_rigidity.py'
       - 'paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md'
       - 'reproduction/checks/check_ns_p2_uniform_scale_loss_audit.py'
       - '.github/workflows/ns-p2-multisource-cancellation.yml'
@@ -56,6 +58,8 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2_multi_anchor_suppression.py
       - name: Exact shell-conditioned span obstruction
         run: python3 reproduction/checks/check_ns_p2_shell_conditioned_span.py
+      - name: Exact rank-2 polarization-plane rigidity
+        run: python3 reproduction/checks/check_ns_p2_rank2_polarization_plane_rigidity.py
       - name: Exact uniform scale-loss audit fixtures
         run: python3 reproduction/checks/check_ns_p2_uniform_scale_loss_audit.py
       - name: Claim-boundary guards
@@ -92,53 +96,33 @@ jobs:
           if missing:
               raise SystemExit('missing multisource-cancellation claim markers: ' + ', '.join(missing))
 
-          cross = Path('paper/NS_P2_CROSS_FAMILY_BOUNDARY_CANCELLATION.md').read_text()
-          cross_required = {
-              'proposal label': 'PROP-P3-CROSS-FAMILY-BOUNDARY-CANCEL-01',
-              'proposal status': 'NEW DERIVATION / PROPOSAL; exact symbolic PASS',
-              'global OCSR open': 'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN',
-              'clay open': 'Clay Navier–Stokes regularity:** OPEN',
-              'no global closure': 'global multi-source cancellation compatibility;',
-          }
-          missing = [k for k, m in cross_required.items() if m not in cross]
-          if missing:
-              raise SystemExit('missing cross-family claim markers: ' + ', '.join(missing))
-
-          nullity = Path('paper/NS_P2_GENERAL_ANCHOR_CROSS_NULLITY.md').read_text()
-          nullity_required = {
-              'proposal label': 'PROP-P3-GENERAL-ANCHOR-CROSS-NULLITY-01',
-              'proposal status': 'NEW DERIVATION / PROPOSAL; exact algebraic PASS',
-              'kernel iff': 'ker L_{p,q,a}\\neq\\{0\\}',
-              'global OCSR open': 'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN',
-              'clay open': 'Clay Navier–Stokes regularity:** OPEN',
-          }
-          missing = [k for k, m in nullity_required.items() if m not in nullity]
-          if missing:
-              raise SystemExit('missing anchor-cross nullity claim markers: ' + ', '.join(missing))
-
-          multi = Path('paper/NS_P2_MULTI_ANCHOR_SUPPRESSION.md').read_text()
-          multi_required = {
-              'proposal label': 'PROP-P3-MULTI-ANCHOR-SUPPRESSION-01',
-              'proposal status': 'NEW DERIVATION / PROPOSAL; exact finite PASS',
-              'four-anchor consequence': 'four-anchor silence',
-              'global OCSR open': 'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN',
-              'clay open': 'Clay Navier–Stokes regularity:** OPEN',
-          }
-          missing = [k for k, m in multi_required.items() if m not in multi]
-          if missing:
-              raise SystemExit('missing multi-anchor claim markers: ' + ', '.join(missing))
-
-          shell = Path('paper/NS_P2_SHELL_CONDITIONED_SPAN.md').read_text()
-          shell_required = {
-              'proposal label': 'PROP-P3-SHELL-CONDITIONED-SPAN-01',
-              'proposal status': 'NEW DERIVATION / PROPOSAL; exact finite PASS',
-              'rank defect': 'shell-conditioned polarization-rank defect',
-              'global OCSR open': 'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN',
-              'clay open': 'Clay Navier–Stokes regularity:** OPEN',
-          }
-          missing = [k for k, m in shell_required.items() if m not in shell]
-          if missing:
-              raise SystemExit('missing shell-conditioned span claim markers: ' + ', '.join(missing))
+          for path, required in {
+              'paper/NS_P2_CROSS_FAMILY_BOUNDARY_CANCELLATION.md': [
+                  'PROP-P3-CROSS-FAMILY-BOUNDARY-CANCEL-01',
+                  'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN',
+                  'Clay Navier–Stokes regularity:** OPEN'],
+              'paper/NS_P2_GENERAL_ANCHOR_CROSS_NULLITY.md': [
+                  'PROP-P3-GENERAL-ANCHOR-CROSS-NULLITY-01',
+                  'NEW DERIVATION / PROPOSAL; exact algebraic PASS',
+                  'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN'],
+              'paper/NS_P2_MULTI_ANCHOR_SUPPRESSION.md': [
+                  'PROP-P3-MULTI-ANCHOR-SUPPRESSION-01',
+                  'NEW DERIVATION / PROPOSAL; exact finite PASS',
+                  'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN'],
+              'paper/NS_P2_SHELL_CONDITIONED_SPAN.md': [
+                  'PROP-P3-SHELL-CONDITIONED-SPAN-01',
+                  'shell-conditioned polarization-rank defect',
+                  'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN'],
+              'paper/NS_P2_RANK2_POLARIZATION_PLANE_RIGIDITY.md': [
+                  'PROP-P3-RANK2-POLARIZATION-PLANE-RIGIDITY-01',
+                  'NEW DERIVATION / PROPOSAL; exact symbolic PASS',
+                  'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN',
+                  'Clay Navier–Stokes regularity:** OPEN'],
+          }.items():
+              text = Path(path).read_text()
+              missing = [m for m in required if m not in text]
+              if missing:
+                  raise SystemExit(path + ' missing claim markers: ' + ', '.join(missing))
 
           standalone = Path('paper/NS_P2_STANDALONE_VNEXT.md').read_text()
           for m in ['**Status:** OPEN', 'Clay Navier–Stokes regularity:** OPEN', '# 118.']:
