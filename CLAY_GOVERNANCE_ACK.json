@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-12",
-  "scope": "Reuse the existing Toledo/Genesis weld, sufficiency, lineage and no-early-collapse machinery together with the existing NS cancellation ledger and W1/W2/W3 fixtures. Add an independent exact depth-1 full-convolution audit for W1/W2/W3. The result does not promote C_k > 0 to a physical defect: on these three fixtures exact shared-target cancellation is instead a live registered algebraic constraint, and full convolution produces off-target novelty (W1: 16/18 nonzero targets, 12 single-source; W2: 42/44, 30 single-source; W3: 36/44, 30 single-source). Global NS-P2-WITNESS-SOUNDNESS, global multi-source cancellation compatibility, OCSR, G6/G7 and Clay Navier-Stokes regularity remain OPEN.",
+  "scope": "Reuse the existing Toledo/Genesis weld, sufficiency, lineage and no-early-collapse machinery together with the existing NS cancellation ledger, W1/W2/W3 fixtures, full-convolution closure, and the already-open antipodal-source branch. Add (1) an independent exact depth-1 audit showing shared-target cancellation is not one-generation losslessness on W1/W2/W3 (W1: 16/18 nonzero targets, 12 single-source; W2: 42/44, 30 single-source; W3: 36/44, 30 single-source), and (2) an exact symbolic antipodal family in which two nonzero parent contributions cancel at k but force two strictly outward crossed descendants at (K,+/-2P,0). No result promotes C_k > 0 to a physical defect. Global NS-P2-WITNESS-SOUNDNESS, global multi-source cancellation compatibility, OCSR, G6/G7 and Clay Navier-Stokes regularity remain OPEN.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "CLAY_RESEARCH_TODO.md already keeps global Witness Soundness for D_cancel OPEN. This PR narrows that item on the three registered fixtures only and therefore does not check off the global task. The new note records the exact local PASS boundary and the next reuse-first targets (antipodal cancellation or OCSR generation 2)."
+    "evidence": "CLAY_RESEARCH_TODO.md already keeps global Witness Soundness, antipodal-source configurations, OCSR generation 2, and global cancellation compatibility OPEN. This PR closes only exact finite subcases, so the global tasks remain unchecked."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "The reuse-first lookup found no canonical Toledo object licensing C_k > 0 as a physical loss. The local result is explicitly labeled PROP-P3-CANCEL-CONSTRAINT-LIVE-W123-01 / NEW DERIVATION-PROPOSAL and should be pinned to the immutable NS merge SHA before any Toledo proposal/canonicalization action. Existing Toledo issue #11 remains the canonicalization gate."
+    "evidence": "Reuse-first lookup found no canonical Toledo object licensing C_k > 0 as physical loss or containing the new antipodal family. Local results are explicitly labeled PROP-P3-CANCEL-CONSTRAINT-LIVE-W123-01 and PROP-P3-ANTIPODAL-CANCEL-OUTWARD-01 / NEW DERIVATION-PROPOSAL. After merge they should be pinned to the immutable NS merge SHA before Toledo proposal/canonicalization action. Existing Toledo issue #11 remains the canonicalization gate."
   },
   "claim_effect": "statement-change"
 }
