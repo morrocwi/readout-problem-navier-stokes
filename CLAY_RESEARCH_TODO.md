@@ -180,6 +180,16 @@ is the current canonical priority for the interior.
 - [ ] OCSR at generation 2 on any seed; antipodal-source configurations; symmetry-free two-shell N=2.
 - [ ] Supply or downgrade the unstated "zero-cancellation source-ray alignment — DERIVED" lemma.
 
+### Current typed attack map (2026-09-12) — Type-P inputs to A1 / A3
+
+Sources: `paper/NS_P2_PROJECTIVE_HOLONOMY_TYPE_AUDIT.md` (three-line rigidity, Type-P / Type-Phi boundary),
+`paper/NS_P2_TYPEP_LOOP_TRANSPORT_FIXTURES.md`, checker `reproduction/checks/check_ns_p2_typeP_loop_transport.py`.
+
+- [x] `PROP-P3-TYPE-P-SHELL-CONFINEMENT-01`: non-rank-0 Type-P transport on an edge forces `|k1| = |k2|` (corollary of the anchor-cross nullity theorem, DERIVED / EXACT); a closed Type-P loop with non-rank-0 edges lies on one shell. The rank-0 edge (`a ⊥ k2`) is a separate projective-collapse branch to `[k1 × k2]`, never an invertible transport.
+- [x] `PROP-P3-TYPE-P-IDENTITY-LOOP-FIXTURES-01`: shell-9 rectangle and shell-5 planar 3-cycle have identity Type-P loop monodromy exactly (EXACT FIXTURE / PROPOSAL); explicit two-fixed-line and zero-fixed-line nonidentity loops recorded. Identity branch A3 is non-empty at the transport level (DERIVED from the fixtures); A3 is NOT closed.
+- [ ] A3: run the existing equal-shell full-convolution closure audit (direction lock, W3 generation-1 suppression, depth-1 full convolution) on the two identity-monodromy fixtures; productivity / zero-defect closure of those webs is untested.
+- [ ] A1: third-line generation/return search, or refutation, on the explicit two-fixed-line loops; equal-shell loop statistics remain FINITE_DIAGNOSTIC only.
+
 Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j ≤ (1−δ)νD_j + Cρ^j`),
 `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`:
 
