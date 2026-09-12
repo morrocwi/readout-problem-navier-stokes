@@ -6,7 +6,7 @@
 **Global FNW / OCSR / Witness Soundness / G4/G6/G7:** OPEN  
 **Clay Navier–Stokes regularity:** OPEN  
 **Checker:** `reproduction/checks/check_ns_p2_m3_suppression_labels.py`  
-**Date:** 2026-09-13
+**Date:** 2026-09-13 (orthogonal-turn fixture added 2026-09-13)
 
 ## 0. Reuse-first path
 
@@ -32,6 +32,9 @@ counter. Reused, not re-derived:
   silently absorbed into a label.
 - Fixtures W1, W2, W3 from `check_ns_p2_multisource_cancellation.py` /
   `NS_P2_MULTISOURCE_CANCELLATION_OCSR_GEN1.md` (`PROP-P3-MULTI-SOURCE-CANCELLATION-WITNESSES-01`).
+- The orthogonal-turn chain geometry of `NS_P2_ORTHOGONAL_TURN_ALLSCALE_ESCAPE.md` /
+  `check_ns_p2_orthogonal_turn_allscale_escape.py` (similitude `A`, seed `p0, q0`, axis exchange
+  `T_1 = N_0`), used as the wavevector / polarization skeleton of the OT fixture below.
 
 No new global architecture is introduced. This note only makes the M3 interface of the recursive
 suppression charging card executable on exact fixtures.
@@ -115,10 +118,14 @@ N_{O,≥2} = #{ e suppressed : rank O(e) ≥ 2 }
 | W1 | `±p_i, ±q_i`, `i = 0,1` (8 modes), `k = (1,0,0)`, two-shell | `\|t\|² ≤ 3` | copied exactly from `check_ns_p2_multisource_cancellation.py` |
 | W2 | `±p_i, ±q_i`, `i = 0,1,2` (12 modes), `k = (1,1,1)`, `p_i = e_i` | `\|t\|² ≤ 3` | copied exactly from `check_ns_p2_multisource_cancellation.py` |
 | W3 point A | `±p_i, ±q_i`, `i = 0,1,2`, plus `±k`, `k = (0,0,1)` (14 modes, all on the unit shell), amplitudes `A1 = 1, A2 = 0, B1 = 0, B2 = −1`, `c = (1,0,0)` | `\|t\|² < 3` | exact literals over `Q(√3)` in the checker |
-| orthogonal-turn gen-1 chain | — | — | **omitted**: `check_ns_p2_orthogonal_turn_allscale_escape.py` registers wavevectors and channel coefficients only, no exact amplitude vectors, so no registered web exists to classify |
+| OT gen-1 time-honest | `±p0, ±q0, ±p1, ±q1` (8 modes): `p0 = (1,0,0)`, `q0 = (2,4,0)`, `p1 = (3,4,0)`, `q1 = (6,8,20)`; polarizations `T0 = (0,1,0)`, `N0 = (0,0,1)`, `N0`, `N1 = (4,−3,0)/5`; amplitudes H1-flat `\|α_k\| = 1/\|k\|`, real, exact over `Q(√5)` (`p2 = (9,12,20)` not yet grown) | `\|t\|² ≤ 500 = \|q1\|²` | **EXACT FIXTURE / FINITE DIAGNOSTIC**; provenance: generator script `ot_chain_gen1_timehonest.py` (polarization chain also in `ot_chain_gen1_fullconv.py`) of the internal attack repository, commit `83d8b5bf0ed15ab81033e0ce92af6e80c9596c95`; wavevector/turn geometry as certified publicly by `check_ns_p2_orthogonal_turn_allscale_escape.py` |
 
-All arithmetic is exact (sympy over `Q` and `Q(√3)`). There is no randomness and no float in any
-PASS decision.
+All arithmetic is exact (sympy over `Q`, `Q(√3)` and `Q(√5)`). There is no randomness and no float in
+any PASS decision. For the OT fixture the checker additionally asserts, mode by mode, `k·u_k = 0`,
+that every amplitude entry is algebraic and free of floating-point atoms, and (symbolically) that
+the interaction used is the same Fourier–Leray operator `B(p,q,a,b) = P_{p+q}[(a·q) b + (b·p) a]`
+as the other checkers. The five-mode complex-phase variant of the generator (`p2` grown, `Z/4`
+donor phases) is not registered because the web contract of §1 is real (`u(−m) = u(m)`).
 
 ## 4. Results
 
@@ -129,6 +136,7 @@ PASS decision.
 | W1 | 26 | 10 | 16 | **0** | 8 | 8 | 2 | 8 |
 | W2 | 56 | 14 | 42 | **0** | 12 | 12 | 2 | 12 |
 | W3 point A | 82 | 26 | 56 | **0** | 16 | 26 | 2 | 16 |
+| OT gen-1 time-honest (EXACT FIXTURE / FINITE DIAGNOSTIC) | 32 | 12 | 20 | **0** | 12 | 8 | 0 | 2 |
 
 Label counts are per target (a target with `{O,E,T}` adds one to each of O, E, T).
 
@@ -139,8 +147,9 @@ Label counts are per target (a target with `{O,E,T}` adds one to each of O, E, T
 | W1 | 8 | 0 | — |
 | W2 | 12 | 0 | — |
 | W3 point A | 14 | 2 | `±k = (0,0,±1)` |
+| OT gen-1 time-honest | 12 | 0 | — |
 
-On W1 and W2 every O-suppressed target is O-suppressed through a single polarization line. On
+On W1, W2 and the OT web every O-suppressed target is O-suppressed through a single polarization line. On
 W3 point A the only double-O targets are `±k`: the three equal-shell pairs `(p_i, q_i)` each have
 `a_i · q_i = 0` with `a_i = e_θi` horizontal, so the anchor polarizations span the plane `k^⊥`
 (rank 2).
@@ -161,6 +170,18 @@ the counts in §4.1–§4.2.
 - W1 / W2: every suppressed target other than `±k` is a self-pair target `2m` (`|t|² = 4` or `8`),
   which is simultaneously O (`a·m = 0`), E (`|p| = |q|` trivially) and T (outside the cell). These
   are the `{O,E,T}` rows.
+- OT gen-1 time-honest (12 suppressed, 20 novelty): every target of this web is single-source
+  (exactly one unordered pair lands on it), so `C` cannot occur and every suppressed target is a
+  projection zero of its only contribution. The selected forward channels `p1 = p0 + q0 = (3,4,0)`
+  and `p2 = p1 + q1 = (9,12,20)` are NOVELTY, as the chain requires. The tree-return target
+  `p0 = (1,0,0)` from `(−q0, p1)` is `{O}` only (`N0·p1 = 0`, `N0·q0 = 0`, unequal shells);
+  `±(5,8,0)` from `(±p1, ±q0)`-type pairs are `{O}`; the six in-cell self-pair and equal-shell
+  targets `±(2,0,0)`, `±(4,8,0)`, `±(6,8,0)` are `{O,E}`; `±2q1 = ±(12,16,40)` are `{O,E,T}`
+  (`|t|² = 2000 > 500`). This reconciles O = 12, E = 8, T = 2, C = 0 and `N_{O,1} = 12`. The
+  labels are identical under the generator's second (critical, `|α|² = 1/|k|`) normalization,
+  as the checker asserts. **Reading:** this is a finite diagnostic of the four-label interface on
+  one exact web; it is never evidence that RSC (O/E/C) passes globally, that the chain is
+  compact or zero-novelty (it is not: 20 novelty targets), or anything about OCSR.
 - W3 point A (26 suppressed): `±k` (`{O,E,C}`); six targets at `|t|² = 9/4` that are `{E}` only,
   two contributions each and both projection zeros (`n_nonzero = 0`), matching the depth-1 audit of
   `NS-P2-W3-FULLCONV-DEPTH1-NOT-LOSSLESS`; two single-contribution projection-zero targets at
@@ -172,11 +193,11 @@ the counts in §4.1–§4.2.
 
 ```text
 PROP-P3-M3-SUPPRESSION-LABELS-01  definition + checker            PASS (exact; not yet in Toledo)
-UNRESOLVED count on W1 / W2 / W3 point A                          0 / 0 / 0
+UNRESOLVED count on W1 / W2 / W3 point A / OT gen-1               0 / 0 / 0 / 0
 W1 k target is C without E                                        PASS
 W3 point A k target is C and E                                    PASS
-double-O rank counter, N_{O,1} / N_{O,>=2} per fixture             PASS (8/0, 12/0, 14/2)
-orthogonal-turn gen-1 chain fixture                               OMITTED (no registered amplitudes)
+double-O rank counter, N_{O,1} / N_{O,>=2} per fixture             PASS (8/0, 12/0, 14/2, 12/0)
+orthogonal-turn gen-1 time-honest fixture (O12/E8/C0/T2)          EXACT FIXTURE / FINITE DIAGNOSTIC
 ```
 
 ## 6. Claim boundary
@@ -192,7 +213,7 @@ global multi-source cancellation compatibility (118.4)            OPEN
 Clay Navier-Stokes regularity                                     OPEN
 ```
 
-In particular: `UNRESOLVED = 0` on three exact fixtures is calibration of the four-label interface
+In particular: `UNRESOLVED = 0` on four exact fixtures is calibration of the four-label interface
 on those webs, not evidence that the four labels are complete in general; a double-O count is a
 count, not a charge certificate (the RSC-O planarity theorem is the only charge statement in the
 repository and it is local); and C on `±k` in every fixture is the cancellation ledger's own row

@@ -181,6 +181,8 @@ jobs:
               'witness soundness open': 'Witness Soundness for D_cancel (Section 111.5)                    OPEN',
               'G6G7 open': 'G6 / G7 (global gates of the charging card)                       OPEN',
               'clay open': 'Clay Navier-Stokes regularity                                     OPEN',
+              'OT fixture tier': 'OT gen-1 time-honest (EXACT FIXTURE / FINITE DIAGNOSTIC) | 32 | 12 | 20 | **0** | 12 | 8 | 0 | 2 |',
+              'OT not global evidence': 'it is never evidence that RSC (O/E/C) passes globally',
           }
           missing = [k for k, m in m3_required.items() if m not in m3]
           if missing:
