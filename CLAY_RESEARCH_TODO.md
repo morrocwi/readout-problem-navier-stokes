@@ -199,6 +199,16 @@ Sources: `paper/NS_P2_PROJECTIVE_HOLONOMY_TYPE_AUDIT.md` (three-line rigidity, T
 - [ ] Next target box (OPEN): passive `O_+` layer + active `O_-` core ⇒ double-O ∨ E ∨ C ∨ novelty/exit, for a compact productive full-convolution-closed zero-novelty one-sided history.
 - [ ] RSC-O branch C: parallel anchor/recruit degeneracy (`p × q = 0`) — classify as scale-ray / rank / terminal structure; OPEN.
 
+### Forced-address accounting after PR #64 (2026-09-13)
+
+Sources: `paper/NS_P2_FORCED_ADDRESS_ACCOUNTING_RULE.md`, checker `reproduction/checks/check_ns_p2_forced_address_accounting.py`.
+
+- [x] `PROP-P3-FORCED-ADDRESS-ACCOUNTING-01` (not yet in Toledo): every registered address that receives nonzero individual forcing must be represented and resolved as ACTIVE ∨ EXACT-CANCELLED ∨ NULL-BY-REGISTERED-GEOMETRY ∨ TED; absent ⇒ UNRESOLVED / INVALID CLOSURE TEST. Checker obligation per address: System A (`c_t ≠ 0`) and System B (`c_t = 0 ∧ F(t) = 0`), both reported; the forgotten case (`c_t = 0 ∧ F(t) ≠ 0`) run so the loophole is seen; `t·t ≠ 0` on symbolic pair sums (denominator-cleared projection). Not "every forced address must be populated" — the exact-cancellation branch is kept.
+- [x] `PROP-P3-RSC-O-SKELETON-FIXTURES-01` (not yet in Toledo), one skeleton, `m ≤ 3`, finite_diagnostic: F1 single-O alternation (double-O excluded) A/B/forgotten all UNSAT for `m = 2, 3` — the earlier raw "unpopulated SAT" was a complex isotropic artifact (`q_0 = (0,0,±i)`), not a forgotten descendant; F2 one-sided `O_+` layer + active `O_-` core A UNSAT, B UNSAT for `m = 1, 2`, forgotten SAT with real witness `q_0 = (0,0,±1)`, `c = 0`; A/B verdicts are skeleton-level (System A refuted at `m = 0` by the anchor–core exits `(2,1,0)`, `(1,2,0)`), so the PR #64 next target box stays OPEN; F3 A3 shell-9 rectangle NO_INSIDE_TARGET (structurally open).
+- [ ] TODO: re-run the NPSC depth-1 sweep with the per-address `A ∨ B` obligation (System B per forced address, M3 split of EXACT-CANCELLED vs NULL-BY-GEOMETRY) instead of the all-addresses-populated variant only.
+- [ ] TODO: coincidence strata (symbolic targets coinciding with each other or with inside addresses) and difference targets `p − q` (negation-closed web) for the skeleton fixtures; other skeletons; `m > 3`.
+- [ ] TODO: A3 shell-5 planar 3-cycle — closure / productivity audit; A3 is NOT closed.
+
 Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j ≤ (1−δ)νD_j + Cρ^j`),
 `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`:
 
