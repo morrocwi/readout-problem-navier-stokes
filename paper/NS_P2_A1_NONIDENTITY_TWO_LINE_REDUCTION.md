@@ -5,6 +5,7 @@
 **Global FNW / OCSR / Witness Soundness / G4/G6/G7:** OPEN  
 **Clay Navier–Stokes regularity:** OPEN  
 **Checker:** `reproduction/checks/check_ns_p2_typeP_nonidentity_fixedline_classification.py`
+**Field declaration (O1 correction, 2026-09-13):** the classification below is over the real fixture field, `A ∈ GL(2,ℝ)`, `[ℓ] ∈ ℝP¹`. Over the complex fiber `ℂP¹` (phases retained, the physical Fourier field) there is no elliptic case: `Δ_P ≠ 0 ⇒ 2` complex fixed lines, `Δ_P = 0 ⇒ 1` repeated fixed line. Only the statements "`M ≠ I ⇒` at most two returned classes" and the parabolic rank-drop survive complexification; complex Type-P recurrence is therefore **reopened** and is the object of the frozen lane T0-04.  
 
 ## 0. Reuse-first ruling
 
@@ -79,9 +80,9 @@ Hence:
 
 ### Case E — no real fixed line
 
-If `Delta_P<0`, then no real retained projective lineage can return exactly.
+If `Delta_P<0`, then **no real fixed projective lineage exists in the declared real fixture**.
 
-Therefore a zero-defect exact recurrence is impossible unless the purported returning lineage is resolved/terminalized/exits or the Type-P loop was not the correct dynamically sufficient return object.
+This is a statement about the real fixture only: over `ℂP¹` the same `M` has a complex-conjugate pair of fixed lines, so this case does **not** exclude complex Type-P recurrence. Within the real fixture, a zero-defect exact recurrence is impossible unless the purported returning lineage is resolved/terminalized/exits or the Type-P loop was not the correct dynamically sufficient return object.
 
 ### Case P — one real fixed line
 
