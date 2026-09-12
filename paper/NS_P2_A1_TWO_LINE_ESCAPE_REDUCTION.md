@@ -4,6 +4,7 @@
 **Parent:** `NS_P2_PROJECTIVE_HOLONOMY_TYPE_AUDIT.md`, Standalone vNext §§10–14, 113–118  
 **Global FNW / OCSR / Witness Soundness / G4/G6/G7:** OPEN  
 **Clay Navier–Stokes regularity:** OPEN  
+**Field declaration (O1 correction, 2026-09-13):** the two-line skeleton is taken over the real fixture field; over `ℂP¹` every nonidentity `M` still has at most two fixed lines, so the two-line skeleton survives complexification, but the elliptic exclusion of the parent paper does not (see that paper's field declaration; complex lane = T0-04).  
 **Checker:** `reproduction/checks/check_ns_p2_orthogonal_turn_fullclosure_escape.py`
 
 ## 0. Reuse-first audit
