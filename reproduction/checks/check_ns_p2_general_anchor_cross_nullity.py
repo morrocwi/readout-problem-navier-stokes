@@ -11,7 +11,7 @@ The exact kernel locus is
 away from the excluded k=0 case.
 
 This checker verifies the adapted-coordinate determinant factorization and the
-explicit equal-shell kernel vector.  No floating arithmetic is used.
+explicit equal-shell kernel vector. No floating arithmetic is used.
 """
 
 import sympy as sp
@@ -54,27 +54,22 @@ detL = sp.factor(sp.together(M.det()))
 expected = sp.factor(lam**2 * (q.dot(q)-p.dot(p)) / k.dot(k))
 assert sp.simplify(detL-expected) == 0
 
-# Explicit nonzero kernel vector on the equal-shell branch lambda != 0:
+# Explicit kernel vector on the equal-shell branch lambda != 0:
 # b_* = k - (k.p/lambda) a.
 bstar = sp.simplify(k - (k.dot(p)/lam)*a)
-assert sp.simplify(q.dot(bstar).subs(q.dot(q),p.dot(p))) == 0 or True
-# Verify the two identities algebraically after imposing |q|^2=|p|^2 by
-# replacing x^2+y^2+z^2 with P^2 in the scalar residuals.
-res_q = sp.together(q.dot(bstar))
-num_q = sp.factor(res_q.as_numer_denom()[0])
-num_q_shell = sp.expand(num_q).subs(x**2 + y**2 + z**2, P**2)
-assert sp.simplify(num_q_shell) == 0
+assert sp.factor(sp.together(q.dot(bstar))) == sp.factor(q.dot(q)-p.dot(p))
 
 beta = sp.simplify(bstar.dot(p))
 raw = sp.simplify(lam*bstar + beta*a)
 assert sp.simplify(raw - lam*k) == sp.zeros(3,1)
+# The projected interaction is therefore zero identically; on |q|=|p|,
+# bstar is also transverse to q and is an admissible kernel vector.
 assert sp.simplify(B(p,q,a,bstar)) == sp.zeros(3,1)
 
 # Orthogonality branch lambda=0: any nonzero b in p^perp cap q^perp is killed.
 borth = sp.simplify(p.cross(q))
 assert sp.simplify(q.dot(borth)) == 0
 assert sp.simplify(p.dot(borth)) == 0
-# With lambda=0, raw source is (b.p)a = 0 for borth.
 raw_orth = sp.expand((a.dot(q))*borth + (borth.dot(p))*a)
 raw_orth_lam0 = raw_orth.subs(A*y + C*z, 0)
 assert sp.simplify(raw_orth_lam0) == sp.zeros(3,1)
