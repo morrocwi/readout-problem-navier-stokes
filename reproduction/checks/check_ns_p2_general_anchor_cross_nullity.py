@@ -71,8 +71,12 @@ borth = sp.simplify(p.cross(q))
 assert sp.simplify(q.dot(borth)) == 0
 assert sp.simplify(p.dot(borth)) == 0
 raw_orth = sp.expand((a.dot(q))*borth + (borth.dot(p))*a)
-raw_orth_lam0 = raw_orth.subs(A*y + C*z, 0)
-assert sp.simplify(raw_orth_lam0) == sp.zeros(3,1)
+# borth = p x q is orthogonal to p identically, so raw_orth = (a.q) * borth exactly;
+# on the orthogonality branch a.q = lam = 0 it vanishes.  (Substituting the sum A*y + C*z -> 0
+# is not a reliable sympy pattern substitution; eliminate z through lam = 0 instead.)
+assert sp.simplify(raw_orth - lam*borth) == sp.zeros(3,1)
+raw_orth_lam0 = sp.simplify(raw_orth.subs(z, sp.solve(sp.Eq(lam, 0), z)[0]))
+assert raw_orth_lam0 == sp.zeros(3,1)
 
 # Exact rational controls for all three branches.
 p0=V(2,0,0); a0=V(0,0,1)
