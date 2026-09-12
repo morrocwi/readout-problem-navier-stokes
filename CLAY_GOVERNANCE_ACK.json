@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-13",
-  "scope": "Wording correction (O1) to the two A1 papers of #58: the Δ_P fixed-line classification is declared over the real fixture field GL(2,R)/RP^1; the elliptic case is restated as \"no real fixed projective lineage in the declared real fixture\" and explicitly does not exclude complex Type-P recurrence (CP^1 has no elliptic case); complex lane T0-04 named. No status/tier change; all global items remain OPEN.",
+  "scope": "Continues the merged A1/RSC route after O1 wording correction. The new proposal PROP-P3-RSC-O-ALTERNATION-TRANSFER-01 is an exact local/recurrent reduction on a fixed two-line skeleton: a genuine nonparallel O-suppressed recruit copies the suppressed anchor's projective polarization line; two consecutive genuine single-O recruits on opposite fixed lines have an individually null mutual cross interaction only on the equal-shell branch; hence a zero-novelty infinite O-line switching history with no terminal/exit/defect transfers to RSC-E or RSC-C. Parallel anchor/recruit degeneracy, eventually one-sided single-O persistence, global RSC-O, RSC-E/RSC-C, OCSR, Witness Soundness, G4/G6/G7 and Clay Navier-Stokes regularity remain OPEN. Exact cancellation remains an accounting/constraint branch and is not promoted to physical loss. PR #62 M3 is pending and is not treated as a merged premise on this branch.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "Wording/field declaration only."
+    "evidence": "The single-O alternation subbranch is reduced without changing the global architecture. The next surviving RSC-O residues are eventually one-sided single-O persistence, parallel anchor/recruit degeneracy, double-O events (already covered locally by the two-anchor planarity certificate), and unresolved event realization."
   },
   "toledo": {
     "status": "issue-open",
-    "evidence": "The Toledo proposal entry PROP-P3-TYPEP-FIXEDLINE-CLASSIFICATION-01 (registration in progress on morrocwi/toledo, branch research/ns-p2-a1-typeP-rsc-proposals-2026-09-13) carries the same real-fixture / complex-fiber caveat; the wording here and there must stay aligned; no canonical code assigned."
+    "evidence": "Reuse-first lookup found no canonical Toledo object for single-O alternation transfer. PROP-P3-RSC-O-ALTERNATION-TRANSFER-01 remains NEW DERIVATION / PROPOSAL and must be pinned to an immutable NS merge SHA before any Toledo canonicalization action. Existing Type-P/RSC Toledo registration work remains separate and merge-gated."
   },
   "claim_effect": "statement-change"
 }
