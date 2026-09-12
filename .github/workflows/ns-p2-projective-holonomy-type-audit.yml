@@ -1,0 +1,41 @@
+name: ns-p2-projective-holonomy-type-audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/NS_P2_PROJECTIVE_HOLONOMY_TYPE_AUDIT.md'
+      - 'reproduction/checks/check_ns_p2_projective_three_line_rigidity.py'
+      - '.github/workflows/ns-p2-projective-holonomy-type-audit.yml'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  exact-projective-type-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install symbolic dependency
+        run: python -m pip install sympy
+      - name: Exact projective three-line rigidity
+        run: python3 reproduction/checks/check_ns_p2_projective_three_line_rigidity.py
+      - name: Claim-boundary and type guards
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('paper/NS_P2_PROJECTIVE_HOLONOMY_TYPE_AUDIT.md').read_text()
+          required = {
+              'projective proposal': 'PROP-P3-PROJECTIVE-THREE-LINE-RIGIDITY-01',
+              'phase distinction': 'These are not the same object.',
+              'coverage open': '`(PH-3)` is **OPEN**.',
+              'global open': '**Global FNW / OCSR / Witness Soundness / G6/G7:** OPEN',
+              'clay open': '**Clay Navier–Stokes regularity:** OPEN',
+          }
+          missing = [name for name, marker in required.items() if marker not in text]
+          if missing:
+              raise SystemExit('missing type-audit claim markers: ' + ', '.join(missing))
+          print('NS P2 PROJECTIVE HOLONOMY TYPE AUDIT CLAIM-BOUNDARY PASS')
+          PY
