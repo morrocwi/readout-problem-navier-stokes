@@ -192,6 +192,12 @@ Sources: `paper/NS_P2_PROJECTIVE_HOLONOMY_TYPE_AUDIT.md` (three-line rigidity, T
 - [x] `PROP-P3-M3-SUPPRESSION-LABELS-01` (`paper/NS_P2_M3_SUPPRESSION_LABELS.md`, checker `reproduction/checks/check_ns_p2_m3_suppression_labels.py`, not yet in Toledo): M3 label-set checker — per suppressed target `L(e) ⊆ {O, E, C, T}` or `UNRESOLVED` (fail-closed), labels not mutually exclusive, C an accounting label never a physical loss; double-O rank counter (`rank{a_i : i ∈ O(e)} ≥ 2`, not two O labels). Exact: `UNRESOLVED = 0` on W1 / W2 / W3 point A; W1 `k` is C without E; W3 `k` is C ∧ E; `N_{O,1}/N_{O,≥2}` = 8/0, 12/0, 14/2. Instrument only — OCSR / Witness Soundness / RSC / G6 / G7 unchanged.
 - [ ] M3 calibration on the orthogonal-turn generation-1 chain: register exact amplitude vectors for that web (its checker carries wavevectors and channel coefficients only), then run the label checker on it.
 
+### RSC-O frontier after PR #63 (2026-09-13)
+
+- [x] `PROP-P3-RSC-O-ONE-SIDED-SILENT-LAYER-01` (`paper/NS_P2_RSC_O_ONE_SIDED_SILENT_LAYER.md`, checker `reproduction/checks/check_ns_p2_rsc_o_one_sided_silent_layer.py`, not yet in Toledo): under one-sided `O_+` persistence every recruit has `q_j ∈ a_+^⊥`, `[b_j] = [a_+]` (ALT-1, PR #63), hence `b_i·q_j = b_j·q_i = 0` and `B_{q_i,q_j}(b_i,b_j) = 0` for all `i, j` — the recruit layer is a 2D3C-like passive layer with respect to internal recruit–recruit interactions only (not a full 2D3C branch; layer/core interactions unconstrained). Reduction: all persistent productivity must cross the layer/core interface. Exact symbolic PASS + two rational fixtures + off-line control. RSC-O branch B is reduced, not closed.
+- [ ] Next target box (OPEN): passive `O_+` layer + active `O_-` core ⇒ double-O ∨ E ∨ C ∨ novelty/exit, for a compact productive full-convolution-closed zero-novelty one-sided history.
+- [ ] RSC-O branch C: parallel anchor/recruit degeneracy (`p × q = 0`) — classify as scale-ray / rank / terminal structure; OPEN.
+
 Audit of the single-target candidate `NS-P2-UNIFORM-FULLCONV-SCALE-LOSS` (`T_j ≤ (1−δ)νD_j + Cρ^j`),
 `paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md`:
 
