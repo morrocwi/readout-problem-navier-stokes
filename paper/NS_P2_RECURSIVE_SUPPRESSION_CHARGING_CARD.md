@@ -16,15 +16,19 @@ Toledo lookup -> Genesis compatibility -> reuse existing object -> derive only t
 
 A Toledo lookup on 2026-09-12 found no canonical object named or equivalent to recursive suppression charging. This card therefore introduces no theorem claim; it records the exact missing global statement and decomposes it into already-typed branches.
 
-Reused repository objects:
+Reused objects already on `main`:
 
 - `PROP-P3-GENERAL-ANCHOR-CROSS-NULLITY-01`;
 - exact cancellation ledger;
-- equal-shell direction lock / Type-P shell confinement lane;
+- equal-shell direction lock;
 - rank-2 polarization / plane-switch reductions;
 - `PROP-P3-A1-TWO-LINE-ESCAPE-REDUCTION-01`;
 - Standalone §114.1 no-silent-loss / null-web lineage discipline;
 - OCSR + global cancellation compatibility + Witness Soundness as the canonical global frontier.
+
+Pending input, not yet a premise of this branch:
+
+- PR #59 Type-P shell-confinement / identity-loop fixtures. These may strengthen the equal-shell branch after merge, but this card does not depend on them.
 
 NPSC finite sweeps may support falsification/calibration but are **not premises** of the global theorem candidate.
 
@@ -177,11 +181,14 @@ The missing global step is to prevent the web from continually changing anchors 
 }
 \]
 
-Reusable inputs:
+Reusable inputs already on `main`:
 
 - equal-shell direction lock;
-- Type-P transport shell confinement;
 - W3 / antipodal cancellation / cancellation-ladder exact families.
+
+Pending strengthening after PR #59 merge:
+
+- Type-P transport shell confinement.
 
 The missing global step is to classify an arbitrary compact productive equal-shell recurrent web, not merely the existing exact families.
 
@@ -292,7 +299,7 @@ After M3 calibration on W1-W3 and orthogonal-turn generation-1, attack the three
 
 ```text
 1. RSC-O: use existing multi-anchor / rank-2 rigidity to seek a finite constraint-growth contradiction;
-2. RSC-E: use equal-shell direction lock + Type-P shell confinement and compare with W3/T0-02 catalogues;
+2. RSC-E: use equal-shell direction lock and compare with W3/T0-02 catalogues; add Type-P shell confinement only after PR #59 merge;
 3. RSC-C: use exact cancellation ancestry to formulate the weakest Witness-Soundness-compatible charging statement.
 ```
 
