@@ -11,12 +11,35 @@ Read, in order:
 3. `CLAY_RESEARCH_TODO.md`
 4. `CLAIMS.md`
 5. relevant `README`/paper/reproduction files for the task
+6. `morrocwi/toledo/EQUATION_SOURCE_POLICY.md`, especially `TG-RFG-01`, before introducing or renaming a mathematical object.
 
 If working on P vs NP, also read `morrocwi/information-discrete-math` PR #117 and its branch `research/p-vs-np-readout`.
 
 If working on shared bridge mathematics, read `morrocwi/information-discrete-math/docs/UNIVERSAL_FINITE_OBSTRUCTION_UNIFORM_BRIDGE_KERNEL.md`.
 
 If changing theorem status/provenance, read `morrocwi/toledo/docs/CLAY_BRIDGE_PROGRAM_2026-09-11.md` before editing.
+
+## Mandatory Toledo-Genesis reuse-first gate
+
+Every new or reused mathematical object in Clay work MUST follow:
+
+```text
+Toledo lookup
+    -> Genesis compatibility
+    -> reuse existing object
+    -> derive only the missing piece
+    -> mark PROPOSAL
+```
+
+Interpretation:
+
+- Toledo is checked first for an existing equation/theorem/constraint/status object;
+- `morrocwi/readout_genesis` is checked next for ontology, sufficiency, quotient, translation, lineage, and defect compatibility;
+- an existing usable object is reused under its current code/status rather than duplicated;
+- if something is genuinely absent, derive only the smallest missing statement needed for the current proof obligation;
+- any such new statement remains `PROPOSAL` until the Toledo review/registration path settles it.
+
+Ambiguous/superseded/conflicting lookups are `HOLD`. Bypassing this order is `DRIFT`. Passing the gate is provenance discipline only and never upgrades a theorem or Clay status.
 
 ## Non-negotiable rules
 
@@ -29,6 +52,7 @@ If changing theorem status/provenance, read `morrocwi/toledo/docs/CLAY_BRIDGE_PR
 - A failed analogy across Clay lanes is valid progress and must be recorded honestly.
 - Use `PASS`, `DERIVED`, `OPEN`, and `HOLD` consistently with the evidence tier.
 - Do not hand-edit generated Toledo registry outputs.
+- Do not bypass `TG-RFG-01` by inventing a domain-local alias for an existing Toledo object.
 
 ## Mandatory PR governance gate
 

@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
-  "reviewed_at": "2026-09-11",
-  "scope": "Adopt the P2 Standalone vNext (Sections 1-118) as the canonical P2 architecture: chain-recurrent core target CR_0(Q-bar^sc_P2) subset P u D, IRR, OWR/FNW, OCSR, Generative Constraint Accumulation, Witness Soundness; add the author's research-direction note. Record exact finite results against it: (113.1)-(113.3) certified; equal-source-shell direction lock as a Section 14 corollary with rank 1 iff |p|=|q| (exact instances PASS, generic DERIVED); exact multi-source cancellation witnesses W1/W2/W3 with vacuous reality constraint; W3 generation-1 outward suppression forces a non-productive parent; W3 depth-1 full convolution is not lossless. Retain NS-P2-FRUSTRATION-OR-CUT, NS-P2B-SCALE-CONTRACTION-UNIFORM, OCSR, OWR/FNW, IRR, Witness Soundness, CR_0 inclusion, and Clay Navier-Stokes regularity as OPEN. No statement of the standalone is refuted; no global P2 claim is promoted. Also audit the single-target candidate NS-P2-UNIFORM-FULLCONV-SCALE-LOSS (T_j <= (1-delta) nu D_j + C rho^j): derive the exact recurrence identity R_{j+1} <= kappa R_j + C_eta R^sh_{j+1}; refute the universal-constant form by the repository's exact triad state (T/D = 20 at the datum; n^6 / A^4 scalings analytic; windowed numbers on the 3-mode Galerkin truncation only); derive the critical-budget ratio 1 + 1/(2 nu) in the P2C-3 budget; record the solution-dependent form as REGULARITY-EQUIVALENT / HOLD under the FINAL-EQUIV anti-reopening rule.",
+  "reviewed_at": "2026-09-12",
+  "scope": "Governance only: AGENTS.md gains the central Toledo-Genesis reuse-first derivation gate (Toledo lookup -> Genesis compatibility -> reuse existing object -> derive only the missing piece -> PROPOSAL; HOLD/DRIFT outcomes). No theorem, tier, OPEN/HOLD or Clay status is changed; no equation is added or promoted.",
   "todo": {
-    "status": "updated",
-    "evidence": "CLAY_RESEARCH_TODO.md gains a 'Canonical P2 architecture upgrade -- Standalone vNext' subsection listing the new OPEN targets (109.3/118.3, 111.2, 112.3/114.3, 117.5, 111.5, 118.4), records FRUSTRATION-OR-CUT as retained OPEN with holonomy demoted to the d_hol defect component, checks off the three exact results, and opens Witness Soundness for D_cancel, generation-2 OCSR / antipodal / symmetry-free items, and the unstated source-ray-alignment lemma."
+    "status": "reviewed-no-change",
+    "evidence": "Policy text only; the research TODO is unchanged by this PR."
   },
   "toledo": {
-    "status": "issue-open",
-    "evidence": "morrocwi/toledo#11 remains the canonicalization gate. Local proposals PROP-P3-EQUAL-SHELL-DIRECTION-LOCK-01, PROP-P3-SINGLE-SOURCE-SURJECTIVITY-01, PROP-P3-MULTI-SOURCE-CANCELLATION-WITNESSES-01, PROP-P2-CR0-CORE-INCLUSION-OPEN-01, PROP-P3-W3-OUTWARD-SUPPRESSION-GEN1-01, PROP-P3-W3-FULLCONV-DEPTH1-01 exist in toledo registry/proposals/ns_p2_critical_quotient.json but are not pushed; they must be pinned to this branch's immutable merge SHA after merge, parented to PROP-P2-SELF-CLOSURE-01 / PROP-P2-CANCELLATION-LEDGER-01, without canonical codes or any global P2/Clay promotion."
+    "status": "not-required",
+    "evidence": "No equation is added, cited as new, or promoted; the PR consumes the public gate TG-RFG-01 from morrocwi/toledo."
   },
-  "claim_effect": "statement-change"
+  "claim_effect": "provenance-change"
 }
