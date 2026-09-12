@@ -5,7 +5,10 @@ on:
     branches: [main]
     paths:
       - 'paper/NS_P2_A1_NONIDENTITY_TWO_LINE_REDUCTION.md'
+      - 'paper/NS_P2_RECURSIVE_SUPPRESSION_CHARGING_CARD.md'
+      - 'paper/NS_P2_RSC_ORTHOGONALITY_TWO_ANCHOR_PLANARITY.md'
       - 'reproduction/checks/check_ns_p2_typeP_nonidentity_fixedline_classification.py'
+      - 'reproduction/checks/check_ns_p2_rsc_o_two_anchor_planarity.py'
       - '.github/workflows/ns-p2-a1-two-line-escape.yml'
       - 'CLAY_GOVERNANCE_ACK.json'
   workflow_dispatch:
@@ -22,6 +25,8 @@ jobs:
         run: python -m pip install sympy
       - name: Exact nonidentity fixed-line classification
         run: python3 reproduction/checks/check_ns_p2_typeP_nonidentity_fixedline_classification.py
+      - name: Exact RSC-O two-anchor planarity
+        run: python3 reproduction/checks/check_ns_p2_rsc_o_two_anchor_planarity.py
       - name: Claim-boundary guards
         run: |
           python3 - <<'PY'
@@ -38,5 +43,32 @@ jobs:
           missing = [k for k,v in required.items() if v not in text]
           if missing:
               raise SystemExit('missing A1 claim markers: ' + ', '.join(missing))
-          print('NS P2 A1 TWO-LINE CLAIM-BOUNDARY PASS')
+
+          card = Path('paper/NS_P2_RECURSIVE_SUPPRESSION_CHARGING_CARD.md').read_text()
+          required_card = {
+              'rsc proposal': 'PROP-P3-RECURSIVE-SUPPRESSION-CHARGING-01',
+              'rsc open': 'Status: **OPEN**.',
+              'unresolved': 'UNRESOLVED',
+              'cancel not loss': 'It is **not** by itself a physical defect or payable loss.',
+              'rsc-o': 'RSC-O repeated orthogonality charging                             OPEN',
+              'rsc-e': 'RSC-E repeated equal-shell charging                               OPEN',
+              'rsc-c': 'RSC-C repeated exact-cancellation charging                        OPEN',
+              'clay card open': 'Clay Navier-Stokes regularity                                     OPEN',
+          }
+          missing = [k for k,v in required_card.items() if v not in card]
+          if missing:
+              raise SystemExit('missing RSC card claim markers: ' + ', '.join(missing))
+
+          otext = Path('paper/NS_P2_RSC_ORTHOGONALITY_TWO_ANCHOR_PLANARITY.md').read_text()
+          required_o = {
+              'rsc-o local proposal': 'PROP-P3-RSC-O-TWO-ANCHOR-PLANARITY-01',
+              'local only': 'This should be used as a charge certificate inside RSC-O, not as a global recurrence theorem.',
+              'global rsc open': 'full RSC-O;',
+              'clay open o': 'G4 / G7 / Clay regularity.',
+          }
+          missing = [k for k,v in required_o.items() if v not in otext]
+          if missing:
+              raise SystemExit('missing RSC-O claim markers: ' + ', '.join(missing))
+
+          print('NS P2 A1 / RSC CLAIM-BOUNDARY PASS')
           PY
