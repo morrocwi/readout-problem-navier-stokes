@@ -1,0 +1,42 @@
+name: ns-p2-a1-two-line-escape
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/NS_P2_A1_NONIDENTITY_TWO_LINE_REDUCTION.md'
+      - 'reproduction/checks/check_ns_p2_typeP_nonidentity_fixedline_classification.py'
+      - '.github/workflows/ns-p2-a1-two-line-escape.yml'
+      - 'CLAY_GOVERNANCE_ACK.json'
+  workflow_dispatch:
+
+jobs:
+  exact-a1-two-line-reduction:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install symbolic dependency
+        run: python -m pip install sympy
+      - name: Exact nonidentity fixed-line classification
+        run: python3 reproduction/checks/check_ns_p2_typeP_nonidentity_fixedline_classification.py
+      - name: Claim-boundary guards
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('paper/NS_P2_A1_NONIDENTITY_TWO_LINE_REDUCTION.md').read_text()
+          required = {
+              'proposal': 'PROP-P3-TYPEP-FIXEDLINE-CLASSIFICATION-01',
+              'two-line target': 'two-line skeleton',
+              'A1 open': '(A1-7)',
+              'global open': '**Global FNW / OCSR / Witness Soundness / G4/G6/G7:** OPEN',
+              'clay open': '**Clay Navier–Stokes regularity:** OPEN',
+              'third re-entry': 'third re-entered lineage candidate',
+          }
+          missing = [k for k,v in required.items() if v not in text]
+          if missing:
+              raise SystemExit('missing A1 claim markers: ' + ', '.join(missing))
+          print('NS P2 A1 TWO-LINE CLAIM-BOUNDARY PASS')
+          PY
