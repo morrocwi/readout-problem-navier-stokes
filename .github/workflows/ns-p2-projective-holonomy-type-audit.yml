@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - 'paper/NS_P2_PROJECTIVE_HOLONOMY_TYPE_AUDIT.md'
+      - 'paper/NS_P2_A1_TWO_LINE_ESCAPE_REDUCTION.md'
       - 'reproduction/checks/check_ns_p2_projective_three_line_rigidity.py'
+      - 'reproduction/checks/check_ns_p2_orthogonal_turn_fullclosure_escape.py'
       - '.github/workflows/ns-p2-projective-holonomy-type-audit.yml'
       - 'CLAY_GOVERNANCE_ACK.json'
   workflow_dispatch:
@@ -22,6 +24,8 @@ jobs:
         run: python -m pip install sympy
       - name: Exact projective three-line rigidity
         run: python3 reproduction/checks/check_ns_p2_projective_three_line_rigidity.py
+      - name: Exact orthogonal-turn full-closure geometry
+        run: python3 reproduction/checks/check_ns_p2_orthogonal_turn_fullclosure_escape.py
       - name: Claim-boundary and type guards
         run: |
           python3 - <<'PY'
@@ -37,5 +41,17 @@ jobs:
           missing = [name for name, marker in required.items() if marker not in text]
           if missing:
               raise SystemExit('missing type-audit claim markers: ' + ', '.join(missing))
-          print('NS P2 PROJECTIVE HOLONOMY TYPE AUDIT CLAIM-BOUNDARY PASS')
+
+          a1 = Path('paper/NS_P2_A1_TWO_LINE_ESCAPE_REDUCTION.md').read_text()
+          required_a1 = {
+              'orthogonal-turn proposal': 'PROP-P3-ORTHOGONAL-TURN-FULLCLOSURE-ESCAPE-01',
+              'a1 reduction': 'PROP-P3-A1-TWO-LINE-ESCAPE-REDUCTION-01',
+              'recursive charging open': 'recursive charging of suppressed descendants                     OPEN',
+              'g6 open': 'FNW / G6                                                           OPEN',
+              'clay open': 'Clay Navier-Stokes regularity                                      OPEN',
+          }
+          missing = [name for name, marker in required_a1.items() if marker not in a1]
+          if missing:
+              raise SystemExit('missing A1 claim markers: ' + ', '.join(missing))
+          print('NS P2 PROJECTIVE HOLONOMY / A1 CLAIM-BOUNDARY PASS')
           PY
