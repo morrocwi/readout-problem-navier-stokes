@@ -11,11 +11,13 @@ on:
       - 'paper/NS_P2_ANTIPODAL_CANCELLATION_OUTWARD_FAMILY.md'
       - 'paper/NS_P2_ANTIPODAL_CANCELLATION_LADDER.md'
       - 'paper/NS_P2_CROSS_FAMILY_BOUNDARY_CANCELLATION.md'
+      - 'paper/NS_P2_GENERAL_ANCHOR_CROSS_NULLITY.md'
       - 'reproduction/checks/check_ns_p2_multisource_cancellation.py'
       - 'reproduction/checks/check_ns_p2_witness_soundness_w123.py'
       - 'reproduction/checks/check_ns_p2_antipodal_cancellation_outward.py'
       - 'reproduction/checks/check_ns_p2_antipodal_cancellation_ladder.py'
       - 'reproduction/checks/check_ns_p2_cross_family_boundary_cancellation.py'
+      - 'reproduction/checks/check_ns_p2_general_anchor_cross_nullity.py'
       - 'paper/NS_P2_UNIFORM_SCALE_LOSS_AUDIT.md'
       - 'reproduction/checks/check_ns_p2_uniform_scale_loss_audit.py'
       - '.github/workflows/ns-p2-multisource-cancellation.yml'
@@ -44,6 +46,8 @@ jobs:
         run: python3 reproduction/checks/check_ns_p2_antipodal_cancellation_ladder.py
       - name: Exact cross-family boundary cancellation
         run: python3 reproduction/checks/check_ns_p2_cross_family_boundary_cancellation.py
+      - name: Exact general anchor-cross nullity locus
+        run: python3 reproduction/checks/check_ns_p2_general_anchor_cross_nullity.py
       - name: Exact uniform scale-loss audit fixtures
         run: python3 reproduction/checks/check_ns_p2_uniform_scale_loss_audit.py
       - name: Claim-boundary guards
@@ -91,6 +95,18 @@ jobs:
           missing = [k for k, m in cross_required.items() if m not in cross]
           if missing:
               raise SystemExit('missing cross-family claim markers: ' + ', '.join(missing))
+
+          nullity = Path('paper/NS_P2_GENERAL_ANCHOR_CROSS_NULLITY.md').read_text()
+          nullity_required = {
+              'proposal label': 'PROP-P3-GENERAL-ANCHOR-CROSS-NULLITY-01',
+              'proposal status': 'NEW DERIVATION / PROPOSAL; exact algebraic PASS',
+              'kernel iff': 'ker L_{p,q,a}\\neq\\{0\\}',
+              'global OCSR open': 'Global OCSR / Witness Soundness / cancellation compatibility:** OPEN',
+              'clay open': 'Clay Navier–Stokes regularity:** OPEN',
+          }
+          missing = [k for k, m in nullity_required.items() if m not in nullity]
+          if missing:
+              raise SystemExit('missing anchor-cross nullity claim markers: ' + ', '.join(missing))
 
           standalone = Path('paper/NS_P2_STANDALONE_VNEXT.md').read_text()
           for m in ['**Status:** OPEN', 'Clay Navier–Stokes regularity:** OPEN', '# 118.']:
