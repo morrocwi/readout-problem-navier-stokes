@@ -3,6 +3,7 @@
 **Status:** NEW DERIVATION / PROPOSAL; exact symbolic family  
 **Global OCSR / Witness Soundness:** OPEN  
 **Clay Navier–Stokes regularity:** OPEN  
+**Family class (claim boundary):** every wavevector of this family has `k_z = 0` and every generated polarization is `e_3`, so the family lies in the 2D3C reduction (terminal class P, where regularity is classical). The results below exhibit the exact constraint-propagation / outward mechanism inside that class; they are not evidence about the productive non-planar sector, and the cross-family question (`NS_P2_CROSS_FAMILY_BOUNDARY_CANCELLATION.md`) is where a `k_z ≠ 0` recruit first enters.  
 **Checker:** `reproduction/checks/check_ns_p2_antipodal_cancellation_outward.py`
 
 ## 0. Reuse-first path

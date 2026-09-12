@@ -95,6 +95,8 @@ the exact 2-by-2 determinant in the corresponding transverse coordinates is
 \tag{CF-1}
 \]
 
+(normalisation note: (CF-1) is the determinant in the transverse coordinates used by the checker; with orthonormal bases on `r^⊥` and `(p+r)^⊥` the same map has area ratio `z^2(|r|^2-|p|^2)/(|r|\,|p+r|)` — an independent re-derivation on 2026-09-12 confirmed this form. The two differ by the positive factor `|p+r|/|r|`, so the null locus `z = 0 ∨ |r| = |p|`, which is all that is used below, is identical.)
+
 Likewise, since `t_z=-z`,
 
 \[
