@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "reviewed_at": "2026-09-12",
-  "scope": "Governance only: AGENTS.md gains the central Toledo-Genesis reuse-first derivation gate (Toledo lookup -> Genesis compatibility -> reuse existing object -> derive only the missing piece -> PROPOSAL; HOLD/DRIFT outcomes). No theorem, tier, OPEN/HOLD or Clay status is changed; no equation is added or promoted.",
+  "scope": "Reuse the existing Toledo/Genesis weld, sufficiency, lineage and no-early-collapse machinery together with the existing NS cancellation ledger, W1/W2/W3 fixtures, full-convolution closure, equal-shell direction lock, productive-triad exact self-closure, and the antipodal cancellation family/ladder. Exact proposal chain on this branch now includes: W1/W2/W3 cancellation-constraint audit; antipodal outward cancellation family; antipodal strip/ladder; cross-family boundary cancellation; general anchor-cross nullity; four-anchor suppression; shell-conditioned polarization-span obstruction; rank-2 polarization-plane rigidity; and rank-2 self-closure planarity/escape. The strengthened rank-2 identity also shows projected-direction collision makes the declared pair nonproductive, so a productive W-closed pair must satisfy n.(p+q)=0. Reusing the existing exact self-closure lemma then removes the former sparse-graph concern locally: one productive triad with retained parent response in W forces a nonzero self-closure interaction; if that forced descendant stays in W, all three triad wavevectors lie in W, otherwise rank-2 polarization closure is broken by explicit escape. No result promotes C_k > 0 to a physical defect. Global NS-P2-WITNESS-SOUNDNESS, global multi-source cancellation compatibility, FNW/OCSR, G6/G7 and Clay Navier-Stokes regularity remain OPEN. Also on main via #54 (governance only): Governance only: AGENTS.md gains the central Toledo-Genesis reuse-first derivation gate (Toledo lookup -> Genesis compatibility -> reuse existing object -> derive only the missing piece -> PROPOSAL; HOLD/DRIFT outcomes). No theorem, tier, OPEN/HOLD or Clay status is changed; no equation is added or promoted.",
   "todo": {
     "status": "reviewed-no-change",
-    "evidence": "Policy text only; the research TODO is unchanged by this PR."
+    "evidence": "The reuse-first chain now narrows the shell-conditioned rank<=2 branch to polarization escape, wavevector planarity, or declared alignment/nonproductivity degeneration using only the existing self-closure machinery plus exact finite algebra. The remaining hard issue is recurrent compatibility across changing rank-2 planes / cancellation of the forced escaping descendants; global FNW/OCSR and Witness Soundness remain OPEN."
   },
   "toledo": {
-    "status": "not-required",
-    "evidence": "No equation is added, cited as new, or promoted; the PR consumes the public gate TG-RFG-01 from morrocwi/toledo."
+    "status": "issue-open",
+    "evidence": "Reuse-first lookups found no canonical Toledo objects for the new cancellation ladder, cross-family boundary theorem, general anchor-cross nullity theorem, four-anchor suppression corollary, shell-conditioned span obstruction, rank-2 polarization-plane rigidity theorem, or rank-2 self-closure planarity/escape corollary. They remain NEW DERIVATION / PROPOSAL under IDs PROP-P3-ANTIPODAL-CANCEL-LADDER-01, PROP-P3-CROSS-FAMILY-BOUNDARY-CANCEL-01, PROP-P3-GENERAL-ANCHOR-CROSS-NULLITY-01, PROP-P3-MULTI-ANCHOR-SUPPRESSION-01, PROP-P3-SHELL-CONDITIONED-SPAN-01, PROP-P3-RANK2-POLARIZATION-PLANE-RIGIDITY-01, and PROP-P3-RANK2-SELFCLOSURE-PLANARITY-01. Existing Toledo issue #11 remains the canonicalization gate; after merge, proposals should be pinned to the immutable NS merge SHA before Toledo canonicalization action."
   },
-  "claim_effect": "provenance-change"
+  "claim_effect": "statement-change"
 }
