@@ -108,3 +108,11 @@ Report:
 Core rule:
 
 > **ONE SHARED CORE — MULTIPLE DOMAIN ADAPTERS — EXPLICIT BRIDGE BEFORE CLAY CLAIM.**
+
+## Programme map
+
+This repository is one node of the Human-AI Readout Programme. Which repository answers which kind of
+question, what to read first and which gate applies is kept in one place, the routing hub:
+<https://github.com/morrocwi/main.hub> (start at its `AGENTS.md`, then `ROUTES.md`).
+The hub holds pointers and pinned links only. It is a readout of one moment: when the hub and this
+repository disagree, this repository wins.
