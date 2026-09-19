@@ -1,73 +1,32 @@
 #!/usr/bin/env python3
-"""Direct raw-sample local inverse certificate for EPSC-19/EPSC-36 at fixed N=1.
+"""Finite direct raw-sample inequality certificate for EPSC-19/EPSC-36 at N=1.
 
-This checker closes a deliberately local, finite-first measurement interface around the
-already-certified small-integer N=1 observability center.  It does *not* reconstruct a
-high-order Taylor jet from noisy samples.  Instead it builds a preconditioner for the
-49-row finite-time sample map directly and certifies the actual finite Galerkin flow by
-finite Taylor-remainder and integral-bootstrap bounds.
+This checker builds the 49-row finite-time shell-energy sample map around the existing
+small-integer N=1 observability center and evaluates an exact finite preconditioner,
+finite derivative/remainder majorants, a q<1 defect budget, and a positive raw-data
+self-map budget.
+
+Crucial foundational fence
+--------------------------
+The executable conclusions are finite rational inequalities.  They do NOT by themselves
+assert that a real contraction sequence has an attained fixed point or that an unknown
+real state exists in the declared branch.  Such a branch-existence conclusion is a
+separately tiered real-analysis/Banach adapter.  A finite-native reconstruction theorem
+would instead need a finite witness/exclusion certificate over the declared admissible
+record set.
 
 Sample map
 ----------
-For the finite N=1 Galerkin flow phi_t and its three shell energies I_s, use
+For the fixed finite N=1 Galerkin problem and shell energies I_s,
 
     S_h(x) = (
-        I_0(phi_{jh}(x))  for j=0..23,
-        I_1(phi_{jh}(x))  for j=0..23,
+        I_0(phi_{jh}(x)) for j=0..23,
+        I_1(phi_{jh}(x)) for j=0..23,
         I_2(x)
     )
 
-on the explicit 49-dimensional translation slice.  The spacing is the explicit
-rational h=10^-200.  This tiny value is chosen for proof robustness, not practical
-sensing.
-
-Direct preconditioner
----------------------
-Let J_z be the exact integer 49x49 scaled Taylor-jet Jacobian in sample-channel order,
-where z_{s,n}=C^n n! a_{s,n}, C=600.  For the degree-23 sample Jacobian polynomial,
-
-    J_T(h) = P_h J_z,
-
-with two Vandermonde blocks P_h = V diag(h^n/(C^n n!)) and one identity row.  The
-checker constructs the exact rational direct-sample preconditioner
-
-    A_h = J_z^{-1} P_h^{-1},
-
-so A_h J_T(h)=I exactly.  This factorization is used only to construct A_h; noisy
-samples are never converted into Taylor coefficients in the certified inverse theorem.
-
-Validated finite flow/tangent enclosure
-----------------------------------------
-On the declared state box ||x||_inf<=4 over 0<=t<=23h, finite operator bounds verify by
-integral bootstrap that the flow remains in the box, ||D phi_t||_inf<=2, and the second
-variation norm is <=1.  A finite 24th-order Taylor theorem bounds the center sample
-Jacobian remainder.  A finite 48th-order Taylor theorem bounds the center sample-value
-remainder used for raw-data branch capture.  No infinite Fourier object and no
-completed-infinity premise appears.
-
-If e_j bounds the center Jacobian remainder row and H_j bounds the sample-map Hessian
-row on a branch of radius r, then
-
-    q <= max_i sum_j |A_h[i,j]| (e_j + r H_j).
-
-The checker chooses r>0 so q<=1/2.  It then certifies a strictly positive raw-sample
-margin delta such that any measured sample center y_obs with sensor radius sigma and
-
-    ||y_obs - y_T||_inf + sigma <= delta
-
-(where y_T is the exact degree-47 center sample polynomial) satisfies the contraction
-self-map condition on the declared branch.  Hence every data vector in that raw sample
-box has a unique solution in the certified local branch, and
-
-    ||x-x_*||_inf <= ||A_h||_inf/(1-q) *
-                     (||y_obs-y_T||_inf + sigma + tau_T),
-
-with tau_T the certified degree-47 center-flow remainder.
-
-Boundary: this is a fixed-N=1 local mathematical measurement certificate.  Its spacing
-and admissible raw-sample tolerance are intentionally microscopic.  It does not claim a
-practical sensor regime, global injectivity, arbitrary finite N, continuum regularity,
-or a Clay result.  Those remain separate obligations.
+with explicit rational h=10^-200.  The spacing is intentionally proof-scale, not a
+practical sensing proposal.  No completed N=infinity object is used.
 """
 from __future__ import annotations
 
@@ -181,7 +140,7 @@ def majorants_to(*, M: int, op: dict, order: int) -> dict:
 
 
 def exact_scaled_output_values(cube, x0_signed, order: int):
-    """Return Y_n=C^n d^n I_s(phi_t(x0))/dt^n|_0 exactly, n=0..order."""
+    """Return finite scaled shell-output derivatives through one declared order."""
     x0 = np.asarray(x0_signed, dtype=object)
     X = [x0]
     W = np.asarray(cube.weights, dtype=object)
@@ -228,13 +187,16 @@ def build_direct_preconditioner(cube, x0, free):
     Pinv[48][48] = Fraction(1)
     A = matmul(Jz_inv, Pinv)
 
-    # Exact degree-23 sample Jacobian, used only to verify A J_T = I exactly.
     P = [[Fraction(0) for _ in range(49)] for _ in range(49)]
     nodes = tuple(range(24))
     for offset in (0, 24):
         for j, node in enumerate(nodes):
             for n in range(24):
-                P[offset + j][offset + n] = Fraction(node**n, 1) * (H**n) / Fraction(C**n * math.factorial(n), 1)
+                P[offset + j][offset + n] = (
+                    Fraction(node**n, 1)
+                    * (H**n)
+                    / Fraction(C**n * math.factorial(n), 1)
+                )
     P[48][48] = Fraction(1)
     JT = matmul(P, Jz)
     return A, JT, det_jz
@@ -271,8 +233,6 @@ def main() -> int:
     Q = Fraction(op["Q_bound"])
     T = MAX_NODE * H
 
-    # Finite integral bootstraps.  They validate the actual finite ODE flow and its
-    # first two variations over the complete sampling window.
     initial_bound = Fraction(center["max_abs_coordinate"]) + BRANCH_CAP
     f_bound = L * STATE_BOUND + B * STATE_BOUND * STATE_BOUND
     k_bound = L + 2 * B * STATE_BOUND
@@ -281,13 +241,12 @@ def main() -> int:
     second_bootstrap = T * (
         k_bound * SECOND_VARIATION_BOUND + 2 * B * TANGENT_BOUND * TANGENT_BOUND
     ) <= SECOND_VARIATION_BOUND
-    flow_ok = bool(state_bootstrap and tangent_bootstrap and second_bootstrap)
+    finite_bootstrap_ok = bool(state_bootstrap and tangent_bootstrap and second_bootstrap)
 
     A, JT, det_jz = build_direct_preconditioner(cube, x0, free)
     exact_inverse_ok = identity_error(A, JT) == 0
     A_inf = weighted_row_norm(A, [Fraction(1) for _ in range(49)])
 
-    # Finite 24th-order Taylor remainder for the center sample Jacobian.
     m24 = majorants_to(M=4, op=op, order=24)
     jac_d24 = Fraction(m24["output_first"][24], C**24) * TANGENT_BOUND
     jac_remainders = []
@@ -298,8 +257,6 @@ def main() -> int:
     jac_remainders.append(Fraction(0))
     q_center = weighted_row_norm(A, jac_remainders)
 
-    # Direct sample-map Hessian bound on the complete branch from the validated
-    # flow/tangent/second-variation enclosure.
     H_sample = 2 * Q * (
         TANGENT_BOUND * TANGENT_BOUND + STATE_BOUND * SECOND_VARIATION_BOUND
     )
@@ -311,8 +268,6 @@ def main() -> int:
         radius = min(BRANCH_CAP, (Q_TARGET - q_center) / q_slope)
     q_total = q_center + q_slope * radius if radius > 0 else Fraction(1)
 
-    # Finite 48th-order Taylor theorem for actual center sample values.  Computing
-    # the exact degree-47 polynomial makes the raw-data acceptance box explicit.
     center_poly = center_value_polynomial(cube, x0)
     if len(center_poly) != 49:
         raise RuntimeError("center sample polynomial must have 49 rows")
@@ -335,8 +290,8 @@ def main() -> int:
         branch_data_budget = Fraction(0)
         raw_sensor_margin = Fraction(-1)
 
-    direct_ok = bool(
-        flow_ok
+    finite_gate_ok = bool(
+        finite_bootstrap_ok
         and det_jz != 0
         and exact_inverse_ok
         and q_center < Q_TARGET
@@ -348,18 +303,18 @@ def main() -> int:
 
     claims = [
         {
-            "id": "V7-EPSC19-N1-DIRECT-SAMPLE-FLOW-ENCLOSURE",
-            "name": "validated finite N=1 flow/tangent enclosure over the explicit raw-sample window",
-            "tier": "Dr",
-            "status": "DERIVED" if flow_ok else "OPEN",
+            "id": "V7-EPSC19-N1-DIRECT-SAMPLE-FINITE-BOOTSTRAPS",
+            "name": "finite N=1 state/tangent/second-variation budget inequalities over the explicit sample window",
+            "tier": "finite_diagnostic",
+            "status": "PASS" if finite_bootstrap_ok else "FAIL",
             "evidence": (
-                f"h=10^-200; T=23h; state<=4 bootstrap={state_bootstrap}; "
-                f"||Dphi||_inf<=2 bootstrap={tangent_bootstrap}; second variation<=1 bootstrap={second_bootstrap}"
+                f"h=10^-200; T=23h; state budget={state_bootstrap}; "
+                f"tangent budget={tangent_bootstrap}; second-variation budget={second_bootstrap}"
             ),
         },
         {
             "id": "V7-EPSC19-N1-DIRECT-SAMPLE-PRECONDITIONER",
-            "name": "exact rational preconditioner for the degree-23 direct 49-sample Jacobian",
+            "name": "exact rational preconditioner for the degree-23 direct 49-sample Jacobian polynomial",
             "tier": "finite_diagnostic",
             "status": "PASS" if det_jz != 0 and exact_inverse_ok else "FAIL",
             "evidence": (
@@ -368,41 +323,48 @@ def main() -> int:
             ),
         },
         {
-            "id": "V7-EPSC19-N1-DIRECT-SAMPLE-Q",
-            "name": "branch-wide preconditioned Jacobian defect below one for the actual direct sample map",
-            "tier": "Dr",
-            "status": "DERIVED" if direct_ok else "OPEN",
+            "id": "V7-EPSC19-N1-DIRECT-SAMPLE-FINITE-Q-GATE",
+            "name": "finite preconditioned defect/remainder budget reaches q<=1/2 for the declared N=1 sample construction",
+            "tier": "finite_diagnostic",
+            "status": "PASS" if finite_gate_ok else "FAIL",
             "evidence": (
-                f"finite 24th-order center Jacobian remainder + validated Hessian variation; "
+                f"finite order-24 Jacobian remainder majorant + declared Hessian budget; "
                 f"q_center bracket={power10_bracket(q_center)}; chosen r bracket={power10_bracket(radius) if radius>0 else 'none'}; q_total<=1/2"
-                if direct_ok else
-                "direct sample-map flow/remainder/preconditioner conditions did not all certify"
+                if finite_gate_ok else
+                "one or more finite direct-sample gate inequalities failed"
             ),
         },
         {
-            "id": "V7-EPSC19-N1-RAW-SAMPLE-BRANCH-CERTIFICATE",
-            "name": "strictly positive raw-sample box certifies the fixed N=1 local inverse branch",
-            "tier": "Dr",
-            "status": "DERIVED" if direct_ok else "OPEN",
+            "id": "V7-EPSC19-N1-RAW-SAMPLE-FINITE-DATA-BUDGET",
+            "name": "strictly positive finite raw-sample data budget for the N=1 direct sample construction",
+            "tier": "finite_diagnostic",
+            "status": "PASS" if finite_gate_ok else "FAIL",
             "evidence": (
-                f"degree-47 exact center sample polynomial with finite 48th-order remainder tau_T; "
-                f"branch data budget {power10_bracket(branch_data_budget)}; tau_T {power10_bracket(tau_center)}; "
-                f"remaining raw sample-center plus sensor margin {power10_bracket(raw_sensor_margin)}. "
-                "Banach self-map/contraction: ||A_h||(data discrepancy)+q r<=r."
-                if direct_ok else
-                "no positive raw-data margin remained after certified center-flow remainder"
+                f"degree-47 center polynomial; finite order-48 remainder budget tau_T {power10_bracket(tau_center)}; "
+                f"data budget {power10_bracket(branch_data_budget)}; remaining sample-center+sensor margin {power10_bracket(raw_sensor_margin)}"
+                if finite_gate_ok else
+                "no positive finite raw-data budget remained"
             ),
         },
         {
-            "id": "V7-EPSC19-N1-RAW-SAMPLES-TO-RHO1",
-            "name": "direct finite raw shell-energy samples propagate to a certified retained-state rho_1 on the validated branch",
+            "id": "V7-EPSC19-N1-RAW-SAMPLES-CONDITIONAL-RHO1",
+            "name": "raw-sample discrepancy has a finite conditional retained-state radius factor on the declared local chart",
             "tier": "Dr",
-            "status": "DERIVED" if direct_ok else "OPEN",
+            "status": "DERIVED" if finite_gate_ok else "OPEN",
             "evidence": (
-                f"rho_1 <= ||A_h||/(1-q) * (sample-center discrepancy + sensor radius + tau_T); "
-                f"inverse factor bracket {power10_bracket(inverse_factor)}; accepted data are certified to remain inside r"
-                if direct_ok else
-                "direct raw-sample inverse prerequisites did not all certify"
+                f"conditional rho_1 <= ||A_h||/(1-q)*(sample-center discrepancy+sensor radius+tau_T); "
+                f"inverse-factor bracket {power10_bracket(inverse_factor)}; this is conditional on separately justified state/root existence in the declared branch"
+                if finite_gate_ok else
+                "finite direct-sample gate prerequisites did not all pass"
+            ),
+        },
+        {
+            "id": "V7-EPSC19-N1-RAW-SAMPLE-REAL-BRANCH-ADAPTER",
+            "name": "attained real-root existence/uniqueness from the contraction gate",
+            "tier": "Open",
+            "status": "OPEN",
+            "evidence": (
+                "Banach fixed-point existence requires an explicitly granted complete real metric-space interpretation/attained limit; the finite checker does not promote that premise to a native finite theorem"
             ),
         },
         {
@@ -411,8 +373,7 @@ def main() -> int:
             "tier": "Open",
             "status": "OPEN",
             "evidence": (
-                "the explicit proof spacing h=10^-200 is intentionally microscopic and the positive raw-sample margin is mathematical, not practical; "
-                "optimizing spacing/preconditioning and validating realistic sensor scales remains open"
+                "h=10^-200 is intentionally microscopic; schedule/preconditioner optimization and realistic sensor-scale validation remain open"
             ),
         },
     ]
@@ -425,34 +386,36 @@ def main() -> int:
         "sample_count": 49,
         "center_taylor_degree_for_jacobian": 23,
         "center_taylor_degree_for_sample_values": 47,
-        "flow_bootstrap": {
+        "finite_bootstraps": {
             "state_bound": "4",
             "tangent_bound": "2",
             "second_variation_bound": "1",
-            "certified": flow_ok,
+            "pass": finite_bootstrap_ok,
         },
         "direct_preconditioner_norm": power10_bracket(A_inf),
         "center_jacobian_remainder_defect": power10_bracket(q_center),
-        "certified_branch_radius": power10_bracket(radius) if radius > 0 else None,
-        "q_bound": "1/2" if direct_ok else None,
+        "declared_local_radius": power10_bracket(radius) if radius > 0 else None,
+        "q_budget": "1/2" if finite_gate_ok else None,
         "center_sample_value_remainder": power10_bracket(tau_center),
-        "raw_branch_data_budget": power10_bracket(branch_data_budget) if branch_data_budget > 0 else None,
+        "raw_data_budget": power10_bracket(branch_data_budget) if branch_data_budget > 0 else None,
         "positive_raw_sensor_margin": power10_bracket(raw_sensor_margin) if raw_sensor_margin > 0 else None,
-        "inverse_factor": power10_bracket(inverse_factor) if inverse_factor > 0 else None,
+        "conditional_inverse_factor": power10_bracket(inverse_factor) if inverse_factor > 0 else None,
+        "finite_gate_pass": finite_gate_ok,
         "what_closed": (
-            "fixed-N=1 direct raw finite sample map: explicit spacing, validated finite flow/tangent enclosure, "
-            "exact preconditioner, q<1, positive local branch-capture data box, and raw-sample-to-rho_1 propagation"
-            if direct_ok else "not closed"
+            "fixed-N=1 direct-sample finite preconditioner, q/data-budget inequalities, and conditional rho factor"
+            if finite_gate_ok else "not closed"
         ),
         "what_remains_open": (
-            "practical spacing/sensor scale, global branch uniqueness, arbitrary finite N, outer EPSC scaling, continuum regularity/Clay"
+            "real branch/root existence unless supplied as a separate adapter or finite witness; global symmetry-aware branch selection; practical spacing/sensor scale; arbitrary finite N; outer EPSC scaling; continuum regularity/Clay"
         ),
-        "finite_first_scope": "all state, sample, Taylor-remainder and contraction objects are finite; no completed N=infinity object is used",
+        "finite_first_scope": (
+            "all native certificate outputs are finite records and rational inequalities; no completed N=infinity object or attained infinite contraction limit is assumed"
+        ),
     }
-    print("EPSC-19 fixed-N=1 direct raw-sample inverse certificate")
+    print("EPSC-19 fixed-N=1 direct raw-sample finite gate")
     print(json.dumps(summary, indent=2, sort_keys=True))
     print("RESULT_JSON:" + json.dumps({"claims": claims, "summary": summary}, separators=(",", ":")))
-    return 0 if all(c["status"] != "FAIL" for c in claims) and direct_ok else 1
+    return 0 if finite_gate_ok else 1
 
 
 if __name__ == "__main__":
